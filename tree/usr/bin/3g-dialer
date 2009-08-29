@@ -22,20 +22,48 @@ show_list(){
    done
 }
 ####################################################################
+set_pin_code()
+{
+   grep -q "Dialer pin" $HOME/.wvdialrc || return
+   [[ ! -z "$pid_pin" ]] && { kill $pid_pin 2>/dev/null 1>&2 || kill -9 $pid_pin 2>/dev/null 1>&2 ; }
+   $guitool --info --text=$"Entering PIN code '$pin' in your modem, please wait" & 
+   pid_pin_gui=$!
+
+   { { wvdial pin 2>&1 & } ; pid_pin=$! ; }
+   while read -r line
+   do
+      if grep -qE "(ERROR|Bad string init|operation not allowed)" $logs ; then
+         kill $pid_pin_gui
+         kill $pid_pin
+         return 
+      fi
+      if grep -q "OK" $logs ; then
+         kill $pid_pin_gui
+         return
+      fi
+      sleep 1
+   done
+   rm -f $logs 
+   unset pid_pin pid_pin_gui
+}
+####################################################################
 try_to_connect()
 {
    rm -f $connected
    rm -f $logs
    #timeout 10 kill $pid 
 #   timeout 10 killall wvdial 2>/dev/null 1>&2
-   kill $pid 2>/dev/null 1>&2 || kill -9 $pid 2>/dev/null 1>&2
+   [[ ! -z "$pid" ]] && { kill $pid 2>/dev/null 1>&2 || kill -9 $pid 2>/dev/null 1>&2 ; }
    
 #   { { wvdial 2>&1 & } ; pid=$! ; } | tee $logs 1>/dev/null # Si se añade esta tuberia no entra en background asi que no usarlo
    echo 10 > $progress_file
-   { { wvdial 2>&1 & } ; pid=$! ; }
+   { { wvdial connect 2>&1 & } ; pid=$! ; }
    #
    sleep 12
-   cat $logs | grep CONNECT && echo "yes" > $connected
+   if cat $logs | grep CONNECT ; then
+      sleep 5
+      echo "yes" > $connected
+   fi
    #echo 100 > $progress_file
    rm -f $logs $progress_file
 
@@ -47,8 +75,13 @@ connected_successfully(){
 }
 ####################################################################
 #$guitool --info --text=$"If you need to type the PIN code for connect your USB modem, you need to disable it first. For that, just extract the SIM card from your modem and put it on a normal phone (nokia recommended) and search the option to disable the PIN code request, if you don't know how to do that, request it at the shop where you have buy it or a simple mobile phone's house"
-$guitool --info --text=$"Do you need to enter a PIN code for your modem ? This is normally needed when you use a 3G/HSDPA connected via USB, not needed if you connect your phone to the computer" && need_pin="yes"
-selected=$( { echo -e "disconnect\n"$"Disconnect""\n"$"Disconnect your connection""\n""null\n"$"Any""\n"$"It is not listed here" ; show_list ; } | $guitool --list --column="File" --column=$"Country" --column=$"Provider" --hide-column=1 --text=$"Select your desired Provider\nand Country to connect" --height="360" --width="300" || echo cancel )
+if $guitool --info --text=$"Do you need to enter a PIN code for your modem ? This is normally needed when you use a 3G-HSDPA connected via USB, not needed if you connect your phone to the computer" ; then
+   pin="$( $guitool --entry --entry-text="1234" --text=$"Please enter your PIN code" || echo cancel )"
+   if [[ ! "${#pin}" = "4" ]] || [[ "$pin" = *[^0-9]* ]] ; then
+      unset pin need_pin
+   fi 
+fi
+selected="$( { echo -e "disconnect\n"$"Disconnect""\n"$"Disconnect your connection""\n""null\n"$"Any""\n"$"It is not listed here" ; show_list ; } | $guitool --list --column="File" --column=$"Country" --column=$"Provider" --hide-column=1 --text=$"Select your desired Provider\nand Country to connect" --height="360" --width="300" || echo cancel )"
 
 if [[ "$selected" = "cancel" ]]; then exit ; fi
 
@@ -108,9 +141,11 @@ do
 cat > $HOME/.wvdialrc << EOF
 [Dialer Defaults]
 Modem = $device
-Phone = $phone
 Username = '$Username'
 Password = '$Password'
+
+[Dialer connect]
+Phone = $phone
 Baud = $Baud
 Stupid Mode = $stupid
 Init = ATZ
@@ -129,8 +164,17 @@ EOF
 [[ "$apn" = "empty" ]] && {
    sed -i "s/^Init3.*$/Init3 = AT+CGDCONT=1,\"IP\",\"\"/" $HOME/.wvdialrc
 }
+[[ "$need_pin" = "yes" ]] && {
+   echo -e "\n[Dialer pin]" >> $HOME/.wvdialrc
+   echo -e "Init1 = AT+CPIN=$pin" >> $HOME/.wvdialrc
+}
 
+
+rm -f $logs 2>/dev/null
+set_pin_code | tee $logs
+rm -f $logs 2>/dev/null
 ( try_to_connect | tee $logs ) &
+
 rm -f $progress_file
 touch $progress_file
 ( while test -f $progress_file ; do cat $progress_file ; sleep 1 ; done ) | ( $guitool --progress --pulsate --auto-close --auto-kill --text=$"Elive is trying to connect using:\n\nPhone '${phone}'\nAPN '${apn}'\nWith Username: '${usernames}'\nWith auto-dns: '${dns}'\nUsing 'stupid mode': ${stupid}\n\nPlease be patient" || echo canceled )
