@@ -1,0 +1,146 @@
+#!/bin/bash
+lists="/usr/share/3g-dialer/templates"
+guitool=zenity
+logs="/tmp/.3g-dialer-${USER}-logs"
+progress_file="/tmp/.3g-dialer-${USER}-progress"
+connected="/tmp/.3g-dialer-${USER}-connected"
+export TEXTDOMAIN="3g-dialer"
+
+#FIXME: Add a question about if connect, disconnect, or select a new provider, this question should be NOT launched if the variable emodule is set (in order to not needed it from the future module)
+
+####################################################################
+show_list(){
+   for file in ${lists}/*
+   do
+      file=$(basename "$file")
+      name=$(echo $file | awk -v FS="__" '{print $1}')
+      country=$(echo $file | awk -v FS="__" '{print $2}')
+
+      echo "$file"
+      echo "$country"
+      echo "$name"
+   done
+}
+####################################################################
+try_to_connect()
+{
+   rm -f $connected
+   rm -f $logs
+   #timeout 10 kill $pid 
+#   timeout 10 killall wvdial 2>/dev/null 1>&2
+   kill $pid 2>/dev/null 1>&2 || kill -9 $pid 2>/dev/null 1>&2
+   
+#   { { wvdial 2>&1 & } ; pid=$! ; } | tee $logs 1>/dev/null # Si se añade esta tuberia no entra en background asi que no usarlo
+   echo 10 > $progress_file
+   { { wvdial 2>&1 & } ; pid=$! ; }
+   #
+   sleep 12
+   cat $logs | grep CONNECT && echo "yes" > $connected
+   #echo 100 > $progress_file
+   rm -f $logs $progress_file
+
+}
+####################################################################
+connected_successfully(){
+   $guitool --info --text=$"You are successfully connected to internet, your configuration is saved for this provider so you can't need to select it again from the list, just go to 'connect'"
+   exit 0 # FIXME ? or its ok since here ?
+}
+####################################################################
+#$guitool --info --text=$"If you need to type the PIN code for connect your USB modem, you need to disable it first. For that, just extract the SIM card from your modem and put it on a normal phone (nokia recommended) and search the option to disable the PIN code request, if you don't know how to do that, request it at the shop where you have buy it or a simple mobile phone's house"
+$guitool --info --text=$"Do you need to enter a PIN code for your modem ? This is normally needed when you use a 3G/HSDPA connected via USB, not needed if you connect your phone to the computer" && need_pin="yes"
+selected=$( { echo -e "disconnect\n"$"Disconnect""\n"$"Disconnect your connection""\n""null\n"$"Any""\n"$"It is not listed here" ; show_list ; } | $guitool --list --column="File" --column=$"Country" --column=$"Provider" --hide-column=1 --text=$"Select your desired Provider\nand Country to connect" --height="360" --width="300" || echo cancel )
+
+if [[ "$selected" = "cancel" ]]; then exit ; fi
+
+unset Username Password Apn Phone  Baud Modem Isdn
+if [[ "$selected" = "disconnect" ]] ; then
+   killall wvdial
+fi
+if [[ "$selected" = "null" ]] ; then
+   Username=request
+   Password=request
+else
+   source ${lists}/"$selected"
+fi
+# Note, more than one 'try' needs to be separed by a simple space
+
+####################################################################
+if [[ -z $Apn ]] ; then
+   $guitool --info --text=$"The APN (Access Point Name) is the most important element that you need to know in order to connect to internet, if you don't know it you can ask it at your Provider or search in google, it should be something like: internet, Internet, web.vodafone.de, movistar.es\n\nIt can be also a EMPTY value"
+   Apn=$( $guitool --entry --text=$"Enter the APN (Access Point Name) of your Provider" || echo cancel )
+fi
+[[ "$Apn" = "cancel" ]] && unset Apn
+#Note: If the APN is empty you should use 'emptry' name:
+[[ "$Apn" = "" ]] && Apn="empty"
+Apn="$Apn internet"
+
+if echo $Username | grep -q phonenumber ; then
+   [[ -z "$phonenumber" ]] && phonenumber=$( $guitool --entry --text=$"Please enter your phone number" || echo cancel )
+   Username=${Username/phonenumber/$phonenumber}
+fi
+if echo $Password | grep -q phonenumber ; then
+   [[ -z "$phonenumber" ]] && phonenumber=$( $guitool --entry --text=$"Please enter your phone number" || echo cancel )
+   Password=${Password/phonenumber/$phonenumber}
+fi
+[[ "$Username" = "request" ]] && Username=$( $guitool --entry --text=$"Enter the Username to use" || echo dummy )
+[[ "$Password" = "request" ]] && Password=$( $guitool --entry --text=$"Enter the Password to use" || echo dummy )
+
+[[ -z $Baud ]] && Baud=460800
+[[ -z $Phone ]] && Phone="*99# *99***1# #777" # FIXME: probar con mi yoigo a ver que pasa si no pongo ningun "phone" variable y dejo solo esto (empezando por el 777) a ver si magicamente se autoconecta a internet =)
+####################################################################
+
+# FIXME: Add the selector of bluetooth/usb modes (add a helper for bluetooth, and verify it too), that sets the variable $device
+# FIXME: Add a list creator of devices (/dev/ttyACM* /dev/ttyUSB* /dev/(bluetoohth, etc) and if is more big than one, run a selector, if there's no devices, error a message saying that plug the device and run this again
+
+device="$( ls -1 /dev/ttyACM* /dev/ttyUSB* 2>/dev/null | $guitool --list --text=$"Select the device from the list" --column=$"Device" || echo /dev/ttyACM0 )"
+
+for phone in $Phone
+do
+   for apn in $Apn
+   do
+      for usernames in yes no
+      do
+         for dns in no yes
+         do
+            for stupid in No Yes
+            do
+#indent
+cat > $HOME/.wvdialrc << EOF
+[Dialer Defaults]
+Modem = $device
+Phone = $phone
+Username = '$Username'
+Password = '$Password'
+Baud = $Baud
+Stupid Mode = $stupid
+Init = ATZ
+Init2 = ATQ0 V1 E1 S0=0 &C1 &D2 +FCLASS=0
+Init3 = AT+CGDCONT=1,"IP","$apn"
+EOF
+[[ "$dns" = "yes" ]] && {
+   echo -e "Auto_DNS = no" >> $HOME/.wvdialrc
+   [[ ! -z "$Dns1" ]] && echo -e "dns1 = $Dns1" >> $HOME/.wvdialrc
+   [[ ! -z "$Dns2" ]] && echo -e "dns2 = $Dns2" >> $HOME/.wvdialrc
+}
+[[ "$usernames" = "no" ]] && {
+   sed -i "s/^Username.*$/Username = ''/" $HOME/.wvdialrc
+   sed -i "s/^Password.*$/Password = ''/" $HOME/.wvdialrc
+}
+[[ "$apn" = "empty" ]] && {
+   sed -i "s/^Init3.*$/Init3 = AT+CGDCONT=1,\"IP\",\"\"/" $HOME/.wvdialrc
+}
+
+( try_to_connect | tee $logs ) &
+rm -f $progress_file
+touch $progress_file
+( while test -f $progress_file ; do cat $progress_file ; sleep 1 ; done ) | ( $guitool --progress --pulsate --auto-close --auto-kill --text=$"Elive is trying to connect using:\n\nPhone '${phone}'\nAPN '${apn}'\nWith Username: '${usernames}'\nWith auto-dns: '${dns}'\nUsing 'stupid mode': ${stupid}\n\nPlease be patient" || echo canceled )
+
+#FIXME: separar el zenity del comando que parece no cerrarse correctamente... parsear los resultados de los logs para saber si seguir intentando o mostrar el mensaje de conectado
+[[ "$( cat $connected)" = "yes" ]] && connected_successfully
+            done
+         done
+      done
+   done
+done
+
+[[ -z $connected ]] && $guitool --error --text=$"We have not possible to connect, you can check your ${logs} file that contains a lot of useful information about the reason of why we have not possible to be connected. You can also try the 'not listed here' option of the list, or edit the templates in /usr/share/3g-dialer/templates with the correct information" 

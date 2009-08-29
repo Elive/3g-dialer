@@ -1,0 +1,1670 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta name="robots" content="index,nofollow">
+
+<title>NetworkManager/Hardware/3G - Ubuntu Wiki</title>
+<script type="text/javascript" src="/htdocs/common/js/common.js"></script>
+
+<script type="text/javascript">
+<!--
+var search_hint = "Search";
+//-->
+</script>
+
+
+<link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="/htdocs/ubuntu/css/common.css">
+<link rel="stylesheet" type="text/css" charset="utf-8" media="screen" href="/htdocs/ubuntu/css/screen.css">
+<link rel="stylesheet" type="text/css" charset="utf-8" media="print" href="/htdocs/ubuntu/css/print.css">
+<link rel="stylesheet" type="text/css" charset="utf-8" media="projection" href="/htdocs/ubuntu/css/projection.css">
+
+<!-- css only for MSIE browsers -->
+<!--[if IE]>
+   <link rel="stylesheet" type="text/css" charset="utf-8" media="all" href="/htdocs/ubuntu/css/msie.css">
+<![endif]-->
+
+
+
+<link rel="Start" href="/Home">
+<link rel="Alternate" title="Wiki Markup" href="/NetworkManager/Hardware/3G?action=raw">
+<link rel="Alternate" media="print" title="Print View" href="/NetworkManager/Hardware/3G?action=print">
+<link rel="Search" href="/FindPage">
+<link rel="Index" href="/TitleIndex">
+<link rel="Glossary" href="/WordIndex">
+<link rel="Help" href="/HelpOnFormatting">
+</head>
+
+<body  lang="en" dir="ltr">
+
+<div id="header">
+<div id="mastwrap"><div id="masthead">
+<div id="logo"><a href="/Home">Ubuntu Wiki</a></div>
+
+<form id="searchform" method="get" action="/NetworkManager/Hardware/3G">
+<div>
+<input type="hidden" name="action" value="fullsearch">
+<input type="hidden" name="context" value="180">
+<label for="searchinput">Search:</label>
+<input id="searchinput" type="text" name="value" value="" size="20"
+    onfocus="searchFocus(this)" onblur="searchBlur(this)"
+    onkeyup="searchChange(this)" onchange="searchChange(this)" alt="Search">
+<input id="titlesearch" name="titlesearch" type="submit"
+    value="Titles" alt="Search Titles">
+<input id="fullsearch" name="fullsearch" type="submit"
+    value="Text" alt="Search Full Text">
+</div>
+</form>
+<script type="text/javascript">
+<!--// Initialize search form
+var f = document.getElementById('searchform');
+f.getElementsByTagName('label')[0].style.display = 'none';
+var e = document.getElementById('searchinput');
+searchChange(e);
+searchBlur(e);
+//-->
+</script>
+
+<div class="login"><a href="/UserPreferences?action=login">Log In / Register</a></div>
+
+  <div id="sisternav">
+      <ul>
+        <li id="plain">
+            <a href="http://www.ubuntu.com"
+               accesskey="t">Ubuntu</a>
+        </li>
+        <li id="plain">
+            <a href="http://www.ubuntu.com/community"
+               accesskey="t">Community</a>
+        </li>
+        <li id="plain">
+            <a href="http://www.ubuntu.com/support"
+               accesskey="t">Support</a>
+        </li>
+        <li id="plain">
+            <a href="http://www.ubuntu.com/partners/program"
+               accesskey="t">Partners</a>
+        </li>
+        <li id="current">
+            <a href="http://wiki.ubuntu.com/"
+               accesskey="t">Wiki</a>
+        </li>
+        <li id="plain">
+            <a href="http://planet.ubuntulinux.org"
+               accesskey="t">Planet</a>
+        </li>
+      </ul>
+  </div>
+
+</div></div>
+
+
+<ul id="navibar">
+
+</ul>
+
+
+<ul id="pagetrail">
+<li><a href="/NetworkManager/Hardware/3G">3G</a></li>
+</ul>
+<ul class="extranav">
+<li><a href="/UserPreferences">User Preferences</a></li>
+<li><a href="/FindPage">Find Page</a></li>
+</ul>
+<ul class="editbar"><li><span class="disabled">Immutable Page</span></li><li><a href="#" class="toggleCommentsButton" style="display:none;" onClick="toggleComments();return false;">Comments</a></li><li><a class="nbinfo" href="/NetworkManager/Hardware/3G?action=info" rel="nofollow">Info</a></li><li><a class="nbattachments" href="/NetworkManager/Hardware/3G?action=AttachFile" rel="nofollow">Attachments</a></li><li>
+<form class="actionsmenu" method="get" action="/NetworkManager/Hardware/3G">
+<div>
+    <label>More Actions:</label>
+    <select name="action"
+        onchange="if ((this.selectedIndex != 0) &&
+                      (this.options[this.selectedIndex].disabled == false)) {
+                this.form.submit();
+            }
+            this.selectedIndex = 0;">
+        <option value="raw">Raw Text</option>
+<option value="print">Print View</option>
+<option value="RenderAsDocbook">Render as Docbook</option>
+<option value="refresh">Delete Cache</option>
+<option value="show" disabled class="disabled">------------------------</option>
+<option value="SpellCheck">Check Spelling</option>
+<option value="LikePages">Like Pages</option>
+<option value="LocalSiteMap">Local Site Map</option>
+<option value="show" disabled class="disabled">------------------------</option>
+<option value="RenamePage" disabled class="disabled">Rename Page</option>
+<option value="CopyPage">Copy Page</option>
+<option value="DeletePage" disabled class="disabled">Delete Page</option>
+<option value="show" disabled class="disabled">------------------------</option>
+<option value="MyPages">My Pages</option>
+<option value="SubscribeUser">Subscribe User</option>
+<option value="show" disabled class="disabled">------------------------</option>
+<option value="Despam">Remove Spam</option>
+<option value="revert">Revert to this revision</option>
+<option value="PackagePages">Package Pages</option>
+<option value="SyncPages">Sync Pages</option>
+<option value="show" disabled class="disabled">------------------------</option>
+<option value="Load">Load</option>
+<option value="Save">Save</option>
+    </select>
+    <input type="submit" value="Do">
+    
+</div>
+<script type="text/javascript">
+<!--// Init menu
+actionsMenuInit('More Actions:');
+//-->
+</script>
+</form>
+</li></ul>
+
+</div>
+
+<div id="page" lang="en" dir="ltr">
+
+
+<ul id="pagelocation">
+<li>NetworkManager/Hardware/3G</li>
+</ul>
+<div dir="ltr" id="content" lang="en"><span class="anchor" id="top"></span>
+<span class="anchor" id="line-1"></span><p class="line862">This page is part of the <a href="/3GNetworkingIntrepid">3GNetworkingIntrepid</a> effort. <span class="anchor" id="line-2"></span><span class="anchor" id="line-3"></span><p class="line867"><strong>Contents</strong> <span class="anchor" id="line-4"></span><div class="table-of-contents"><p class="table-of-contents-heading">Contents<ol><li><a href="#Data Card Info">Data Card Info</a><ol><li><a href="#How to obtain device details">How to obtain device details</a></li><li><a href="#Mobile Broadband cards">Mobile Broadband cards</a></li><li><a href="#Mobile Phones">Mobile Phones</a></li><li><a href="#Provider info">Provider info</a></li></ol></li></ol></div> <span class="anchor" id="line-5"></span><span class="anchor" id="line-6"></span><p class="line867">
+<h1 id="Data Card Info">Data Card Info</h1>
+<span class="anchor" id="line-7"></span><span class="anchor" id="line-8"></span><p class="line862">This page lists hardware details and test results for mobile broadband hardware (including mobile phones) for <a href="/NetworkManager">NetworkManager</a> 0.7 3G networking testing and development. <span class="anchor" id="line-9"></span><span class="anchor" id="line-10"></span><p class="line862">If your device isn't listed, please add it to the table below. If it's not detected by the latest <a href="/NetworkManager">NetworkManager</a> 0.7 from the <a href="/NetworkManager">NetworkManager</a> <a class="http" href="http://launchpad.net/~network-manager/+archive">PPA</a>, file a bug according to the instructions <a class="http" href="http://lwn.net/Articles/293813/">here</a>. <strong>Remember to attach your lshal output to the bug report you file</strong> and to link to the bug report from the entry for your hardware on this page. <span class="anchor" id="line-11"></span><span class="anchor" id="line-12"></span><p class="line867">
+<h2 id="How to obtain device details">How to obtain device details</h2>
+<span class="anchor" id="line-13"></span><span class="anchor" id="line-14"></span><p class="line874">Many modems are internally installed in a laptop, or are rebranded/rebadged devices from other providers. They also vary in terms of their capabilities, many of which can't be discovered from the USB device IDs alone. <span class="anchor" id="line-15"></span><span class="anchor" id="line-16"></span><p class="line862">Some detailed instructions on how to probe your modem to find out the real manufacturer details, modem capabilities, USB vendor and product IDs, etc can be found in <a href="/NetworkManager/Hardware/3G/Probing">NetworkManager/Hardware/3G/Probing</a>. Adding this information - particularly the capabilities string and the real manufacturer - to the "Notes" section of the entry for your device would be helpful. <span class="anchor" id="line-17"></span><span class="anchor" id="line-18"></span><p class="line867">
+<h2 id="Mobile Broadband cards">Mobile Broadband cards</h2>
+<span class="anchor" id="line-19"></span><span class="anchor" id="line-20"></span><p class="line874">For mobile phones, see the next section. This list is for add-in or built-in dedicated mobile broadband modems. <span class="anchor" id="line-21"></span><span class="anchor" id="line-22"></span><div><table><tbody><tr>  <td><p class="line862"> <strong>Hardware</strong> </td>
+  <td><p class="line862"> <strong>Type</strong> </td>
+  <td><p class="line862"> <strong>Status</strong> </td>
+  <td><p class="line862"> <strong>Provider(s)</strong> </td>
+  <td><p class="line862"> <strong>LP Bug</strong> </td>
+  <td><p class="line862"> <strong>Device ID</strong> </td>
+  <td><p class="line862"> <strong>Notes</strong> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-23"></span><p class="line862"> Bandrich Bandluxe C100 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-24"></span><p class="line862"> Bandrich Bandluxe C100S (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works out of box </td>
+  <td><p class="line862"> <a class="nonexistent" href="/ChungHwa">ChungHwa</a> Telecom (Taiwan), Taiwan Mobile (Taiwan) </td>
+  <td><p class="line862">  </td>
+  <td><p class="line862">  </td>
+  <td><p class="line862"> wvdial works fine </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-25"></span><p class="line862"> Bandrich Bandluxe C120 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-26"></span><p class="line862"> Bandrich Bandluxe M150 (HSDPA) </td>
+  <td><p class="line862"> Mini-PCI (USB) </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-27"></span><p class="line862"> Bandrich Bandluxe M250 (HSUPA) </td>
+  <td><p class="line862"> Mini-PCI (USB) </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-28"></span><p class="line862"> C-motech D-50 (CDMA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> ice.net (Sweden) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x16d8 product=0x6803 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-29"></span><p class="line862"> C-motech CNU-680 (CDMA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> ice.net (Sweden) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x16d8 product=0x6803 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-30"></span><p class="line862"> Dell 5510 Mobile Broadband (HSDPA) </td>
+  <td><p class="line862"> Mini-PCI (USB) </td>
+  <td><p class="line862"> Works with Network Manger &amp; pppd </td>
+  <td><p class="line862"> AT&amp;T </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x413c product=0x8137 </td>
+  <td><p class="line862"> Novatel Wireless Expedite </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-31"></span><p class="line862"> Dell 5520 Mobile Broadband (HSDPA) </td>
+  <td><p class="line862"> Mini-PCI (USB) </td>
+  <td><p class="line862"> Works with patch to drivers/usb/serial/option.c and change to hal FDI config </td>
+  <td><p class="line862"> Telstra (Australia) </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/262498">262498</a> </td>
+  <td><p class="line862"> vendor=0x413c product=0x8138 </td>
+  <td><p class="line862"> Novatel Wireless Expedite EU870D <a class="nonexistent" href="/MiniCard">MiniCard</a>. AT+GCAP: +CGSM,+DS,+ES </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-32"></span><p class="line862"> Dell 5720 VZW Mobile Broadband (EVDO Rev-A) </td>
+  <td><p class="line862"> Mini-PCI (USB) </td>
+  <td><p class="line862"> works out of box </td>
+  <td><p class="line862"> Verizon </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x413c product=0x8133 </td>
+  <td><p class="line862"> Novatel Wireless Expedite </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-33"></span><p class="line862"> Dell 5720 Sprint Mobile Broadband (EVDO Rev-A) </td>
+  <td><p class="line862"> Mini-PCI (USB) </td>
+  <td><p class="line862"> unknown </td>
+  <td><p class="line862"> Sprint </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x413c product=0x8134 </td>
+  <td><p class="line862"> Novatel Wireless Expedite. Just change line 233 of /usr/share/hal/fdi/information/10freedesktop/10-modem.fdi from &lt;match key="@info.parent:usb.product_id" int_outof="0x8114;0x8117;0x8128;0x8129;0x8133"&gt; to &lt;match key="@info.parent:usb.product_id" int_outof="0x8114;0x8117;0x8128;0x8129;0x8133;0x8134"&gt; and reboot. Then everything works. </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-34"></span><p class="line862"> Huawei E160 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works out of box </td>
+  <td><p class="line862"> Orange (Austria) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-35"></span><p class="line862"> Huawei E166 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-36"></span><p class="line862"> Huawei E169 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works out of box </td>
+  <td><p class="line862"> Optus (Australia), Drei (Austria), O2 (Germany), <a class="nonexistent" href="/ChungHwa">ChungHwa</a> Telecom (Taiwan), Play (Poland) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x12d1 product=0x1001 </td>
+  <td><p class="line862">Identified as Huawei E620 (same vendor and product-id) </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-37"></span><p class="line862"> Huawei E170 (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works out of box </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> tested with Ubuntu 8.10 and <a href="/NetworkManager">NetworkManager</a> 0.7 </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-38"></span><p class="line862"> Huawei E180 (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works </td>
+  <td><p class="line862"> Orange (Austria), 3 (Sweden) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x12d1 product=0x1003 </td>
+  <td><p class="line862"> you have to blacklist airprime, which is loaded wrongly when plugging in and won't onload anymore, so you need to reboot in that case. UPDATE: the airprime driver has been removed in 2.6.27, so this won't be a problem in future. Identified as Huawei E220 (same vendor and product-id). Works out of the box at 3 Sweden, but may have to manually set DNS servers </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-39"></span><p class="line862"> Huawei E200 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works out of box </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-40"></span><p class="line862"> Huawei E216 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-41"></span><p class="line862"> Huawei E219 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-42"></span><p class="line862"> Huawei E220 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works out of box </td>
+  <td><p class="line862"> Tele2 Sweden, 3 Sweden, Orange (Austria), Play (Poland), Vodafone (Spain) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x12d1 product=0x1003 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-43"></span><p class="line862"> Huawei E226 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-44"></span><p class="line862"> Huawei E230 (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-45"></span><p class="line862"> Huawei E270 (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> Works </td>
+  <td><p class="line862"> 3 Sweden </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> I have "blacklist airprime" in /etc/modprobe.d/blacklist for my E220. UPDATE: the airprime driver has been removed in 2.6.27, so this won't be a problem in future. </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-46"></span><p class="line862"> Huawei E510 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> DVB-T Mobile TV </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-47"></span><p class="line862"> Huawei E620 </td>
+  <td><p class="line862"> PCMCIA (USB) </td>
+  <td><p class="line862"> NOT WORKING (with NM 0.7) </td>
+  <td><p class="line862"> PT Kanguru </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/270282">270282</a> </td>
+  <td><p class="line862"> vendor=0x12d1 product=0x1001 </td>
+  <td><p class="line862"> PCMCIA card identified as USB device. </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-48"></span><p class="line862"> Huawei EC121 (CDMA2000) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-49"></span><p class="line862"> Huawei EC168 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-50"></span><p class="line862"> Huawei EC226 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-51"></span><p class="line862"> Huawei EC321 (CDMA2000) </td>
+  <td><p class="line862"> PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-52"></span><p class="line862"> Huawei EC325 (CDMA2000) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-53"></span><p class="line862"> Huawei EC328 (CDMA2000) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-54"></span><p class="line862"> Huawei EC360 (EVDO Rev-0) </td>
+  <td><p class="line862"> PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-55"></span><p class="line862"> Huawei EC500 (EVDO Rev-A) </td>
+  <td><p class="line862"> PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-56"></span><p class="line862"> Huawei EC821 (CDMA2000) </td>
+  <td><p class="line862"> PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-57"></span><p class="line862"> Huawei EG162G (EDGE) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-58"></span><p class="line862"> Huawei EG602 (EDGE) </td>
+  <td><p class="line862"> PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-59"></span><p class="line862"> MU-Q101 </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> modem not detected, only usb-storage detected and loaded </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.edge.launchpad.net/ubuntu/+source/network-manager/+bug/259028">259028</a> </td>
+  <td><p class="line862"> vendor=0x0408 product=0xea02 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-60"></span><p class="line862"> Novatel Wireless Expedite E725 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB-MiniPCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-61"></span><p class="line862"> Novatel Wireless Expedite EU850D (HSDPA) </td>
+  <td><p class="line862"> USB-MiniPCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-62"></span><p class="line862"> Novatel Wireless Expedite EU860D (HSDPA) </td>
+  <td><p class="line862"> USB-MiniPCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-63"></span><p class="line862"> Novatel Wireless Expedite EU870D (HSDPA) </td>
+  <td><p class="line862"> USB-MiniPCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x413c product=0x8138 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-64"></span><p class="line862"> Novatel Wireless Merlin U630 (UMTS) </td>
+  <td><p class="line862"> PCMCIA </td>
+  <td><p class="line862"> Is not seen by network manager </td>
+  <td><p class="line862"> Kanguru (Portugal) </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.edge.launchpad.net/ubuntu/+source/network-manager/+bug/248630">248630</a> </td>
+  <td><p class="line862"> vendor=0x00a4 product=0x0276 </td>
+  <td><p class="line862"> Requires module serial_cs. To work with full bandwidth requires the command: "/bin/setserial &lt;device, usually /dev/ttyS0&gt; spd_warp low_latency" </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-65"></span><p class="line862"> Novatel Wireless Merlin U740 (HSDPA) </td>
+  <td><p class="line862"> USB/PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-66"></span><p class="line862"> Novatel Wireless Merlin PC720 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB/PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-67"></span><p class="line862"> Novatel Wireless Merlin X720 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB/EXPRESSCARD </td>
+  <td><p class="line862"> Works out of the box </td>
+  <td><p class="line862"> Verizon (USA) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x1410 product=0x1120 </td>
+  <td><p class="line862"> +GCAP: +CIS707-A, CIS-856-A, +MS, +ES, +DS </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-68"></span><p class="line862"> Novatel Wireless Merlin X950D (HSUPA) </td>
+  <td><p class="line862"> USB/EXPRESSCARD </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-69"></span><p class="line862"> Novatel Wireless Merlin XU870 (HSDPA) </td>
+  <td><p class="line862"> USB/EXPRESSCARD </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-70"></span><p class="line862"> Novatel Wireless Merlin XV620 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB/EXPRESSCARD </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-71"></span><p class="line862"> Novatel Wireless Ovation MC727 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-72"></span><p class="line862"> Novatel Wireless Ovation MC930D (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-73"></span><p class="line862"> Novatel Wireless Ovation MC950D (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> Detected out of the box with 8.04 and NM 0.7 but dialing fails. wvdial works </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> idVendor=0x1410 idProduct=0x4400 </td>
+  <td><p class="line862"> +CGSM,+DS,+ES </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-74"></span><p class="line862"> Novatel Wireless Ovation MC990D (HSPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-75"></span><p class="line862"> Novatel Wireless Ovation MCD3000 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-76"></span><p class="line862"> Option Wireless Globetrotter GT 0201 (HSDPA) </td>
+  <td><p class="line862"> USB/PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-77"></span><p class="line862"> Option Wireless Globetrotter GT 0202 (HSDPA) </td>
+  <td><p class="line862"> USB/PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-78"></span><p class="line862"> Option Wireless Globetrotter GT MAX 201 (HSDPA) </td>
+  <td><p class="line862"> USB/PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-79"></span><p class="line862"> Option Wireless Globetrotter GT MAX 202 (HSDPA) </td>
+  <td><p class="line862"> USB/PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-80"></span><p class="line862"> Option Wireless Globetrotter GT MAX HSUPA (HSUPA) </td>
+  <td><p class="line862"> USB/PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-81"></span><p class="line862"> Option Wireless Globetrotter Express 7.2 (HSDPA) </td>
+  <td><p class="line862"> USB/EXPRESSCARD </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-82"></span><p class="line862"> Option Wireless Globetrotter Express HSUPA (HSUPA) </td>
+  <td><p class="line862"> USB/EXPRESSCARD </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-83"></span><p class="line862"> Option Wireless Globetrotter iCON 7.2 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> almost works </td>
+  <td><p class="line862"> XS4ALL (Netherlands)</td>
+  <td><p class="line862"> <a class="https" href="https://bugs.edge.launchpad.net/ubuntu/+source/network-manager/+bug/282787">282787</a>, 256296 &amp; 272254 </td>
+  <td><p class="line862"> vendor=0x0af0 product=0x6911 </td>
+  <td><p class="line862"> Requires rezero (from ~martijn/ppa) or usb_modeswitch; have to blacklist 'udev.tar.tz fromoption' driver; GSM connection option is shown twice in n-m, but there's only one hso device </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-84"></span><p class="line862"> Option Wireless Globetrotter iCON HSUPA (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-85"></span><p class="line862"> Option Wireless GTM378 (HSDPA) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-86"></span><p class="line862"> Option Wireless GTM380 (HSUPA) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-87"></span><p class="line862"> Option Wireless GTM382 (HSUPA) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-88"></span><p class="line862"> Option Wireless GTM501 (HSUPA) </td>
+  <td><p class="line862"> USB/Embedded </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-89"></span><p class="line862"> Option Wireless iCON 225 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works and is seen by network-manager </td>
+  <td><p class="line862"> Orange(Uk) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0af0 product=6971 </td>
+  <td><p class="line862"> using hso-1.6.tar.gz and udev.tar.gz from pharscape. All now working with network-manager </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-90"></span><p class="line862"> Option Wireless iCON 401 (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-91"></span><p class="line862"> Option Wireless Globetrotter (HSUPA) </td>
+  <td><p class="line862"> USB/PCMCIA </td>
+  <td><p class="line862"> works out of the box </td>
+  <td><p class="line862"> Vodafone (germany) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-92"></span><p class="line862"> Option Wireless Globetrotter GPRS (GPRS) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862">  </td>
+  <td><p class="line862"> vendor=0x0013 product=0x???? </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-93"></span><p class="line862"> Option Wireless Globetrotter Fusion (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862">  </td>
+  <td><p class="line862"> vendor=0x0af0 product=0x6000 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-94"></span><p class="line862"> Option Wireless Globesurfer Icon (HSDPA) 1.8mbs </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works with usb-storage&gt;usb-serial switch </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862">  </td>
+  <td><p class="line862"> vendor=0x0af0 product=0x6600 </td>
+  <td><p class="line862">Use icon_switch or usb_modeswitch tools. </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-95"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 595 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB/PCMCIA </td>
+  <td><p class="line862"> works out of box </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-96"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 595U (EVDO Rev-A) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works out of box </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-97"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 597E (EVDO Rev-A) </td>
+  <td><p class="line862"> USB/EXPRESSCARD </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-98"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 875 </td>
+  <td><p class="line862"> PCMCIA </td>
+  <td><p class="line862"> works out of box </td>
+  <td><p class="line862">Orange(Austria) AT&amp;T </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-99"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 880 (HSUPA) </td>
+  <td><p class="line862"> USB/CARDBUS </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862">  European Optimised Version of the 881 </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-100"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 880E (HSUPA) </td>
+  <td><p class="line862"> USB/EXPRESSCARD </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862">  European Optimised Version of the 881E </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-101"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 880U (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works out of the box </td>
+  <td><p class="line862"> AT&amp;T </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x1199 product=0x6856 </td>
+  <td><p class="line862">  European Optimised Version of the 881U, assumed to be the same status </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-102"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 881 (HSUPA) </td>
+  <td><p class="line862"> USB/CARDBUS </td>
+  <td><p class="line862"> works with Sierra homepage instructions </td>
+  <td><p class="line862"> AT&amp;T </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x1199 product=0x6851 </td>
+  <td><p class="line862"> <a href="/NetworkManager">NetworkManager</a> does not control the device, fails setting APN, has to be controlled via external pppd w/sierra ppp gsm scripts  </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-103"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 881E (HSUPA) </td>
+  <td><p class="line862"> USB/EXPRESSCARD </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-104"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 881U (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works out of the box </td>
+  <td><p class="line862"> AT&amp;T </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x1199 product=0x6856 </td>
+  <td><p class="line862">  have to manually load the "option" driver, <a class="nonexistent" href="/NetworkManger">NetworkManger</a> won't control the connection have to manually run "pppd" </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-105"></span><p class="line862"> Sierra Wireless <a class="nonexistent" href="/AirCard">AirCard</a> 885E (HSUPA) </td>
+  <td><p class="line862"> USB/EXPRESSCARD </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-106"></span><p class="line862"> Sierra Wireless Apex 880 (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-107"></span><p class="line862"> Sierra Wireless Compass 597 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-108"></span><p class="line862"> Sierra Wireless Compass 885 (HSUPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> AT&amp;T </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x1199 product=0x6880 </td>
+  <td><p class="line862"> +GCAP: +CGSM,+FCLASS,+DS +COPS: 0,0,"ATT@",0 </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-109"></span><p class="line862"> Sierra Wireless MC5725 (EVDO Rev-A) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-110"></span><p class="line862"> Sierra Wireless MC5725V (EVDO Rev-A) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-111"></span><p class="line862"> Sierra Wireless MC8775 (HSDPA) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> works, but required some tweaking </td>
+  <td><p class="line862"> O2 (UK), Elisa Finland </td>
+  <td><p class="line862"> See <a href="/SierraMC8775">SierraMC8775</a> </td>
+  <td><p class="line862"> vendor=0x1199 product=0x6813 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-112"></span><p class="line862"> Sierra Wireless MC8775V (HSDPA) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-113"></span><p class="line862"> Sierra Wireless MC8780 (HSUPA) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-114"></span><p class="line862"> Sierra Wireless MC8781 (HSUPA) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-115"></span><p class="line862"> Sierra Wireless MC8785V (HSUPA) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-116"></span><p class="line862"> Sierra Wireless MC8790 (HSUPA) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-117"></span><p class="line862"> Sierra Wireless MC8790V (HSUPA) </td>
+  <td><p class="line862"> USB/Mini-PCIE </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-118"></span><p class="line862"> Vodafone Mobile Connect Original (UMTS) </td>
+  <td><p class="line862"> PCMCIA </td>
+  <td><p class="line862"> UNKNOWN </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x1045 product=0xc861 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-119"></span><p class="line862"> Vodafone Mobile Connect, UK (Merlin UMTS Modem) </td>
+  <td><p class="line862"> PCMCIA </td>
+  <td><p class="line862"> not seen by network manager </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.edge.launchpad.net/ubuntu/+source/network-manager/+bug/248630">248630</a> </td>
+  <td><p class="line862"> vendor=0x00a4 product=0x0276  </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-120"></span><p class="line862"> ZTE MF628 (HSDPA) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> works, if driver detected correctly(product=0x0015) </td>
+  <td><p class="line862"> Yesss (Austria) </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/269858">269858</a> FDI attached to: <a class="https" href="https://bugs.launchpad.net/ubuntu/+source/hal/+bug/267727">https://bugs.launchpad.net/ubuntu/+source/hal/+bug/267727</a> </td>
+  <td><p class="line862"> vendor=0x19d2 product=0x0015 </td>
+  <td><p class="line862"> In 2.6.27: usb-storage patch  </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-121"></span><p class="line862"> ZTE CDMA (ONDA Communication S.p.A.) </td>
+  <td><p class="line862"> USB </td>
+  <td><p class="line862"> UNKNOWN</td>
+  <td><p class="line862"> Reliance Broadband(India) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862">  vendor=0x19d2 product=0xfffd </td>
+  <td><p class="line862"> Works properly with usbserial </td>
+</tr>
+</tbody></table></div><span class="anchor" id="line-122"></span><span class="anchor" id="line-123"></span><p class="line867">
+<h2 id="Mobile Phones">Mobile Phones</h2>
+<span class="anchor" id="line-124"></span><div><table><tbody><tr>  <td><p class="line862"> <strong>Hardware</strong> </td>
+  <td><p class="line862"> <strong>Type</strong> </td>
+  <td><p class="line862"> <strong>Status</strong> </td>
+  <td><p class="line862"> <strong>Provider(s)</strong> </td>
+  <td><p class="line862"> <strong>LP Bug</strong> </td>
+  <td><p class="line862"> <strong>Device ID</strong> </td>
+  <td><p class="line862"> <strong>Notes</strong> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-125"></span><p class="line862"> Nokia 3109c </td>
+  <td><p class="line862"> GSM Phone via USB </td>
+  <td><p class="line862"> not detected </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.edge.launchpad.net/ubuntu/+source/hal-info/+bug/259041">259041</a> (proposed fix uploaded to <a class="https" href="https://edge.launchpad.net/~network-manager/+archive">NetworkManager PPA</a>)</td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-126"></span><p class="line862"> Nokia 6300 </td>
+  <td><p class="line862">GSM Phone via USB </td>
+  <td><p class="line862"> Needs a small patch to hal-info (nm-0.7) </td>
+  <td><p class="line862">MTN Nigeria </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.launchpad.net/ubuntu/+source/hal-info/+bug/258197">258197</a> (Works out of the box with hal-info from <a class="https" href="https://edge.launchpad.net/~network-manager/+archive">NetworkManager PPA</a>)</td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-127"></span><p class="line862"> Nokia 6500c </td>
+  <td><p class="line862"> GSM Phone via Bluetooth </td>
+  <td><p class="line862"> Not detected, works fine with manual configuration </td>
+  <td><p class="line862"> Vodafone Ireland </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-128"></span><p class="line862"> Nokia 6500c </td>
+  <td><p class="line862"> GSM Phone via USB </td>
+  <td><p class="line862"> Works fine </td>
+  <td><p class="line862"> Most providers, KPN Netherlands in this case. </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x0421, product=0x003d; +GCAP: +CGSM,+DS,+W </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-129"></span><p class="line862"> Nokia E51 </td>
+  <td><p class="line862">GSM/UMTS Phone via USB/Bluetooth </td>
+  <td><p class="line862"> Not detected via USB </td>
+  <td><p class="line862">Swisscom (Switzerland) </td>
+  <td><p class="line862"> <a class="https" href="https://launchpad.net/bugs/261416">261416</a> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-130"></span><p class="line862"> Nokia E71 </td>
+  <td><p class="line862">GSM/UMTS Phone via USB/Bluetooth </td>
+  <td><p class="line862"> Not detected via USB </td>
+  <td><p class="line862">E-Plus (Germany) </td>
+  <td><p class="line862"> <a class="https" href="https://launchpad.net/bugs/257045">257045</a> (proposed fix uploaded to <a class="https" href="https://edge.launchpad.net/~network-manager/+archive">NetworkManager PPA</a>)</td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-131"></span><p class="line862"> Nokia E70 </td>
+  <td><p class="line862">GSM/UMTS Phone via USB/Bluetooth </td>
+  <td><p class="line862"> Detected via USB / Not detected via Bluetooth </td>
+  <td><p class="line862">o2 (Germany) </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.launchpad.net/bugs/257725">257725</a> (proposed fix uploaded to <a class="https" href="https://edge.launchpad.net/~network-manager/+archive">NetworkManager PPA</a>)</td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-132"></span><p class="line862"> Nokia N73 </td>
+  <td><p class="line862"> GMS/UMTS/HSDPA phone via Bluetooth </td>
+  <td><p class="line862"> Not detected, works fine with manual configuration </td>
+  <td><p class="line862"> Vodafone (Spain) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-133"></span><p class="line862"> Nokia N73 </td>
+  <td><p class="line862"> GMS/UMTS/HSDPA phone via USB </td>
+  <td><p class="line862"> Detected, works great </td>
+  <td><p class="line862"> Orange (Romania) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-134"></span><p class="line862"> Nokia N95-2 </td>
+  <td><p class="line862"> GMS/UMTS/HSDPA phone via USB </td>
+  <td><p class="line862"> Generic CDC+ACM, Works after small hal-info patch </td>
+  <td><p class="line862"> T-Mobile (UK) </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.launchpad.net/ubuntu/+source/hal-info/+bug/285494">bug 285494</a> </td>
+  <td><p class="line862"> vendor=0x0421, product=0x070 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-135"></span><p class="line862"> Nokia N95-3 (RM-160) </td>
+  <td><p class="line862"> GSM/UMTS/HSDPA phone via USB </td>
+  <td><p class="line862"> Generic CDC+ACM, Works after small hal-info patch  </td>
+  <td><p class="line862"> Telstra (Australia) </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/262566">bug 262556, with patch</a> </td>
+  <td><p class="line862"> vendor=0x0421, product=0x04f0, AT+GCAP: +GCAP: +CGSM,+DS,+W </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-136"></span><p class="line862"> Nokia N95-3 (RM-160) </td>
+  <td><p class="line862"> GSM/UMTS/HSDPA phone via Bluetooth </td>
+  <td><p class="line862"> Not detected via bluetooth, but works fine with manual rfcomm+pppd+chat setup. </td>
+  <td><p class="line862"> Telstra (Australia) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-137"></span><p class="line862"> T-Mobile Dash </td>
+  <td><p class="line862"> GSM Phone via USB </td>
+  <td><p class="line862"> generic rndis device </td>
+  <td><p class="line862"> T-Mobile(USA) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-138"></span><p class="line862"> Toshiba TS705 </td>
+  <td><p class="line862"> GSM Phone via USB </td>
+  <td><p class="line862"> Detected, not able to connect yet </td>
+  <td><p class="line862"> Yoigo (Spain)</td>
+  <td><p class="line862"> <a class="https" href="https://launchpad.net/bugs/255304">255304</a> and <a class="https" href="https://launchpad.net/bugs/257111">257111</a> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-139"></span><p class="line862"> LG U990 </td>
+  <td><p class="line862"> GSM/UMTS/HSDPA phone via USB </td>
+  <td><p class="line862"> Generic CDC+ACM, works after small hal-info patch </td>
+  <td><p class="line862"> Three (Australia) </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/263044">263044</a> </td>
+  <td><p class="line862"> vendor=0x1004, product=0x6000 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-140"></span><p class="line862"> LG U990 </td>
+  <td><p class="line862"> GSM/UMTS/HSDPA phone via Bluetooth </td>
+  <td><p class="line862"> Not detected by NM, but works fine with manual rfcomm+pppd+chat setup </td>
+  <td><p class="line862"> Three (Australia) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> AT+GCAP: +CGSM,+DS,+ES </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-141"></span><p class="line862"> Nokia E90 </td>
+  <td><p class="line862"> GSM/UMTS Phone via USB/Bluetooth </td>
+  <td><p class="line862"> Not detected by NM, but works fine with manual rfcomm+pppd+chat setup.  </td>
+  <td><p class="line862"> TDC/Sonofon (Denmark) </td>
+  <td><p class="line862"> <a class="https" href="https://bugs.edge.launchpad.net/ubuntu/+source/network-manager/+bug/274952">274952</a> </td>
+  <td><p class="line862">  +GCAP: +CGSM,+DS,+W +COPS: 0,2,"23801",2 &lt;ME0&gt;  Manufacturer: Nokia &lt;ME1&gt;  Model: Nokia E90 &lt;ME2&gt;  Revision: V 210.41.48.2 10-04-08 RA-6 (c) Nokia &lt;ME3&gt;  Serial Number:xxx vendor=0x421 product=0x04ce</td>
+  <td><p class="line862"> Solution is described in the bug </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-142"></span><p class="line862"> Samsung SGH-Z370 </td>
+  <td><p class="line862"> GSM/UMTS phone via USB/Bluetooth </td>
+  <td><p class="line862"> works out-of-box </td>
+  <td><p class="line862"> Play (Poland) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vendor=0x04e8, product=0x6601 </td>
+  <td><p class="line862"> Detected as Samsung Z100 via USB, plays well with NM0.7 via USB, for bluetooth use command line </td>
+</tr>
+</tbody></table></div><span class="anchor" id="line-143"></span><span class="anchor" id="line-144"></span><p class="line867">
+<h2 id="Provider info">Provider info</h2>
+<span class="anchor" id="line-145"></span><span class="anchor" id="line-146"></span><p class="line874">Information needed to get online with certain providers. <span class="anchor" id="line-147"></span><span class="anchor" id="line-148"></span><div><table><tbody><tr>  <td><p class="line862"> <strong>Provider</strong> </td>
+  <td><p class="line862"> <strong>Country</strong> </td>
+  <td><p class="line862"> <strong>APN</strong> </td>
+  <td><p class="line862"> <strong>Dial</strong> </td>
+  <td><p class="line862"> <strong>Username</strong> </td>
+  <td><p class="line862"> <strong>Password</strong> </td>
+  <td><p class="line862"> <strong>Other information</strong> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-149"></span><p class="line862"> 3 </td>
+  <td><p class="line862"> Australia </td>
+  <td><p class="line862"> 3netaccess </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-150"></span><p class="line862"> 3 </td>
+  <td><p class="line862"> Austria </td>
+  <td><p class="line862"> drei.at </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> username and password can be empty </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-151"></span><p class="line862"> 3 Bredband </td>
+  <td><p class="line862"> Sweden </td>
+  <td><p class="line862"> bredband.tre.se </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> dummy </td>
+  <td><p class="line862"> dummy </td>
+  <td><p class="line862"> APN depends on contract: 3 Bredband Kontant is "net.tre.se", 3 Bredband is "bredband.tre.se" (the new autotool entered "data.tre.se" which also worked, deprecated address?) UPDATE: data.tre.se is for mobile phone usage (same speed though) and will only give you a NATed address. May have to enter DNS servers manually (please fix this bug): 80.251.192.244 and 80.251.192.245 </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-152"></span><p class="line862"> 3 Kontant </td>
+  <td><p class="line862"> Sweden </td>
+  <td><p class="line862"> net.tre.se </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> dummy </td>
+  <td><p class="line862"> dummy </td>
+  <td><p class="line862"> APN depends on contract. 3 Bredband Kontant is "net.tre.se", 3 Bredband is "bredband.tre.se" </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-153"></span><p class="line862"> 3 </td>
+  <td><p class="line862"> Italy </td>
+  <td><p class="line862"> naviga.tre.it </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> anon </td>
+  <td><p class="line862"> anon </td>
+  <td><p class="line862">  </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-154"></span><p class="line862"> 3 </td>
+  <td><p class="line862"> Ireland </td>
+  <td><p class="line862"> 3ireland.ie </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> 3ireland </td>
+  <td><p class="line862"> 3ireland </td>
+  <td><p class="line862">  </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-155"></span><p class="line862"> 3 </td>
+  <td><p class="line862"> UK </td>
+  <td><p class="line862"> three.co.uk </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> three </td>
+  <td><p class="line862"> three </td>
+  <td><p class="line862"> APN is dependant on contract. PAYG is "three.co.uk" full contract is "3internet" </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-156"></span><p class="line862"> AT&amp;T   </td>
+  <td><p class="line862"> USA  </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> testing </td>
+  <td><p class="line862"> testing </td>
+  <td><p class="line862"> username/pass just dummy data and the number needs to be *99# </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-157"></span><p class="line862"> China Mobile </td>
+  <td><p class="line862"> China </td>
+  <td><p class="line862"> cmnet </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> zte </td>
+  <td><p class="line862"> zte </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-158"></span><p class="line862"> Elisa   </td>
+  <td><p class="line862"> Finland  </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> *99***1# </td>
+  <td><p class="line862"> rlnet </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> username "rlnet" (apparently not needed), password "internet" </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-159"></span><p class="line862"> Globe Visibility </td>
+  <td><p class="line862"> Philippines </td>
+  <td><p class="line862"> internet.globe.com.ph </td>
+  <td><p class="line862"> *99# or *99***1# </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-160"></span><p class="line862"> Kanguru </td>
+  <td><p class="line862"> Portugal </td>
+  <td><p class="line862"> myconnection </td>
+  <td><p class="line862"> *99***1# </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> May need dummy username and password (enter anything) DNS Servers: 62.169.67.172 and 62.169.67.171 (see <a class="https" href="https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/270282">270282</a> and <a class="https" href="https://bugs.launchpad.net/ubuntu/+source/network-manager/+bug/248630">248630</a>) </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-161"></span><p class="line862"> Kanguru (fixo) </td>
+  <td><p class="line862"> Portugal </td>
+  <td><p class="line862"> kangurufixo </td>
+  <td><p class="line862"> *99***1# </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> Dummy username and password. DNS Servers: 62.169.67.172 and 62.169.67.171 </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-162"></span><p class="line862"> ice.net </td>
+  <td><p class="line862"> Sweden </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> #777 </td>
+  <td><p class="line862"> cdma </td>
+  <td><p class="line862"> cdma </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-163"></span><p class="line862"> IM3 </td>
+  <td><p class="line862"> Indonesia </td>
+  <td><p class="line862"> www.indosat-m3.net </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> im3 </td>
+  <td><p class="line862"> im3 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-164"></span><p class="line862"> Iusacell </td>
+  <td><p class="line862"> México </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> #777 </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> username/password can be anything </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-165"></span><p class="line862"> <a class="nonexistent" href="/MobileOne">MobileOne</a> </td>
+  <td><p class="line862"> Singapore </td>
+  <td><p class="line862"> sunsurf </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> M1 </td>
+  <td><p class="line862"> M1 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-166"></span><p class="line862"> Movistar </td>
+  <td><p class="line862"> Spain </td>
+  <td><p class="line862"> movistar.es </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> movistar </td>
+  <td><p class="line862"> movistar </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-167"></span><p class="line862"> MTN NG </td>
+  <td><p class="line862"> Nigeria </td>
+  <td><p class="line862"> web.gprs.mtnnigeria.net </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> web </td>
+  <td><p class="line862"> web </td>
+  <td><p class="line862"> Use GPRS always; username: web; password: web </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-168"></span><p class="line862"> Netcom </td>
+  <td><p class="line862"> Norway </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-169"></span><p class="line862"> o2 </td>
+  <td><p class="line862"> Germany </td>
+  <td><p class="line862"> internet or surfo2 (see <a class="http" href="http://o2online.custhelp.com/cgi-bin/o2online.cfg/php/enduser/std_adp.php?p_sid=X5JmnObj&amp;p_accessibility=0&amp;p_redirect=&amp;p_lva=478&amp;p_li=&amp;p_faqid=472&amp;p_created=1182170843">FAQ</a>) </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> any username and password </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-170"></span><p class="line862"> o2 </td>
+  <td><p class="line862"> Ireland </td>
+  <td><p class="line862"> open.internet </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> gprs </td>
+  <td><p class="line862"> gprs </td>
+  <td><p class="line862">  </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-171"></span><p class="line862"> Optimus </td>
+  <td><p class="line862"> Portugal </td>
+  <td><p class="line862"> myconnection </td>
+  <td><p class="line862"> *99***1# </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> May need dummy username and password (enter anything) </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-172"></span><p class="line862"> o2 </td>
+  <td><p class="line862"> UK </td>
+  <td><p class="line862"> mobile.o2.co.uk </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-173"></span><p class="line862"> Optus Prepaid </td>
+  <td><p class="line862"> Australia </td>
+  <td><p class="line862"> preconnect </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> Needs to be able to recieve SMS's to activate the SIM. Windows utility has this capability. Works perfectly in Ubuntu when activated. </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-174"></span><p class="line862"> Orange (formerly ONE) </td>
+  <td><p class="line862"> Austria </td>
+  <td><p class="line862"> orange.web or fullspeed or web.one.at </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> web </td>
+  <td><p class="line862"> web </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-175"></span><p class="line862"> Orange </td>
+  <td><p class="line862"> UK </td>
+  <td><p class="line862"> orangeinternet or internetvpn (see <a class="http" href="http://www.business.orange.co.uk/servlet/Satellite?pagename=Business&amp;c=OUKPage&amp;cid=1044134122137">FAQ</a>)</td>
+  <td><p class="line862">  </td>
+  <td><p class="line862"> orange </td>
+  <td><p class="line862"> orange </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-176"></span><p class="line862"> Play </td>
+  <td><p class="line862"> Poland </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> Leave user and password blank </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-177"></span><p class="line862"> PT. SATelindo C </td>
+  <td><p class="line862"> Indonesia </td>
+  <td><p class="line862"> indosat3g </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> indosat </td>
+  <td><p class="line862"> indosat </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-178"></span><p class="line862"> Pro XL </td>
+  <td><p class="line862"> Indonesia </td>
+  <td><p class="line862"> www.xlgprs.net </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> xlgprs </td>
+  <td><p class="line862"> proxl </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-179"></span><p class="line862"> Proximus </td>
+  <td><p class="line862"> Belgium </td>
+  <td><p class="line862"> internet.proximus.be </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> test </td>
+  <td><p class="line862"> test </td>
+  <td><p class="line862"> May need "Prefer GPRS". Used Huawei e220 </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-180"></span><p class="line862"> SFR </td>
+  <td><p class="line862"> France </td>
+  <td><p class="line862"> websfr </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> websfr </td>
+  <td><p class="line862"> websfr </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-181"></span><p class="line862"> Smart </td>
+  <td><p class="line862"> Philippines </td>
+  <td><p class="line862"> Internet </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-182"></span><p class="line862"> Sprint </td>
+  <td><p class="line862"> USA </td>
+  <td><p class="line862"> unknown </td>
+  <td><p class="line862"> #777 </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> number: #777 authenticates via ESN </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-183"></span><p class="line862"> Simyo    </td>
+  <td><p class="line862"> Spain   </td>
+  <td><p class="line862"> gprs-service.com </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-184"></span><p class="line862"> Sunrise </td>
+  <td><p class="line862"> Switzerland </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862">  </td>
+  <td><p class="line862">  </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-185"></span><p class="line862"> Swisscom </td>
+  <td><p class="line862"> Switzerland </td>
+  <td><p class="line862"> gprs.swisscom.ch </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> gprs </td>
+  <td><p class="line862"> gprs </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-186"></span><p class="line862"> T-Mobile    </td>
+  <td><p class="line862"> USA   </td>
+  <td><p class="line862"> internet2.voicestream.com  </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-187"></span><p class="line862"> Tele 2   </td>
+  <td><p class="line862"> Sweden </td>
+  <td><p class="line862"> mobileinternet.tele2.se </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> May need dummy username and password (enter anything) </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-188"></span><p class="line862"> <a class="nonexistent" href="/TelecomSel">TelecomSel</a> </td>
+  <td><p class="line862"> Indonesia </td>
+  <td><p class="line862"> flash </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> flash </td>
+  <td><p class="line862"> flash</td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-189"></span><p class="line862"> <a class="nonexistent" href="/TeliaSonera">TeliaSonera</a> </td>
+  <td><p class="line862"> Sweden </td>
+  <td><p class="line862"> online.telia.se </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> 3G </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-190"></span><p class="line862"> Telstra </td>
+  <td><p class="line862"> Australia </td>
+  <td><p class="line862"> Telstra.WAP or Telstra.Internet </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-191"></span><p class="line862"> Telenor </td>
+  <td><p class="line862"> Sweden </td>
+  <td><p class="line862"> services.telenor.se </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-192"></span><p class="line862"> TIM </td>
+  <td><p class="line862"> Italy </td>
+  <td><p class="line862"> ibox.tim.it </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> anon </td>
+  <td><p class="line862"> anon </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-193"></span><p class="line862"> TMN </td>
+  <td><p class="line862"> Portugal </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> username and password can be empty </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-194"></span><p class="line862"> TW Mobile </td>
+  <td><p class="line862"> Taiwan </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> username/password can be anything </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-195"></span><p class="line862"> Verizon </td>
+  <td><p class="line862"> USA </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> #777 </td>
+  <td><p class="line862"> &lt;phonenum&gt;@vzw3g.com </td>
+  <td><p class="line862"> vzw </td>
+  <td><p class="line862"> username/pass can be blank </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-196"></span><p class="line862"> Vodacom </td>
+  <td><p class="line862"> South Africa </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-197"></span><p class="line862"> Vodafone </td>
+  <td><p class="line862"> Germany </td>
+  <td><p class="line862"> web.vodafone.de </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-198"></span><p class="line862"> Vodafone </td>
+  <td><p class="line862"> Italy </td>
+  <td><p class="line862"> web.omnitel.it </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-199"></span><p class="line862"> Vodafone </td>
+  <td><p class="line862"> Ireland </td>
+  <td><p class="line862"> hs.vodafone.ie </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-200"></span><p class="line862"> Vodafone </td>
+  <td><p class="line862"> Netherlands </td>
+  <td><p class="line862"> live.vodafone.com </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-201"></span><p class="line862"> Vodafone </td>
+  <td><p class="line862"> Portugal </td>
+  <td><p class="line862"> internet.vodafone.pt </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-202"></span><p class="line862"> Vodafone </td>
+  <td><p class="line862"> Romania </td>
+  <td><p class="line862">internet.vodafone.ro </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> internet.vodafone.ro </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-203"></span><p class="line862"> Vodafone </td>
+  <td><p class="line862"> Spain </td>
+  <td><p class="line862"> ac.vodafone.es </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> vodafone</td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-204"></span><p class="line862"> Vodafone </td>
+  <td><p class="line862"> UK </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> vodafone </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-205"></span><p class="line862"> VIP </td>
+  <td><p class="line862"> Croatia </td>
+  <td><p class="line862"> data.vip.hr </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> 38591 </td>
+  <td><p class="line862"> 38591 </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-206"></span><p class="line862"> Virgin Mobile </td>
+  <td><p class="line862"> Australia </td>
+  <td><p class="line862"> virgininternet </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> N/A </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-207"></span><p class="line862"> Wind </td>
+  <td><p class="line862"> Italy </td>
+  <td><p class="line862"> internet.wind </td>
+  <td><p class="line862"> </td>
+  <td><p class="line862"> anon </td>
+  <td><p class="line862"> anon </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-208"></span><p class="line862"> XS4ALL </td>
+  <td><p class="line862"> Netherlands </td>
+  <td><p class="line862"> umts.xs4all.nl </td>
+  <td><p class="line862"> (umts/gprs default) </td>
+  <td><p class="line862"> chosen username </td>
+  <td><p class="line862"> chosen password </td>
+  <td><p class="line862"> Username and password are chosen when you register for the service. </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-209"></span><p class="line862"> Yesss </td>
+  <td><p class="line862"> Austria </td>
+  <td><p class="line862"> web.yesss.at </td>
+  <td><p class="line862"> *99# </td>
+  <td><p class="line862"> dummy </td>
+  <td><p class="line862"> dummy </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-210"></span><p class="line862"> Yoigo    </td>
+  <td><p class="line862"> Spain   </td>
+  <td><p class="line862"> internet </td>
+  <td><p class="line862"> *99***1# </td>
+  <td><p class="line862"> yoigo </td>
+  <td><p class="line862"> yoigo </td>
+  <td><p class="line862"> </td>
+</tr>
+<tr>  <td><span class="anchor" id="line-211"></span><p class="line862"> Reliance Broadband </td>
+  <td><p class="line862"> India </td>
+  <td><p class="line862">N/A </td>
+  <td><p class="line862">#777</td>
+  <td><p class="line862"> Your_mobile_number </td>
+  <td><p class="line862">Your_mobile_number</td>
+  <td><p class="line862"> </td>
+</tr>
+</tbody></table></div><span class="anchor" id="line-212"></span><span class="anchor" id="bottom"></span></div><p id="pageinfo" class="info" lang="en" dir="ltr">NetworkManager/Hardware/3G  (last edited 2008-10-26 22:23:33 by <span title="https://login.launchpad.net/+id/BLs4AwA @ dsl-189-247-77-134.prod-infinitum.com.mx[189.247.77.134]"><a class="interwiki" href="https://launchpad.net/~alromh87" title="https://login.launchpad.net/+id/BLs4AwA @ dsl-189-247-77-134.prod-infinitum.com.mx[189.247.77.134]">alromh87</a></span>)</p>
+
+<div id="pagebottom"></div>
+</div>
+
+
+<div id="footer">
+
+  <div id="ubuntulinks">
+     &copy; 2008 <a href="http://www.canonical.com">Canonical Ltd</a>. Ubuntu, Kubuntu, Edubuntu, Xubuntu and Canonical are registered trademarks of Canonical Ltd.<br />
+     <a href="http://www.ubuntu.com/feedback">Feedback</a> &mdash; 
+     <a href="http://www.ubuntu.com/legal">Legal</a> &mdash; 
+     <a href="https://wiki.ubuntu.com/wiki/credits">Credits</a> &mdash; 
+     <a href="http://www.ubuntu.com/sitemap">Site Map</a> &mdash;
+     <a href="http://moinmoin.wikiwikiweb.de/">Powered By the MoinMoin Wiki Engine</a>
+  </div>
+<script src="https://ssl.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1018242-7";
+urchinTracker();
+__utmSetVar('UbuntuWiki');
+</script>
+
+
+</div>
+</body>
+</html>
+

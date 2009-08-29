@@ -1,0 +1,372 @@
+1	Vodafone (Spain)	airtelnet.es	vodafone	vodafone	196.207.32.69	196.43.45.190
+2	AIS (Thailand)	 	ais	ais	202.183.255.20	202.183.255.21
+3	Amena (Spain)	internet	CLIENTE	AMENA	213.143.32.20 	213.143.33.8
+4	Aria (Turkey)	internet	(*)	(*)	212.156.4.4	212.156.4.20
+5	AT&T (USA)	proxy	(*)	(*)	10.250.1.10	10.250.1.11
+6	Aycell (Turkey)	aycell	(*)	(*)	212.156.4.1	212.156.4.4
+7	Beeline (Russia)	internet.beeline.ru	beeline	beeline	217.118.66.243	217.118.66.244
+8	Bite (Lithuania)	banga	bite	(*)	213.226.131.131	193.219.88.36
+9	Blu Contratto (Italy)	INTERNET	(*)	(*)	212.17.192.49	212.17.192.209
+10	Blu Prepagata (Italy)	PINTERNET	(*)	(*)	212.17.192.49	212.17.192.209
+11	Bouygues Telecom (B2Bouygtel)  (France)	b2bouygtel.com	(*)	(*)	62.201.129.99	
+12	Bouygues Telecom (France)	ebouygtel.com	(*)	(*)	62.201.129.99	62.201.159.99
+13	BPL (India)	bplgprs.com	bplmobile	(**)	202.169.145.34	202.169.129.40
+14	Cable & Wireless (Jamaica)	wap	(*)	(*)		
+15	Cell-c (South Africa)	internet	Cellcis	Crap	196.7.0.138	196.7.142.132
+16	CellCom (Israel)	etecsa	etecsa	(*)	192.168.91.10	192.168.91.4
+17	Cellis FTML (Lebannon)	internet.ftml.com.lb	plugged	plugged		
+18	Cesky Mobil (postpaid) (Czech Rep.)	internet	(*)	(*)	212.67.64.2	217.77.161.131
+19	Cesky Mobil (prepaid) (Czech Rep.)	Cinternet	(*)	(*)	212.67.64.2	217.77.161.131
+20	China Mobile (China)	cmnet	(*)	(*)	211.136.20.203 	211.136.20.203
+21	China Unicom (China)	none	(*)	(*)	211.136.20.203 	211.136.20.203
+22	Chunghwa (Taiwan)	emome	(*)	(*)	168.95.1.1	168.95.192.1
+23	Cingular (NO acceleration) (USA)	ISP.CINGULAR	ISP@CINGULARGPRS.COM	CINGULAR1	66.102.163.231 	66.102.163.232
+24	Cingular (non-contract) (USA)	WAP.CINGULAR	WAP@CINGULARGPRS.COM	CINGULAR1	66.102.163.231 	66.102.163.232
+25	Cingular (With acceleration) (USA)	ISP.CINGULAR	ISPDA@CINGULARGPRS.COM	CINGULAR1	66.102.163.231	66.102.163.232
+26	Claro (Brazil)	claro.com.br	claro	claro	200.169.126.15 	10.121.5.60
+27	Click Vodafone (Egypt)	internet.vodafone.net	internet	internet		
+28	CM Prepay (Czech Rep.)	cinternet	*)	(*)	212.67.64.2	
+29	Cosmote (Greece)	3g-internet	(*)	(*)	195.167.65.194	
+30	CSL (Hong-Kong)	internet	(*)	(*)	202.84.255.1	203.116.254.150
+31	Dialog GSM (post-paid) Sri Lanka)	www.dialogsl.com	(*)	(*)		
+32	DIGI (Malaysia)	diginet	(*)	(*)	203.92.128.131	203.92.128.132
+33	Digicel (Jamaica)	web.digiceljamaica.com	wapuser	wap03jam	208.131.176.126	200.10.152.232
+34	Digitel TIM (Venezuela)	gprsweb.digitel.ve			57.67.127.195	
+35	Dna (Finland)	internet	(*)	(*)	217.78.192.22 	217.78.192.78
+36	DTAC (Thailand)	www.dtac.co.th	(*)	(*)	202.44.202.2	203.44.144.33
+37	E-Plus (pre-pay) (Germany)	internet.eplus.de	eplus	gprs	212.23.97.2	212.23.97.3
+38	E-Plus (contract) (Germany)	internet.eplus.de	eplus	gprs	212.23.97.2	212.23.97.3
+39	EMT (Estonia)	internet.emt.ee	(*)	(*)	217.71.32.116	217.71.32.115
+40	Entel PCS (Chile)	imovil.entelpcs.cl	entelpcs	entelpcs	164.77.252.197 	164.77.252.198
+41	ERA (Poland)	erainternet	erainternet	erainternet	213.158.194.1 	213.158.193.38
+42	Etisalat (UAE)	mnet	mnet	mnet	194.170.1.6	194.170.1.7
+43	Europolitan (Sweden)	none	(*)	(*)	192.165.99.231	192.165.99.232
+44	Eurotel (contract) (Czech Republic)	internet	(*)	(*)	160.218.10.200	160.218.43.200
+45	EuroTel (Go) (Czech Rep.)	gointernet	(*)	(*)	160.218.10.200 	160.218.43.200
+46	T-Mobile (EuroTel) (Slovakia)	internet	(*)	(*)	194.154.230.66 	194.154.230.74
+47	Far EasTone (Taiwan)	fetnet01	(*)	(*)	210.241.199.199	
+48	France Telecom (France)	orange.fr.mnc001.mcc208.gprs	gprs			
+49	Globe Telecom (Philippines)	internet.globe.com.ph	globe	globe	203.127.225.10	203.127.225.11
+50	Globtel (Slovakia)	internet	(*)	(*)	213.151.200.3	195.12.140.130
+51	GloBul (Bulgaria)	internet.globul.bg	globul	(*)	192.168.88.11	
+52	Hinet (Taiwan)	internet	(*)	(*)		
+53	HTmobile (Croatia)	www.htgprs.hr	(*)	(*)	10.12.0.1	
+54	IceCelular (Costa Rica)	icecelular	(*)	(*)	208.133.206.44 	208.133.206.44
+55	Idea (Poland)	www.idea.pl	idea	idea	194.9.223.79	217.17.34.10
+56	IM3 (Indonesia)	www.imdosat-m3.net	gprs	im3	202.155.46.66 	202.155.46.77
+57	Indosat (Indonesia)	satelindogprs.com	(*)	(*)	202.152.162.250	
+58	Islandssimi (Island)	gprs.islandssimi.is			213.176.128.51	213.176.128.50
+59	Jeans (Ukraine)	www.jeans.ua	(*)	(*)	80.255.64.23	80.255.64.24
+60	Jersey Telecom (UK)	pepper	abc	abc	212.9.0.135	212.9.0.136
+61	KGT Online (Taiwan)	internet	(*)	(*)		
+62	KPN Mobile (Netherlands)	internet	KPN	gprs	62.133.126.28	62.133.126.29
+63	LibanCell (Lebanon)	isurf.libancell.com.lb				
+64	LMT (Latvia)	internet.lmt.lv	(*)	(*)	212.93.96.2	212.93.96.4
+65	LUXGSM (Luxembourg)	webp.pt.lu	(*)	(*)	194.154.192.101	194.154.192.102
+66	M-Tel (Bulgaria)	inet-gprs.mtel.bg	mtel	mtel	213.226.7.34	213.226.7.35
+67	M1 (Singapore)	sunsurf	65	user123	202.79.64.21	202.79.64.26
+68	Max Max Online Mobil (Austria)	gprsinternet	GPRS	(**)	213.162.64.1	213.162.64.2
+69	Max Online (Austria)	gprsinternet	GPRS	(**)	213.162.64.1	213.162.64.2
+70	Max Online (Business) (Austria)	business.gprsinternet	GPRS		213.162.64.1	213.162.64.2
+71	Max Online (Metro) (Austria)	gprsmetro	GPRS		213.162.64.1	213.162.64.2
+72	Maxis (contract) (Malaysia)	internet.gprs.maxis	(*)	(*)	202.75.129.101	10.216.4.21
+73	Maxis (pre-pay) (Malaysia)	net	maxis	net		
+74	Megafon (nw) (Russia)	internet.nw	(*)	(*)	10.140.142.42 	10.140.142.45
+75	Microcell Fido (Canada)	internet.fido.ca	fido	fido	204.92.15.211	207.181.101.4
+76	Mobilkom (Austria)	a1.net	ppp@a1plus.at	pp	194.48.139.254	194.48.124.202
+77	MobiNil (Egypt)	mobinilweb	(*)	(*)	80.75.166.250	163.121.163.201
+78	Mobistar (business) (Belgium)	web.pro.be	mobistar	mobistar	212.65.63.10	212.65.63.145
+79	Mobitel (postpaid) (Slovenia)	internet	mobitel	internet	213.229.248.161 	193.189.160.11
+80	Mobitel (prepaid) (Slovenia)	internetpro	mobitel	internet	213.229.248.161 	193.189.160.11
+81	Mobtel Srbija (Serbia-M.)	internet	mobtel	gprs	217.65.192.1	
+82	MTN (South Africa)	internet	(*)	(*)	196.11.240.241	209.212.97.1
+83	MTS (Russia)	internet.mts.ru	mts	mts	213.87.0.1	213.87.1.1
+84	Netcom (Norway)	internet.netcom.no	netcom	netcom	212.169.123.67 	212.45.188.254
+85	New World (Hong-Kong)	internet	(*)	(*)		
+86	Nordea (Estonia)	internet.emt.ee	(*)	(*)		
+87	O2 (contract) (Ireland)	open.internet	gprs	gprs	62.40.32.33	62.40.32.34
+88	O2 (contract) (UK)	mobile.o2.co.uk	web	password	193.113.200.200	193.113.200.201
+89	O2 (Germany)	internet	(*)	(*)	195.182.110.132 	62.134.11.4
+90	O2 (Netherlands)	internet	(*)	(*)	195.99.65.220	195.99.66.220
+91	O2 (pre-pay) (Ireland)	pp.internet	faster	web	62.40.32.33	62.40.32.34
+92	O2 (pre-pay) (UK)	payandgo.o2.co.uk	payandgo	payandgo		
+93	O2 Viag Interkom (Germany)	internet	(*)	(*)	195.182.110.132	62.134.11.4
+94	Oi (Brazil)	gprs.oi.com.br	(*)	oioioi		
+95	Omnitel (contract) (Lithuania)	gprs.omnitel.net	(*)	(*)	194.176.32.129	195.22.175.1
+96	Omnitel (Italy)	web.omnitel.it	(*)	(*)	83.224.65.134 	83.224.65.134
+97	Omnitel (no contract) (Lithuania)	gprs.startas.lt	omni	omni	194.176.32.129	195.22.175.1
+98	OneNet (Austria)	web.one.at	web	web	194.24.128.100	194.24.128.102
+99	Optimus (Portugal)	internet	(*)	(*)	194.79.69.129	
+100	Optus (Australia)	internet	(*)	(*)	202.139.83.3	192.65.91.129
+101	Orange (Belgium)	orangeinternet	(*)	(*)		
+102	Orange (contract) (UK)	orangeinternet	(*)	(*)	193.35.133.10 	193.35.134.10
+103	Orange (Denmark)	web.orange.dk	(*)	(*)	212.97.206.131	212.97.206.161
+104	Orange (France) (contract)	orange.fr	orange	orange	194.51.3.56	194.51.3.76
+105	Orange (France) (no contact)	orange	orange	orange	194.51.3.56 	194.51.3.76
+106	Orange (Hong Kong)	web.orangehk.com	(*)	(*)		
+107	Orange (India)	portalnmms	(*)	(*)	10.11.206.51	10.11.206.50
+108	Orange (Israel)	orangeinternet	(*)	(*)	158.43.192.1	158.43.128.1
+109	Orange (Romania)	internet	(*)	(*)	172.22.7.21 	172.22.7.20
+110	Orange (Slovakia)	internet	jusernejm	pasvord	213.151.200.30 	213.151.208.161
+111	Orange (Switzerland)	click	(*)	(*)	213.55.128.1 	213.55.128.2
+112	Orange JustTalk (UK)	orangeinternet	(*)	(*)	193.35.133.10	193.35.134.10
+113	Orange MIB (France)	orange-mib	mportail	mib	172.17.0.2 	172.17.0.4
+114	Orange Mobicarte (France)	orange	orange	orange		
+115	Oscar (Post p.) (Czech Rep.)	internet	wap	wap	217.77.161.130	217.77.161.131
+116	Oscar (Pre p.) (Czech Rep.)	internet	(*)	(*)	217.77.161.130	217.77.161.131
+117	Paegas Internet (Czech Rep.)	internet.click.cz	(*)	(*)	62.141.0.1	62.141.0.2
+118	Paegas Profil (Czech Rep.)	profil.click.cz	(*)	(*)	62.141.0.1	62.141.0.2
+119	Pannon (atalanydijas) (Hungary)	netx	(*)	(*)	193.225.155.254 	194.149.0.157
+120	Pannon (normal) (Hungary)	net	(*)	(*)	193.225.153.17	195.56.172.113
+121	Personal (Argentina)	gprs.personal.com	gprs	adgj	172.25.7.6	172.25.7.7
+122	People (Hong-Kong)	internet	(*)	(*)		
+123	Polkomtel (Poland)	www.plusgsm.pl	(*)	(*)	212.2.96.51 	212.2.96.52
+124	PrimTelephone (Russia)	internet.primtel.ru	(*)	(*)		
+125	Proximus Inter (Belgium)	internet.proximus.be	(*)	(*)	195.238.2.21	195.238.2.22
+126	Proximus Intra (Belgium)	intraprox.be	(*)	(*)	195.238.2.21	195.238.2.22
+127	Quam (Germany)	quam.de	quam	quam	193.189.244.192	193.189.244.205
+128	Radiolinja (Estonia)	internet	(*)	(*)	194.204.0.1	
+129	Elisa (Radiolinja) (Finland)	internet	(*)	(*)	193.229.0.40 	193.229.0.42
+130	Radiomibil (Czech Rep.)	internet.click.cz	(*)	(*)		
+131	RLE (Estonia)	internet	(*)	(*)		
+132	Rogers AT&T (Canada)	internet.com	wapuser1	wap	207.181.101.4	207.181.101.5
+133	SFR (France)	websfr	(*)	(*)	172.20.2.10	172.20.2.39
+134	Simobil (Slovenia)	none	(*)	(*)	121.30.86.130	193.189.160.11
+135	SingTel (Singapore)	internet	(*)	(*)	165.21.100.88	165.21.83.88
+136	Song (Finland)	internet.song.fi	song@internet	songnet		
+137	Smart (Philippines)	internet	witsductoor	banonoy	202.57.96.3	202.57.96.4
+138	SmarTone (Hong-Kong)	internet	(*)	(*)	202.140.96.51	202.140.96.52
+139	Sonera (Finlan)	internet	(*)	(*)	192.89.123.230	192.89.123.231
+140	Sonera (Finland)	internet	(*)	(*)	192.89.123.230	192.89.123.23
+141	Sonofon (Denmark)	internet	(*)	(*)	212.88.64.199	212.88.64.14
+142	Starhub (Singapore)	shwap	star	(***)	203.116.1.78	203.116.254.150
+143	Sunday (Hong-Kong)	internet	(*)	(*)		
+144	Sunrise (Switzerland)	internet	internet	internet	212.35.35.35	212.35.35.5
+145	Swisscom (Switzerland)	gprs.swisscom.ch	gprs	gprs	164.128.36.34	164.128.76.39
+146	T-Mobil (Czech Rep.)	internet.t-mobile.cz	(*)	(*)	62.141.0.1	213.162.65.1
+147	T-mobile (D1) (Germany)	internet.t-d1.de	(*)	t-d1	193.254.160.1 	193.254.160.130
+148	T-Mobile (Hungary)	internet	wap	Wap	212.51.115.1 	194.176.224.6
+149	T-Mobile (Netherlands)	internet	(*)	(*)	193.78.240.12	193.79.242.39
+150	T-Mobile (UK)	general.t-mobile.uk	User	mms	149.254.201.126	149.254.192.126
+151	T-Mobile (USA) (non-contract)	wap.voicestream.com	(*)	(*)	66.94.9.120	66.94.25.120
+152	T-Mobile (USA) (VPN)	internet3.voicestream.com	(*)	(*)	66.94.25.120	66.94.9.120
+153	T-Mobile (USA) VoiceStream	internet2.voicestream.com	(*)	(*)	66.94.9.120	66.94.25.120
+154	Taiwan Cellular (Taiwan)	internet	(*)	(*)		
+155	Tango (Luxembourg)	internet	tango	tango		
+156	TDC (Denmark)	internet	(*)	(*)	194.239.134.83	193.162.153.164
+157	TELCEL (Mexico)	internet.itelcel.com	webgprs	webgprs2002	148.233.151.245	148.233.151.245
+158	Tele.ring (Austria)	web	web@telering.at	web	212.95.31.167 	212.95.31.168
+159	Tele2 (3G) (Sweden)	internet.tele2.se	wap	wap	130.244.127.161 	130.244.127.169
+160	Tele2 (Comviq) (Sweden)	internet.tele2.se	gprs	internet	130.244.127.161	130.244.127.169
+161	Telefonica (Spain)	movistar.es	movistar	movistar	194.179.1.100	194.179.1.101
+162	Telekom Srbija (Serbia-M. - default)	gprsinternet	mts	64	195.178.38.3	
+163	Telekom Srbija (Serbia-M. - via MMS)	mms	mts	64	195.178.38.3	
+164	Telekom Srbija (Serbia-M. - via wap)	gprswap	mts	64	195.178.38.3	
+165	Telekomsel (India)	internet	wap	wap123		
+166	Telenor (Norway)	internet	(*)	(*)	212.17.131.3	148.122.161.2
+167	Telering (Austria)	web	web@telering.at	web	212.95.31.167 	212.95.31.168
+168	Telering (Taiwan)	web	web@telering.at	web	212.95.31.11	212.95.31.35
+169	Telestet (Greece)	gnet.b-online.gr	(***)	24680	212.152.79.19	212.152.79.20
+170	Telfort (Netherlands)	internet	telfortnl	(***)		
+171	Telia (Sweden)	online.telia.se	(*)	(*)	10.254.254.254	
+172	Telkomsel (Indonesia)	internet	wap	wap123	202.152.0.2	202.155.14.251
+173	Telsim (Turkey) (Post-paid)	telsim	telsim	telsim	212.65.128.20	212.156.4.7
+174	Telstra (Australia)	telstra.internet	(*)	(*)	203.50.2.71	139.130.4.4
+175	Three (Australia)	3netaccess	a	a	202.124.68.130	202.124.76.66
+176	Three (Hong Kong)	web-g.three.com.hk	(*)	(*)		
+177	TIM (Brazil)	tim.br	tim	tim	10.223.246.102	10.223.246.103
+178	TIM (Italy - waptim)	wap.tim.it	WAPTIM		213.230.155.94 	213.230.130.222
+179	TIM (new) (Italy)	uni.tim.it	(***)	(***)	213.230.155.94	213.230.130.222
+180	Claro (Peru)	tim.pe	tim	tulibertad		
+181	Timecel (Malaysia)	timenett.com.my	(*)	(*)	203.121.16.85	203.121.16.120
+182	TM Touch (Malaysia)	internet	(*)	(*)	202.188.0.133	
+183	TMN (Portugal)	internet	(*)	(*)	194.65.3.20	194.65.3.21
+184	TransAsia (Taiwan)	internet				
+185	Turkcell (Turkey)	internet	gprs	gprs	86.108.136.27	86.108.136.26
+186	Ufone (Pakistan)	ufone.internet	ufone	ufone		
+187	UMC (Ukraine) (umc.ua)	www.umc.ua	(*)		80.255.64.23	80.255.64.24
+188	VELCOM (Belarus)	wap.velcom.by	wap	wap		
+189	VELCOM (Simple GPRS) (Belarus)	web.velcom.by	web	web	212.98.162.154	193.232.248.2
+190	VIPNET (Croatia) PRO	gprs5.vipnet.hr	38591	38591	195.29.159.15	
+191	VIPNET (Croatia) START	gprs0.vipnet.hr	38591	38591	195.29.159.15	
+192	Vodafone (Germany) (D2)	web.vodafone.de	(*)	(*)	139.7.30.125	139.7.30.126
+193	Vodafone (Portugal)	internet.vodafone.pt	(*)	(*)	212.18.160.133	212.18.160.134
+194	Vodafone (Australia)	vfinternet.au	(*)	(*)	192.189.54.33	210.80.58.3
+195	Vodafone (Germany) (D2)	web.vodafone.de	(*)	(*)	139.7.30.125	139.7.30.126
+196	Vodafone (Greece)	internet.vodafone.gr				
+197	Vodafone (Hungary) (elof. norm.)	standardnet.vodafone.net	vodawap	vodawap	80.244.97.30	80.244.96.1
+198	Vodafone (Hungary) (elof. tom.)	internet.vodafone.net	vodawap	vodawap	80.244.97.30	80.244.96.1
+199	Vodafone (Hungary) (felt. norm.)	vitamax.snet.vodafone.net	(**)	(**)	80.244.97.30	80.244.96.1
+200	Vodafone (Hungary) (felt. tom.)	vitamax.internet.vodafone.net	(**)	(**)	80.244.97.30	80.244.96.1
+201	Vodafone (Ireland)	isp.vodafone.ie	vodafone	vodafone		
+202	Vodafone (Israel) (MTC)	apn01	(*)	(*)	10.10.10.30	
+203	Vodafone (Italy) (Omnitel)	web.omnitel.it	(*)	(*)	83.224.66.134	83.224.65.134
+204	Vodafone (Japan) (J-Phone)	vodafone	ai@vodafone	vodafone	61.195.195.153	61.195.194.26
+205	Vodafone (Kuwait)	apn01	(*)	(*)	10.10.10.30	
+206	Vodafone (Netherlands) (normal)	web.vodafone.nl	vodafone	vodafone		
+207	Vodafone (Netherlands) (business)	office.vodafone.nl	vodafone	vodafone		
+208	Vodafone (New Zealand)	 live.vodafone.com	(*)	(*)	202.20.93.10	203.97.191.189
+209	Vodafone (Portugal) (Telecel)	internet.vodafone.pt	(*)	(*)	212.18.160.133	212.18.160.134
+210	Vodafone (Spain) (Airtel)	airtelnet.es	vodafone	vodafone	212.73.32.3	212.73.32.67
+211	Vodafone (Sweden) (Europolitan)	internet.vodafone.net	(*)	(*)	217.174.65.61 	217.174.65.62
+212	Vodafone (UK) (contract)	internet	web	web	10.206.65.68	10.203.65.68
+213	Vodafone (UK) (pre-pay)	pp.vodafone.co.uk	wap	wap	172.29.1.11 	172.29.1.11
+214	VoiceStream (USA)	internet2.voicestream.com			216.155.175.40	216.155.175.41
+215	VoiceStream Central (USA)	internet2.voicestream.com			216.155.175.105	216.155.175.106
+216	VOXmobile (Luxembourg)	vox.lu	(*)	(*)		
+217	Wind (Italy)	internet.wind	Wind	Wind	212.245.255.2 	212.141.84.12
+218	Heyah (Poland)	heyah.pl	heyah	heyah	213.158.194.1	213.158.193.38
+219	Telefonica Movil (Chile)	web.tmovil.cl	web	web	200.68.32.180	200.30.193.15
+220	Airtel (India)	airtelgprs.com	(*)	(*)	202.56.230.5 	202.56.240.5
+221	Ancel (Uruguay)	gprs.ancel	(*)	(*)	200.40.30.245 	200.40.220.245
+222	Beeline (Kazakhstan)	internet.beeline.kz	@internet.beeline	(*)	212.19.149.53 	194.226.128.1
+223	Eurotel (contract - open) (Czech Republic)	internet.open	(*)	(*)	160.218.10.200 	160.218.43.200
+224	Megafon (ugsm) (Russia)	internet.ugsm	(*)	(*)	83.149.32.2 	83.149.33.2
+225	Megafon (usi) (Russia)	internet.usi.ru	(*)	(*)	212.120.160.130 	212.120.160.130
+226	Megafon (dv) (Russia)	internet.dv	(*)	(*)	83.149.52.77	194.186.112.18
+227	Megafon (kvk) (Russia)	internet.kvk	(*)	(*)	83.149.24.244 	62.183.50.230
+228	Megafon (ltmsk) (Russia)	internet.ltmsk	(*)	(*)	10.22.10.20 	10.22.10.21
+229	Megafon (sib) (Russia)	internet.sib	(*)	(*)	83.149.51.65 	83.149.50.65
+230	Megafon (volga) (Russia)	internet.volga	(*)	(*)	83.149.16.7 	195.128.128.1
+231	Megafon (mc) (Russia)	internet.mc	(*)	(*)	81.18.129.252 	217.150.34.1
+232	NCC (Russia)	internet	ncc		10.0.3.5 	10.0.3.2
+233	NTC (Russia)	internet.ntc	(*)	(*)	80.243.64.67 	80.243.68.34
+234	Pannon (compressed) (Hungary)	snet	(*)	(*)	193.225.153.17	194.149.0.157
+235	T-Mobile (mms) (Hungary)	mms-westel	mms		212.51.115.1	194.176.224.3
+236	TIM (ibox - 3G) (Italy)	ibox.tim.it	(*)	(*)	213.230.130.222 	213.230.155.94
+237	VIPNET (Croatia) 3G	3g.vip.hr	38591	38591	212.91.97.3 	212.91.97.4
+238	Wind (Business) (Italy)	internet.wind.biz	Wind	Wind	212.245.255.2 	212.141.84.12
+239	Meteor (Ireland)	isp.mymeteor.ie	my	meteor		
+240	Glo-Ng (Nigeria)	glogwap	wap	wap		
+241	Idea Cellulat (India)	internet	(*)	(*)	10.4.42.15	
+242	CTI (Argentina)	internet.ctimovil.com.ar	ctigprs	(*)	170.51.255.100	170.51.242.18
+243	MTNL Mumbai (India)	mmsmtnlmum	mtnl	mtnl123		
+244	Virgin Mobile (UK)	vdata	(*)	(*)	196.7.0.138	196.7.142.132
+245	O2 (Germany) (3G)	surfo2	(*)	(*)	195.182.110.132 	62.134.11.4
+246	Tre (Sweden) (3G)	internet.djuice.se			217.174.65.61	217.174.65.62
+247	Cable and Wireless (Panama)	apn01.cwpanama.com.pa	xxx	xxx		
+248	Vodacom (South Africa)	internet	(*)	(*)	196.207.40.165	196.43.46.190
+249	Globacom (Nigeria)	gprs	wap	(*)		
+250	Digicel (St Vincent And The Grenadines)	wap.digiceloecs.com	wapoecs	wap03oecs		
+251	Drei (Austria)	drei.at	(*)	(*)		
+252	3 (Denmark)		(*)	(*)		
+253	Go Mobile (Malta) (Pre-paid)	rtgsurfing	(*)	(*)		
+254	Go Mobile (Malta) (Post-paid)	gosurfing	(*)	(*)		
+255	Orange (Hutch) (India)	www	(*)	(*)	10.11.206.51	10.11.206.50
+256	MTNL Mumbai (Plan 2) (India)	gprsmtnlmum	mtnl	mtnl123		
+257	H3G (Italy) (Post-paid)	tre.it	(*)	(*)	62.13.171.1	62.13.171.2
+258	Vodafone (Sweden) (3G)	services.vodafone.net	(*)	(*)	217.174.65.61 	217.174.65.62
+259	O2 (contract-faster) (UK)	mobile.o2.co.uk	faster	password	193.113.200.200	193.113.200.201
+260	Uzdunrobita (Uzbekistan)	net.urd.uz	user	pass		
+261	Mobitel (Sri LAnka)	isp	(*)	(*)		
+262	Tele2 (Latvia)	internet.tele2.lv	gprs	internet		
+263	Djuice Ukraine	www.djuice.com.ua	(*)	(*)	212.58.160.33	212.58.160.34
+264	Moldcell (Moldavia)	internet	gprs	gprs		
+265	TIM (Greece)	gint.b-online.gr	web	web		
+266	Mobi-GSM (Ukraine)	internet.urs	(*)	(*)	213.186.192.254	193.239.128.5
+267	Celtel (Nigeria)	wap	wap	wap		
+268	Areeba (Ghana)	internet.areeba.com.gh	(*)	(*)	196.201.34.5	213.137.131.3
+269	Vodafone (Romania)	internet.vodafone.ro	internet.vodafone.ro	vodafone	193.230.161.3	193.230.161.4
+270	Macau Hutchison Telecom (Macau, China)	ctm-mobile	(*)	(*)		
+271	ETL (Laos)	etlnet	(*)	(*)	192.168.4.130	
+272	Tigo (Senegal)	internet.tigo.hn	(*)	(*)	200.85.0.104	200.85.0.107
+273	Excelcomindo (XL) (Indonesia)	www.xlgprs.net	xlgprs	proxl	202.152.254.245	202.152.254.246
+274	Orange (Poland)	internet	internet	internet	194.9.223.79	194.204.159.1
+275	Orange (Dominican Republic)	orangenet.com.do	(*)	(*)		
+276	Vodafone (Congo)	vodanet	vodalive	(*)	172.24.97.1	
+277	Saunalahti (Finland)	internet.saunalahti	(*)	(*)	195.197.54.100	195.74.0.47
+278	STC (Saudi Arabia)	jawalnet.com.sa	(*)	(*)	212.118.133.101	212.118.133.102
+279	Dialog GSM (re-paid) Sri Lanka)	ppwap	(*)	(*)		
+280	Transatel Telecom (France)	netgprs.com	(*)	(*)		
+281	MTN (Nigeria)	web.gprs.mtnnigeria.net	dona	westend		
+282	Maroc Telecom (Morocco)	iam	wac	1987		
+283	Grameen Phone (Bangladesh)	gpinternet	(*)	(*)	202.56.4.120	202.56.4.121
+284	Emtel (Mauritius)	WEB	(***)	(***)		
+285	Celcom (Malaysia)	celcom.net.my	(*)	(*)		
+286	Medi Telecom (Morocco)	wap.meditel.ma	MEDIWAP	MEDIWAP		
+287	Comcel (Guatemala)	Wap.tigo.gt	Wap	Wap		
+288	Alo Pcs (Nicaragua)	internet.ideasalo.ni	internet	internet		
+289	CTI (Uruguay)	internet.ctimovil.com.uy	ctiweb	ctiweb999		
+290	Movistar (Uruguay)	webapn.movistar.com.uy	movistar	movistar		
+291	Virgin Mobile (South Africa)	vdata	(*)	(*)	196.7.0.138	196.7.142.132
+292	Movistar (Argentina)	internet.gprs.unifon.com.ar	wap	wap		
+293	Vodafone (Malta)	Internet	Internet	Internet		
+294	Orange (Cameroon)	orangecmgprs	orange	orange		
+295	Orange (France) (business contract)	internet-entreprise	orange	orange		
+296	VELCOM (Belarus) (Web Plus)	plus.velcom.by	plus	plus		
+297	VELCOM (Belarus) (Privet)	privet.velcom.by	privet	privet		
+298	MTS (Belarus)	internet.mts.by	mts	mts		
+299	Telia (Denmark)	www.internet.mtelia.dk	(*)	(*)		
+300	Celtel (Kenya)	ke.celtel.com	(*)	(*)		
+301	Telenor (Sweden)	internet.telenor.se	(*)	(*)	217.174.065.061	217.174.065.062
+302	Base (Belgium)	gprs.base.be	base	base		
+303	Tigo (Ghana)	wap.tigo.com.gh	wap	wappost		
+304	Ace&Base (Ukraine)	www.ab.kyivstar.net	igprs	internet		
+305	Life (standard) (Ukraine)	internet	(*)	(*)	212.58.160.33	212.58.160.34
+306	3 (UK)	three.co.uk	(*)	(*)		
+307	Beeline (Ukraine)	internet.beeline.ua	(*)	(*)		
+308	PCS Digital (Guatemala)	ideasalo	(*)	(*)		
+309	Vodafone (contract) (Czech Republic)	internet	(*)	(*)	217.77.161.130	217.77.161.131
+310	Telefonica (contract) (Czech Republic)	internet	(*)	(*)	160.218.10.200	160.218.43.200
+311	Vodafone (restricted) (New Zealand)	www.vodafone.net.nz	(*)	(*)	202.20.93.10	203.97.191.189
+312	Vodafone (pre-pay) (Ireland)	live.vodafone.com	vodafone	vodafone	10.24.59.100	
+313	BSNL (India)	celloneportal	(*)	(*)	192.168.051.163	
+314	MTN (Nigeria)	web.gprs.mtnnigeria.net	wap	gprs		
+315	Vodafone (unrestricted) (New Zealand)	internet	(*)	(*)	202.20.93.10	203.97.191.189
+316	Macau Hutchison Telecom (MMS) (Macau)	mms.hutchisonmacau.com	hutchison	1234		
+317	Cable & Wireless (Saint Lucia)	internet	(*)	(*)	-	
+318	CTI (Paraguay)	internet.ctimovil.com.py	ctigprs	ctigprs999		
+319	CTM (Macau)	ctm-mobile	(*)	(*)		
+320	Dhiraagu (Maldives)	internet.dhimobile	(*)	(*)		
+321	Vodafone (Omnitel) (Italy)	web.omnitel.it	(*)	(*)	83.224.65.134	
+322	Cingular (ex AT&T) (USA)	proxy	(*)	(*)		
+323	Vodafone (pre-pay) (Czech Republic)	ointernet	(*)	(*)	217.77.161.130	217.77.161.131
+324	T-Mobile (Internet) (USA)	internet2.voicestream.com	(*)	(*)	216.155.175.105	216.155.175.106
+325	Mobistar (personal) (Belgium)	internet.be	mobistar	mobistar	212.65.63.10	212.65.63.145
+326	Sun Cellular (Philippines)	minternet	(*)	(*)		
+327	MTN (Cameroon)	INTERNET	(*)	(*)	-	
+328	Azercell (Azerbaijan)	internet	(*)	(*)		
+329	Telefonica (Go) (Czech Republic)	gointernet	(*)	(*)	160.218.10.201	194.228.2.1
+330	Safaricom (Kenya)	web.safaricom.com	web	web		
+331	GT&T Cellink Plus (Guyana)	wap.cellinkgy.com	test	test		
+332	Tele2, Comviq (Sweden)	isplnk1.swip.net	gprs	internet		
+333	Orange (Pay and Go) (UK)	orangewap	Multimedia	Orange	158.43.192.1	158.43.128.1
+334	Orange (business) (France)	internet-entreprise	orange	orange	194.51.3.56	194.51.3.76
+335	Oi (WAP) (Brazil)	wapgprs.oi.com.br	oiwap	oioioi		
+336	Orange (Pay Monthly) (UK)	orangeinternet	user	pass	158.43.192.1	158.43.128.1
+337	Orange (contract) (France)	orange.fr	orange	orange	194.51.3.56	194.51.3.76
+338	Mobtel Srbija (Serbia- Montenegro)	internet	mobtel	gprs	217.65.192.1	217.65.192.52
+339	Vodafone (normal) (Netherlands)	web.vodafone.nl	vodafone	vodafone	-	
+340	Globe Telecoms (WAP) (Philippines)	www.globe.com.ph	globe	globe	203.127.225.10	203.127.225.11
+341	Mascom Wireless (Botswana)	internet.mascom	(*)	(*)		
+342	Megafon (Moscow) (Russia)	internet.msk	gdata	gdata		
+343	Hutch (normal) (India)	www	(*)	(*)	10.11.206.51	10.11.206.50
+344	Globacom (WAP) (Nigeria)	glowap	wap	wap	-	
+345	Hutch (Gujarat) (India)	web	(*)	(*)	10.11.206.51	10.11.206.50
+346	Indosat (Matrix) (Indonesia)	satelindogprs.com indosatgprs	(*)	(*)	202.155.46.66	202.155.46.77
+347	GloBul (Bulgaria)	internet.globul.bg	globul	[none]	192.168.88.11	
+348	Vodafone (Airtel) (Spain)	airtelnet.es	vodafone	vodafone	212.73.32.3	212.73.32.67
+349	Vodafone (Albania)	Twa	(*)	(*)	-	
+350	Eurotel (Slovakia)	internet	(*)	(*)	194.154.230.64	194.154.230.74
+351	Life (faster) (Ukraine)	speed	(*)	(*)	212.58.160.33	212.58.160.34
+352	Maxis 3G (contract) (Malaysia)	unet	maxis	wap	10.213.17.1	10.213.17.2
+353	Velox (Brazil)	wap.telcel.com	iesgprs	iesgprs2002	66.36.250.14	
+354	Telenor (3G) (Sweden)	services.vodafone.net	(*)	(*)		
+355	TIM (Italy)	ibox.tim.it	(*)	(*)	213.230.155.94	213.230.130.222
+356	Macau Hutchison Telecom (Internet) (Macau)	web.hutchisonmacau.com	hutchison	1234		
+357	KPN Mobile (Netherlands)	internet	KPN	gprs	62.133.126.28	62.133.126.29
+358	MTC Touch (Lebannon)	gprs.mtctouch.com.lb	(*)	(*)		
+359	Telstra (data bundles) (Australia)	telstra.datapack		Telstra	139.130.4.4	203.50.2.71
+360	Telstra (pay by time) (Australia)	telstra.pcpack		Telstra	139.130.4.4	203.50.2.71
+361	Enisey TeleCom (Russia)	internet.etk.ru	etk	(***)	10.10.30.3	10.10.30.4
+362	H3G (Italy) (Naviga3)	naviga.tre.it	(*)	(*)	62.13.171.1	62.13.171.2
+363	iPlus (Poland)	www.plusgsm.pl	(*)	(*)	212.2.96.51	212.2.96.52
+364	UMC (Ukraine) (internet)	internet	internet	(***)	212.58.160.33	212.58.160.34
+365	Motiv (Russia)	inet.ycc.ru	motiv	(***)	217.148.52.34	217.148.52.3
+366	Tatincom (Russia)	internet.tatincom.ru	tatincom	tatincom	89.207.96.2	89.207.97.18
+367	Wellcome (Ukraine)	internet.urs	(*)	(*)	213.186.192.254	193.239.128.5
+368	H3G (Italy) (Pre-paid)	pre.h3g.it	(*)	(*)	62.13.175.1	62.13.171.2
+369	Vodacom (South Africa) (vpn)	internetvpn	(*)	(*)	196.207.32.69	196.43.45.190
+370	Tele2 (Russia)	wap.tele2.ru	gprs	(*)	130.244.127.161	130.244.127.169
+371	Jeans (Hyper) (Ukraine)	hyper.net	(*)	(*)	212.58.160.33	212.58.160.34
+372	Telsim (Turkey) (Pre-paid)	prepaidgprs	(*)	(*)	212.65.128.20	212.156.4.7
