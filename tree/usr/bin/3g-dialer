@@ -130,6 +130,8 @@ if [[ "$selected" = "null" ]] ; then
 else
    source ${lists}/"$selected"
 fi
+
+name="${selected%%_*}"
 # Note, more than one 'try' needs to be separed by a simple space
 
 ####################################################################
@@ -182,6 +184,7 @@ do
 #indent
 cat > $HOME/.wvdialrc << EOF
 [Dialer Defaults]
+# 3G_NAME: $name
 Modem = $device
 Username = '$Username'
 Password = '$Password'
