@@ -38,7 +38,7 @@ exit_me()
    
 ####################################################################
 device_busy(){
-   $guitool --error --text=$"Looks like your device is busy or you have selected a wrong device, please unplug your modem and plug it again, then run again this application" &
+   $guitool --error --text=$"Looks like your device is busy or you have selected a wrong device, please disconnect and connect it again, then run this application once more" &
    exit_me 1
 }
 ####################################################################
@@ -92,10 +92,10 @@ try_to_connect()
       echo "connected" >> $connected
    fi
    if grep -q "NO CARRIER" $logs ; then
-      $guitool --error --text="NO CARRIER: "$"This message means that there's a problem connecting with your provider, this happens sometimes in some places, please try to move somewhere else and try again to connect. You can also continue testing to connect"
+      $guitool --error --text="NO CARRIER: "$"This message means that there is a problem connecting to your provider. This can happen in some places, please move to somewhere else and try to connect again. You can also continue trying to connect"
    fi
    if grep -q "Modem not responding" $logs ; then
-      $guitool --error --text=$"Modem is not responding, please try to unplug it and plug it again"
+      $guitool --error --text=$"Modem is not responding, please try to unplug it and plug it in again"
       exit_me 1
    fi
    #echo 100 > $progress_file
@@ -104,12 +104,12 @@ try_to_connect()
 }
 ####################################################################
 connected_successfully(){
-   $guitool --info --text=$"You are successfully connected to internet, your configuration is saved for this provider so you can't need to select it again from the list, just go to 'connect'"
+   $guitool --info --text=$"You have been successfully connected to the Internet. Your configuration is saved for this provider so you do not need to select it again from the list, just go to 'connect'"
    exit_me 0
 }
 ####################################################################
 #$guitool --info --text=$"If you need to type the PIN code for connect your USB modem, you need to disable it first. For that, just extract the SIM card from your modem and put it on a normal phone (nokia recommended) and search the option to disable the PIN code request, if you don't know how to do that, request it at the shop where you have buy it or a simple mobile phone's house"
-if $guitool --question --text=$"Do you need to enter a PIN code for your modem ? This is normally needed when you use a 3G-HSDPA connected via USB, not needed if you connect your phone to the computer" ; then
+if $guitool --question --text=$"Do you need to enter a PIN code for your modem? This is normally needed when you use a 3G-HSDPA modem connected via USB. It is not needed if you connect your phone to the computer" ; then
    pin="$( $guitool --entry --entry-text="1234" --text=$"Please enter your PIN code" || echo cancel )"
    need_pin="yes"
    if [[ ! "${#pin}" = "4" ]] || [[ "$pin" = *[^0-9]* ]] ; then
@@ -156,7 +156,7 @@ fi
 [[ "$Password" = "request" ]] && Password=$( $guitool --entry --text=$"Enter the Password to use" || echo dummy )
 
 [[ -z $Baud ]] && Baud=460800
-[[ -z $Phone ]] && Phone="*99# *99***1# #777" # FIXME: probar con mi yoigo a ver que pasa si no pongo ningun "phone" variable y dejo solo esto (empezando por el 777) a ver si magicamente se autoconecta a internet =)
+[[ -z $Phone ]] && Phone="*99# *99***1# #777 #888" # FIXME: probar con mi yoigo a ver que pasa si no pongo ningun "phone" variable y dejo solo esto (empezando por el 777) a ver si magicamente se autoconecta a internet =)
 ####################################################################
 
 # FIXME: Add the selector of bluetooth/usb modes (add a helper for bluetooth, and verify it too), that sets the variable $device
@@ -238,4 +238,4 @@ grep -q connected $connected && connected_successfully || kill $pid
    done
 done
 
-[[ -z $connected ]] && $guitool --error --text=$"We have not possible to connect, you can check your ${logs} file that contains a lot of useful information about the reason of why we have not possible to be connected. You can also try the 'not listed here' option of the list, or edit the templates in /usr/share/3g-dialer/templates with the correct information" 
+[[ -z $connected ]] && $guitool --error --text=$"It is not possible to connect. You can check your log file, ${logs} which contains a lot of useful information about why it has not been possible to be connected. You can also try the 'not listed here' option in the list, or edit the templates in /usr/share/3g-dialer/templates with the correct information" 
