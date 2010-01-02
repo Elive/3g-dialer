@@ -10,16 +10,21 @@ rm -f $connected $progress_file $logs
 #FIXME: Add a question about if connect, disconnect, or select a new provider, this question should be NOT launched if the variable emodule is set (in order to not needed it from the future module)
 
 ####################################################################
+show_list_sorted(){
+   show_list | sort | awk 'BEGIN{FS = "::"} {print $3"\n"$1"\n"$2}'
+}
 show_list(){
    for file in ${lists}/*
    do
+      unset name country
       file=$(basename "$file")
       name=$(echo $file | awk -v FS="__" '{print $1}')
       country=$(echo $file | awk -v FS="__" '{print $2}')
+      [[ -z "$file" ]] && continue
+      [[ -z "$name" ]] && continue
+      [[ -z "$country" ]] && continue
 
-      echo "$file"
-      echo "$country"
-      echo "$name"
+      echo "$country::$name::$file"
    done
 }
 ####################################################################
@@ -116,7 +121,8 @@ if $guitool --question --text=$"Do you need to enter a PIN code for your modem? 
       unset pin need_pin
    fi 
 fi
-selected="$( { echo -e "disconnect\n"$"Disconnect""\n"$"Disconnect your connection""\n""null\n"$"Any""\n"$"It is not listed here" ; show_list ; sleep 1 ; echo "" ; } | $guitool --list --column="File" --column=$"Country" --column=$"Provider" --hide-column=1 --text=$"Select your desired Provider\nand Country to connect" --height="360" --width="300" || echo cancel )"
+full_list="$(show_list_sorted)"
+selected="$( { echo -e "disconnect\n"$"Disconnect""\n"$"Disconnect your connection""\n""null\n"$"Any""\n"$"It is not listed here" ; echo "$full_list" ; sleep 1 ; echo "" ; } | $guitool --list --column="File" --column=$"Country" --column=$"Provider" --hide-column=1 --text=$"Select your desired Provider\nand Country to connect" --height="360" --width="300" || echo cancel )"
 
 if [[ "$selected" = "cancel" ]]; then exit_me 0 ; fi
 
