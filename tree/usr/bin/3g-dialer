@@ -5,15 +5,18 @@ logs="/tmp/.3g-dialer-${USER}-logs"
 progress_file="/tmp/.3g-dialer-${USER}-progress"
 connected="/tmp/.3g-dialer-${USER}-connected"
 export TEXTDOMAIN="3g-dialer"
+debug="yes"
 
 rm -f $connected $progress_file $logs
 #FIXME: Add a question about if connect, disconnect, or select a new provider, this question should be NOT launched if the variable emodule is set (in order to not needed it from the future module)
 
+[[ -x /usr/bin/timeout ]] && timeout="timeout 30" || unset timeout
+
 ####################################################################
-show_list_sorted(){
-   show_list | sort | awk 'BEGIN{FS = "::"} {print $3"\n"$1"\n"$2}'
+show_list_providers_sorted(){
+   show_list_providers | sort | awk 'BEGIN{FS = "::"} {print $3"\n"$1"\n"$2}'
 }
-show_list(){
+show_list_providers(){
    for file in ${lists}/*
    do
       unset name country
@@ -28,8 +31,7 @@ show_list(){
    done
 }
 ####################################################################
-exit_me()
-{
+exit_me(){
    echo "PIDS: $pid_pin | $pid ******" 
    [[ ! -z "$pid_pin" ]] && { kill $pid_pin 2>/dev/null 1>&2 || kill -9 $pid_pin 2>/dev/null 1>&2 ; }
    if [[ "$1" = "1" ]] ; then
@@ -40,20 +42,23 @@ exit_me()
    rm -f $connected $progress_file
    exit 0
 }
-   
 ####################################################################
 device_busy(){
-   $guitool --error --text=$"Looks like your device is busy or you have selected a wrong device, please disconnect and connect it again, then run this application once more" &
-   exit_me 1
+   if [[ "$1" != "connect" ]] ; then
+      $guitool --error --text=$"Looks like your device is busy or you have selected a wrong device, please disconnect and connect it again, then run this application once more"
+   fi
 }
 ####################################################################
-set_pin_code()
-{
+set_pin_code(){
    [[ "$need_pin" != "yes" ]] && return
    [[ ! -z "$pid_pin" ]] && { kill $pid_pin 2>/dev/null 1>&2 || kill -9 $pid_pin 2>/dev/null 1>&2 ; }
-   $guitool --info --text=$"Entering PIN code '$pin' in your modem, please wait" & 
-   pid_pin_gui=$!
+   if [[ "$1" != "connect" ]]; then
+      # show gui only if we are not connecting explicitly
+      $guitool --info --text=$"Entering PIN code '$pin' in your modem, please wait" & 
+      pid_pin_gui=$!
+   fi
 
+   # FIXME: is needed "wvdial pin" when pin is required
    wvdial pin 2>$logs &
    pid_pin=$!
 
@@ -62,7 +67,8 @@ set_pin_code()
       sleep 2
       if grep -qiE "(Device or resource busy|No such file or directory)" $logs ; then
          kill $pid_pin_gui
-         device_busy 
+         device_busy "$@"
+         exit_me 1
       fi
       if grep -qE "(ERROR|Bad init string|operation not allowed|^OK)" $logs ; then
          break
@@ -76,8 +82,7 @@ set_pin_code()
    return
 }
 ####################################################################
-try_to_connect()
-{
+try_to_connect(){
    #timeout 10 kill $pid 
 #   timeout 10 killall wvdial 2>/dev/null 1>&2
    [[ ! -z "$pid" ]] && { kill $pid 2>/dev/null 1>&2 || kill -9 $pid 2>/dev/null 1>&2 ; }
@@ -88,7 +93,7 @@ try_to_connect()
    wvdial connect 2>$logs &
    pid=$!
    #
-   sleep 12
+   sleep 14
    
    grep -q EXIT_NOW $connected 2>/dev/null && exit_me 1
 
@@ -97,31 +102,61 @@ try_to_connect()
       echo "connected" >> $connected
    fi
    if grep -q "NO CARRIER" $logs ; then
-      $guitool --error --text="NO CARRIER: "$"This message means that there is a problem connecting to your provider. This can happen in some places, please move to somewhere else and try to connect again. You can also continue trying to connect"
+      $guitool --error --text="NO CARRIER: "$"This message means that there is a problem connecting to your provider. Please try to unplug and plug again your device and then wait 5 minutes before to try to connect, sometimes is needed that your device will start before to use, if this not works, try to move to a different place with a better signal."
    fi
    if grep -q "Modem not responding" $logs ; then
       $guitool --error --text=$"Modem is not responding, please try to unplug it and plug it in again"
       exit_me 1
    fi
+   if grep -qiE "(Device or resource busy|No such file or directory)" $logs ; then
+      device_busy
+      [[ -n "$pid_connecting_gui" ]] && { kill $pid_connecting_gui 2>/dev/null || kill -9 $pid_connecting_gui 2>/dev/null ; } 
+   fi
    #echo 100 > $progress_file
    rm -f $progress_file
+}
+####################################################################
+connected_wait_for_prompt(){
+   : > $logs
+   [[ "$debug" = "yes" ]] && cat $logs
+   if [[ "$1" != "connect" ]]; then
+      # only show gui if we are not connecte explicitly
+      { sleep 1 ; echo 10 ; sleep 1000 ; } | $guitool --progress --text="Connected... Waiting for data" --pulsate &
+      pid_prompt_gui=$!
+   fi
 
+   while true
+   do
+      sleep 1
+      if grep -qiE "(Device or resource busy|No such file or directory)" $logs ; then
+         [[ -n "$pid_prompt_gui" ]] && { kill $pid_prompt_gui 2>/dev/null || kill -9 $pid_prompt_gui 2>/dev/null ; } 
+         device_busy "$@"
+         exit_me 1
+      fi
+      if grep -qE "(local.*IP.*address|remote.*IP.*address|primary.*DNS|secondary.*DNS)" $logs ; then
+         # ok, connected
+         [[ -n "$pid_prompt_gui" ]] && { kill $pid_prompt_gui 2>/dev/null || kill -9 $pid_prompt_gui 2>/dev/null ; } 
+         [[ -n "$pid_connecting_gui" ]] && { kill $pid_connecting_gui 2>/dev/null || kill -9 $pid_connecting_gui 2>/dev/null ; } 
+         connected_successfully
+         break
+      fi
+   done
 }
 ####################################################################
 connected_successfully(){
-   $guitool --info --text=$"You have been successfully connected to the Internet. Your configuration is saved for this provider so you do not need to select it again from the list, just go to 'connect'"
+   $timeout $guitool --info --text=$"You have been successfully connected to the Internet."
    exit_me 0
 }
 ####################################################################
-#$guitool --info --text=$"If you need to type the PIN code for connect your USB modem, you need to disable it first. For that, just extract the SIM card from your modem and put it on a normal phone (nokia recommended) and search the option to disable the PIN code request, if you don't know how to do that, request it at the shop where you have buy it or a simple mobile phone's house"
+main(){
 if $guitool --question --text=$"Do you need to enter a PIN code for your modem? This is normally needed when you use a 3G-HSDPA modem connected via USB. It is not needed if you connect your phone to the computer" ; then
-   pin="$( $guitool --entry --entry-text="1234" --text=$"Please enter your PIN code" || echo cancel )"
+   pin="$( $guitool --entry --entry-text="1234-example" --text=$"Please enter your PIN code" || echo cancel )"
    need_pin="yes"
    if [[ ! "${#pin}" = "4" ]] || [[ "$pin" = *[^0-9]* ]] ; then
       unset pin need_pin
    fi 
 fi
-full_list="$(show_list_sorted)"
+full_list="$(show_list_providers_sorted)"
 selected="$( { echo -e "disconnect\n"$"Disconnect""\n"$"Disconnect your connection""\n""null\n"$"Any""\n"$"It is not listed here" ; echo "$full_list" ; sleep 1 ; echo "" ; } | $guitool --list --column="File" --column=$"Country" --column=$"Provider" --hide-column=1 --text=$"Select your desired Provider\nand Country to connect" --height="360" --width="300" || echo cancel )"
 
 if [[ "$selected" = "cancel" ]]; then exit_me 0 ; fi
@@ -166,7 +201,6 @@ fi
 ####################################################################
 
 # FIXME: Add the selector of bluetooth/usb modes (add a helper for bluetooth, and verify it too), that sets the variable $device
-# FIXME: Add a list creator of devices (/dev/ttyACM* /dev/ttyUSB* /dev/(bluetoohth, etc) and if is more big than one, run a selector, if there's no devices, error a message saying that plug the device and run this again
 
 if [[ "$( ls -1 /dev/ttyACM* /dev/ttyUSB* 2>/dev/null | wc -l )" -gt "1" ]] ; then
    device="$( ls -1 /dev/ttyACM* /dev/ttyUSB* 2>/dev/null | $guitool --list --text=$"Select the device from the list" --column=$"Device" || echo /dev/ttyACM0 )"
@@ -237,7 +271,7 @@ try_to_connect
 grep -q EXIT_NOW $connected && exit_me 1
 
 #FIXME: separar el zenity del comando que parece no cerrarse correctamente... parsear los resultados de los logs para saber si seguir intentando o mostrar el mensaje de conectado
-grep -q connected $connected && connected_successfully || kill $pid
+grep -q connected $connected && connected_wait_for_prompt "$@" || kill $pid
             done
          done
       done
@@ -245,3 +279,43 @@ grep -q connected $connected && connected_successfully || kill $pid
 done
 
 [[ -z $connected ]] && $guitool --error --text=$"It is not possible to connect. You can check your log file, ${logs} which contains a lot of useful information about why it has not been possible to be connected. You can also try the 'not listed here' option in the list, or edit the templates in /usr/share/3g-dialer/templates with the correct information" 
+}
+
+
+case $1 in
+disconnect)
+   killall wvdial 2>/dev/null && exit 0
+   sleep 8
+   killall -9 wvdial 2>/dev/null
+   ;;
+connect)
+   [[ ! -f $HOME/.wvdialrc ]] && { main ; exit ; }
+   # This one ("1234") is just to remove deprecated configurations, remote it in the future
+   if grep -q "1234" $HOME/.wvdialrc ; then
+      echo -e "Removing deprecated PIN configuration..."
+      sed -i "/[Dialer pin]/d" $HOME/.wvdialrc
+      sed -i "/Init1 = AT+CPIN=/d" $HOME/.wvdialrc
+   fi
+   if grep -q "1234-example" $HOME/.wvdialrc ; then
+      sed -i "/[Dialer pin]/d" $HOME/.wvdialrc
+      sed -i "/Init1 = AT+CPIN=/d" $HOME/.wvdialrc
+   fi
+   name="$( cat $HOME/.wvdialrc | grep "3G_NAME" | sed 's|^.*3G_NAME: ||g' )"
+   { sleep 1 ; echo 10 ; sleep 1000 ; } | $guitool --progress --text="Connecting to ${name}..." --pulsate &
+   pid_connecting_gui=$!
+
+   if grep -q "Dialer pin" $HOME/.wvdialrc ; then
+      need_pin="yes"
+      set_pin_code "$@"
+   fi
+   : > $connected
+   try_to_connect
+   grep -q EXIT_NOW $connected && exit_me 1
+   grep -q connected $connected && connected_wait_for_prompt "$@" || kill $pid
+   
+
+   ;;
+*)
+   main
+   ;;
+esac
