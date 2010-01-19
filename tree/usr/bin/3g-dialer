@@ -75,6 +75,8 @@ set_pin_code(){
       fi
    done
 
+   sleep 26 # initializing modem...
+
    kill $pid_pin_gui
    kill $pid_pin
    unset pid_pin pid_pin_gui
@@ -177,7 +179,7 @@ name="${selected%%_*}"
 
 ####################################################################
 if [[ -z $Apn ]] ; then
-   $guitool --info --text=$"The APN (Access Point Name) is the most important element that you need to know in order to connect to internet, if you don't know it you can ask it at your Provider or search in google, it should be something like: internet, Internet, web.vodafone.de, movistar.es\n\nIt can be also a EMPTY value"
+   $guitool --info --text=$"The APN (Access Point Name) is the most important element that you need to know in order to connect to the Internet. If you do not know it, you can ask your Provider or search on google. It should be something like: internet, Internet, web.vodafone.de, movistar.es\n\nIt can be also an EMPTY value"
    Apn=$( $guitool --entry --text=$"Enter the APN (Access Point Name) of your Provider" || echo cancel )
 fi
 [[ "$Apn" = "cancel" ]] && unset Apn
@@ -263,11 +265,11 @@ touch $progress_file $logs
 [[ "$pin_ok" != "yes" ]] && set_pin_code
 grep -q EXIT_NOW $connected 2>/dev/null && exit_me 0
 
-( while test -f $progress_file ; do cat $progress_file ; sleep 1 ; done ) | ( $guitool --progress --pulsate --auto-close --text=$"Elive is trying to connect using:\n\nPhone '${phone}'\nAPN '${apn}'\nWith Username: '${usernames}'\nWith auto-dns: '${dns}'\nUsing 'stupid mode': ${stupid}\n\nPlease be patient while waiting\nthat the attemps will be completed" || echo EXIT_NOW >> $connected ) &
+( while test -f $progress_file ; do cat $progress_file ; sleep 1 ; done ) | ( $guitool --progress --pulsate --auto-close --text=$"Elive is trying to connect using:\n\nPhone '${phone}'\nAPN '${apn}'\nWith Username: '${usernames}'\nWith auto-dns: '${dns}'\nUsing 'stupid mode': ${stupid}\n\nPlease be patient while waiting\nfor the attempts to be completed" || echo EXIT_NOW >> $connected ) &
 
 try_to_connect
 
-#( while test -f $progress_file ; do cat $progress_file ; sleep 1 ; done ) | ( $guitool --progress --pulsate --auto-close --auto-kill --text=$"Elive is trying to connect using:\n\nPhone '${phone}'\nAPN '${apn}'\nWith Username: '${usernames}'\nWith auto-dns: '${dns}'\nUsing 'stupid mode': ${stupid}\n\nPlease be patient while waiting\nthat the attemps will be completed" || echo cancel )
+#( while test -f $progress_file ; do cat $progress_file ; sleep 1 ; done ) | ( $guitool --progress --pulsate --auto-close --auto-kill --text=$"Elive is trying to connect using:\n\nPhone '${phone}'\nAPN '${apn}'\nWith Username: '${usernames}'\nWith auto-dns: '${dns}'\nUsing 'stupid mode': ${stupid}\n\nPlease be patient while waiting\nfor the attempts to be completed" || echo cancel )
 grep -q EXIT_NOW $connected && exit_me 1
 
 #FIXME: separar el zenity del comando que parece no cerrarse correctamente... parsear los resultados de los logs para saber si seguir intentando o mostrar el mensaje de conectado
@@ -292,7 +294,7 @@ connect)
    [[ ! -f $HOME/.wvdialrc ]] && { main ; exit ; }
    # This one ("1234") is just to remove deprecated configurations, remote it in the future
    if grep -q "1234" $HOME/.wvdialrc ; then
-      echo -e "Removing deprecated PIN configuration..."
+      $guitool --info --text=$"Removing deprecated PIN configuration..."
       sed -i "/[Dialer pin]/d" $HOME/.wvdialrc
       sed -i "/Init1 = AT+CPIN=/d" $HOME/.wvdialrc
    fi
