@@ -133,7 +133,14 @@ done
    
 rm -f "$file1" "$file2"
 
-echo -e "list of templates available at $(pwd)/templates_new/"
 
+while read -ru 3 file
+do
+   cat "$file" | sort -u > "${file}.2"
+   mv "${file}.2" "${file}"
+done 3<<< "$( find "$(pwd)/templates_new/" -type f -iname '*'__'*' )"
+
+
+echo -e "list of templates available at $(pwd)/templates_new/"
 
 
