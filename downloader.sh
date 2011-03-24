@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 baseurl="http://iqonn.com/operators/"
 file1="file1.html"
 file2="file2.html"
