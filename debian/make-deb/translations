@@ -1,4 +1,0 @@
-domain="3g-dialer"
-name="3g-dialer"
-description="Connect to internet from your mobile phone"
-files="tree/usr/bin/3g-dialer"
