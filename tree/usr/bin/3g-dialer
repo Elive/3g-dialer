@@ -12,8 +12,11 @@ progress_file="/tmp/.3g-dialer-${USER}-progress"
 connected="/tmp/.3g-dialer-${USER}-connected"
 debug="yes"
 timeout="timeout 30"
+wvdialrc="$HOME/.wvdialrc"
 
 
+# FIXME: we need to be in the "dialout" group, do a test to see if we are or not
+# FIXME:  + add a feature in elive-tools for add users in groups
 
 #===  FUNCTION  ================================================================
 #          NAME:  providers_list_show_sorted
@@ -21,9 +24,14 @@ timeout="timeout 30"
 #    PARAMETERS:  dir where the list of files of providers are located
 #===============================================================================
 providers_list_show_sorted(){
+    # pre {{{
     local list
     list="$1"
+
+    el_debug
     el_check_variables "$list"
+
+    # - pre }}}
 
    providers_list_show "$1" | sort | awk 'BEGIN{FS = "::"} {print $3"\n"$1"\n"$2}'
 }
@@ -34,9 +42,14 @@ providers_list_show_sorted(){
 #    PARAMETERS:  pid
 #===============================================================================
 kill_pid(){
+    # pre {{{
     local pid
     pid="$1"
 
+    el_debug
+    el_check_variables "$pid"
+
+    # - pre }}}
     # only kill if exists
     if [[ -n "$pid" ]] ; then
         kill "$pid" 2>/dev/null 1>&2 || kill -9 "$pid" 2>/dev/null 1>&2
@@ -48,12 +61,16 @@ kill_pid(){
 #    PARAMETERS:  dir where the list of files of providers are located
 #===============================================================================
 providers_list_show(){
+    # pre {{{
     local file provider country list
     list="$1"
 
+    el_debug
+    el_check_variables "$list"
     el_check_dirs "$list"
     el_check_dir_has_files "$list"
 
+    # - pre }}}
     for file in "${list}"/*__*
     do
         unset provider country
@@ -68,6 +85,212 @@ providers_list_show(){
     done
 }
 
+#===  FUNCTION  ================================================================
+#          NAME:  template_create_new
+#   DESCRIPTION:  this function creates a new wvdialrc template
+#===============================================================================
+template_create_new(){
+    # FIXME: run a wvdialconf and check for device
+    el_debug
+    foo
+}
+
+#===  FUNCTION  ================================================================
+#          NAME:  device_modem_select
+#   DESCRIPTION:  search for a modem device in /dev
+#    PARAMETERS:  - | force
+#===============================================================================
+device_modem_select(){
+    # pre {{{
+    el_debug
+
+    config_get
+    # - pre }}}
+    # FIXME add bluetooth devices feature too
+
+    # test actual modem {{{
+    if [[ -n "${device}" ]] ; then
+        # this checks if the modem works, if not, we should select a new one
+       if wvdial device_reset 2>&1 | grep -qi "Modem initialized" ; then
+           el_explain 1 0 "modem working"
+           return
+       fi
+    fi
+
+    # - test actual modem }}}
+    # detect or select modem {{{
+    device="$( wvdialconf 2>&1 | grep -i "Found a modem on" | sed -e 's|^.*/dev/|/dev/|g' -e 's|\.$||g' | grep -E "(ACM|USB)" )"
+
+    if [[ "$( echo "${device}" | wc -l)" -gt "1" ]] ; then
+        device="$( echo "$device" | $guitool --list --text=$"Select the device from the list" --column=$"Device" || echo /dev/ttyUSB1 )"
+        el_explain 1 0 "Device selected is __${device}__"
+    else
+        echo -e "Device found is ${el_c_g}${device}${el_c_n}" 1>&2
+        el_explain 1 0 "Device found is __${device}__"
+    fi
+
+    # }}}
+}
+
+#===  FUNCTION  ================================================================
+#          NAME:  config_get
+#   DESCRIPTION:  read some values required from the conf
+#===============================================================================
+config_get(){
+    # pre {{{
+    el_debug
+    el_check_variables "${wvdialrc}"
+
+    # - pre }}}
+    if [[ -f "${wvdialrc}" ]] \
+        && grep -q "3G_DIALER:.*connection successful" "${wvdialrc}" ; then
+    # get some variables from our last conf {{{
+
+        # device
+        if [[ -z "${device}" ]] ; then
+            device="$( grep "^Modem =" "${wvdialrc}" | head -1 )"
+            device="${device/*\/dev//dev}"
+            echo -e "Device used last is ${device}" 1>&2
+        fi
+
+        # pin required?
+        if grep -q "AT+CPIN.*=" "${wvdialrc}" ; then
+            device_pin="$( grep "AT+CPIN" "${wvdialrc}" | grep -v "CPIN.*=.*\",\"" | sed -e 's|^.*CPIN.*=||g' | head -1 )"
+            echo -e "Pin is: ${el_c_g}${device_pin}${el_c_n}"
+            # FIXME: add a function "check pin validity"
+            is_pin_needed=1
+        else
+            is_pin_needed=0
+        fi
+    # - get some variables from our last conf }}}
+    else
+        configuration_select_new
+    fi
+
+}
+
+#===  FUNCTION  ================================================================
+#          NAME:  device_pin_check
+#   DESCRIPTION:  verify if the pin was accepted or not
+#    PARAMETERS:
+#===============================================================================
+device_pin_check(){
+    # pre {{{
+    local line
+
+    el_debug
+
+    # - pre }}}
+    while read -ru 3 line
+    do
+        # device not found
+        if [[ "${line}" = *"Cannot open /dev"* ]] ; then
+               # pick a new modem {{{
+               if [[ "${FUNCNAME[1]}" = "$FUNCNAME" ]] ; then
+                   # select a new device for use
+                   unset device
+                   device_modem_select
+               else
+                   # try again (once), maybe device is not initialized
+                   sleep 10
+                   $FUNCNAME
+               fi
+
+               # - run again }}}
+        fi
+
+       # pin is accepted
+       if [[ "${line}" = *"CPIN: READY"* ]] ; then
+           el_verbose info "pin is accepted"
+           is_pin_set=1
+           break
+       fi
+
+       # pin required to insert
+       if [[ "${line}" = *"CPIN: SIM PIN"* ]] ; then
+           device_pin_set
+           break
+       fi
+
+       # puk required
+       if [[ "${line}" = *"CPIN: SIM PUK"* ]] ; then
+           $guitool --error --text=$"Seems like your modem requires the PUK key, this happens when you have failed the PIN for 3 times which locks your SIM card, we recommend you to try again by just unplug the device and try to connect again, if you still having PUK errors, try to extract the SIM card from the modem and put it on any cell phone, where you can easly unlock the PIN by giving the PUK code"
+           # TODO: implement a way to unlock the puk (added in template)
+       fi
+
+    done 3<<< "$( wvdial check_pin_status 2>&1 )"
+}
+
+#===  FUNCTION  ================================================================
+#          NAME:  device_pin_set
+#   DESCRIPTION:  set the pin to the device
+#===============================================================================
+device_pin_set(){
+    # pre {{{
+    local line
+
+    config_get
+
+    # - pre }}}
+    if ((is_pin_needed)) && ! ((is_pin_set)) ; then
+       kill_pid "$pid_pin"
+
+       if [[ -z "${device_pin}" ]] ; then
+           # FIXME: request pin
+           true
+          #$guitool --info --text=$"Entering PIN code '$pin' in your modem, please wait" &
+          #pid_pin_gui=$!
+       fi
+
+       #{ sleep 1 ; echo 10 ; sleep 1000 ; } \
+           #| $guitool --progress --text=$"Entering PIN code '$pin' in your modem, please wait" --pulsate &
+       #pid_pin_gui=$!
+
+
+       while read -ru 3 line
+       do
+           # device not found
+           if [[ "${line}" = *"Cannot open /dev"* ]] ; then
+               # run again {{{
+               if [[ "${FUNCNAME[1]}" = "$FUNCNAME" ]] ; then
+                   # FIXME: request a new device
+                   true
+               else
+                   sleep 10
+                   $FUNCNAME
+               fi
+
+               # - run again }}}
+               return
+           fi
+
+           # device works and pin seems to be set, verify it
+           if [[ "${line}" = *"Modem initialized"* ]] ; then
+               # FIXME: implement future elive-tools features (debug info features)
+               device_pin_check
+               break
+           fi
+
+           if echo "$line" | grep -qiE "(Device or resource busy|No such file or directory)" ; then
+               kill_pid "$pid_pin_gui"
+               device_busy "$@"
+           fi
+
+           if echo "$line " | grep -qE "(not specify a valid modem device)" "$logs" ; then
+               device_modem_select
+           fi
+
+
+       done 3<<< "$( wvdial pin 2>&1 )"
+
+
+   fi
+
+   kill_pid "$pid_pin_gui"
+   kill_pid "$pid_pin"
+
+   unset pid_pin pid_pin_gui
+}
 
 ###########################################################################
 #                                  Main                                   #
@@ -76,21 +299,50 @@ providers_list_show(){
 main(){
     # pre {{{
     rm -f "$connected" "$progress_file" "$logs"
+    touch "$connected" "$progress_file" "$logs"
 
     # }}}
 
     case $1 in
         disconnect)
+            # FIXME: real disconnect commands ?
             killall wvdial 2>/dev/null && exit 0
             sleep 8
             killall -9 wvdial 2>/dev/null
             ;;
         connect)
-            if [[ -f $HOME/.wvdialrc ]] ; then
-                # XXX
+            el_group_add "dialout"
+
+            if grep -q "3G_DIALER:.*connection successful" "${wvdialrc}" ; then
+                device_connect
+            fi
+
+            ;;
+        status)
+            true
+            #TODO: add "status" and quality of connection etc...
+
+            ;;
+        *)
+            el_group_add "dialout"
+            #configuration_select_new "$@"
+
+            #device_modem_select
+            #device_pin_set
+
+            ;;
+    esac
+
+
+exit # FIXME
+
+
+
+
+
                 if grep -q "PIN=.*1234-example" $HOME/.wvdialrc ; then
                     sed -i "/[Dialer pin]/d" $HOME/.wvdialrc
-                    sed -i "/Init1 = AT+CPIN=/d" $HOME/.wvdialrc
+                    sed -i "/Init1 = AT+CPIN.*=/d" $HOME/.wvdialrc
                 fi
 
                 provider="$( cat $HOME/.wvdialrc | grep "3G_NAME" | sed 's|^.*3G_NAME: ||g' )"
@@ -111,23 +363,13 @@ main(){
 
                 grep -q EXIT_NOW $connected && exit_me 1
                 grep -q connected $connected && connected_wait_for_prompt "$@" || kill $pid_wvdial
-            else
-
-                configuration_select_new "$@"
-
-            fi
-
-            ;;
-        *)
-            configuration_select_new "$@"
-
-            ;;
-    esac
-
 
     #FIXME: Add a question about if connect, disconnect, or select a new provider, this question should be NOT launched if the variable emodule is set (in order to not needed it from the future module)
 
 }
+
+main "$@"
+
 exit # FIXME remove
 
 
@@ -167,59 +409,21 @@ exit_me(){
 device_busy(){
    if [[ "$1" != "connect" ]] ; then
       $guitool --error --text=$"Looks like your device is busy or you have selected a wrong device, please disconnect and connect it again, then run this application once more"
+      # FIXME: there instead declare to disconnect the modem and connect it back, then scan for the device to use
+      exit_me 1
    fi
 }
 ####################################################################
-device_pin_set(){
-   if ! ((is_pin_needed)) ; then
-       return
-   fi
-
-   kill_pid "$pid_pin"
-
-   if [[ "$1" != "connect" ]]; then
-      # show gui only if we are not connecting explicitly
-      $guitool --info --text=$"Entering PIN code '$pin' in your modem, please wait" &
-      pid_pin_gui=$!
-   fi
-
-   # FIXME: is needed "wvdial pin" when pin is required
-   wvdial pin 2>$logs &
-   pid_pin=$!
-
-   while true
-   do
-       sleep 2
-       if grep -qiE "(Device or resource busy|No such file or directory)" "$logs" ; then
-           kill_pid "$pid_pin_gui"
-           device_busy "$@"
-           exit_me 1
-       fi
-       if grep -qE "(ERROR|Bad init string|operation not allowed|^OK)" "$logs" ; then
-           kill_pid "$pid_pin_gui"
-           break
-       fi
-       if grep -qE "(not specify a valid modem device)" "$logs" ; then
-           kill_pid "$pid_pin_gui"
-           $guitool --error --text=$"Your configuration doesn't include a valid device to use"
-           # FIXME: detect device and try again
-           break
-       fi
-   done
-
-   sleep 26 # initializing modem...
-
-   kill_pid "$pid_pin_gui"
-   kill_pid "$pid_pin"
-
-   unset pid_pin pid_pin_gui
-
-   is_pin_accepted="yes"
-
-   return
-}
 ####################################################################
 device_connect(){
+    #FIXME's:
+    # - check if device exists and is reachable
+    # - check for pin required, enter, check, etc..
+    # - show progress bar from main code
+
+    device_modem_select
+    device_pin_set
+
     kill_pid "$pid_wvdial"
 
 #   { { wvdial 2>&1 & } ; pid_wvdial=$! ; } | tee $logs 1>/dev/null # Si se añade esta tuberia no entra en background asi que no usarlo
@@ -369,8 +573,6 @@ if [[ -z $Phone ]] ; then
 fi
 ####################################################################
 
-# FIXME: Add the selector of bluetooth/usb modes (add a helper for bluetooth, and verify it too), that sets the variable $device
-
 if [[ "$( ls -1 /dev/ttyACM* /dev/ttyUSB* 2>/dev/null | wc -l )" -gt "1" ]] ; then
     # FIXME: autodetect at every start, since the device can change
    device="$( ls -1 /dev/ttyACM* /dev/ttyUSB* 2>/dev/null | $guitool --list --text=$"Select the device from the list" --column=$"Device" || echo /dev/ttyACM0 )"
@@ -425,7 +627,7 @@ fi
 
 if ((is_pin_needed)) ; then
    echo -e "\n[Dialer pin]" >> $HOME/.wvdialrc
-   echo -e "Init1 = AT+CPIN=$pin" >> $HOME/.wvdialrc
+   echo -e "Init1 = AT+CPIN = $pin" >> $HOME/.wvdialrc
 fi
 
 
@@ -434,7 +636,7 @@ sleep 1
 touch "$progress_file" "$logs"
 #echo -e "\tD: Try to connect"
 
-if [[ "$is_pin_accepted" != "yes" ]] ; then
+if ! ((is_pin_set)) ; then
     device_pin_set
 fi
 if grep -q EXIT_NOW $connected 2>/dev/null ; then
