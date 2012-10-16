@@ -21,7 +21,7 @@ debug(){
    [[ "$debug" != "yes" ]] && return
    echo -e "D: $1"
 }
-   
+
 
 # get regions
 curl -s "$baseurl" > $file1
@@ -53,12 +53,12 @@ do
    do
 #      if echo "$line" | grep -q "Incomplete settings" ; then
 #      fi
-      
+
 
       if echo "$line" | grep -q "^<label>" ; then
          line="${line#<label>}"
          firstparm="$( echo $line | sed 's|:.*$||g' )"
-         case $firstparm in 
+         case $firstparm in
          Subscription)
             subscription="${line##*label>}"
             subscription="${subscription%%</span>*}"
@@ -130,7 +130,7 @@ do
 
 
 done
-   
+
 rm -f "$file1" "$file2"
 
 
@@ -142,5 +142,7 @@ done 3<<< "$( find "$(pwd)/templates_new/" -type f -iname '*'__'*' )"
 
 
 echo -e "list of templates available at $(pwd)/templates_new/"
+
+echo -e "\nNote: more providers can be found on this git: https://aur.archlinux.org/packages.php?ID=29530 | http://git.gnome.org/cgit/mobile-broadband-provider-info/"
 
 
