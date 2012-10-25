@@ -2,9 +2,11 @@
 source /usr/lib/elive-tools/functions
 el_make_environment
 
+# Source Code Note: This code is also an experimental way to programming, more like event-driven programming, the application itself knows what needs calling its dependencies in order to reach the goal, the goal is not defined itself, the application just walks to it, thanks to the feature for avoid loops it makes the application perfectly usable, please stick to this procedure
+
 guitool=zenity
 lists="/usr/share/3g-dialer/templates"
-logs="/tmp/.3g-dialer-${USER}-logs"
+logs_main="/tmp/.3g-dialer-${USER}-logs"
 progress_file="/tmp/.3g-dialer-${USER}-progress"
 connected="/tmp/.3g-dialer-${USER}-connected"
 debug="yes"
@@ -16,6 +18,8 @@ TOOL_VERSION="2" # do not use floatpoint
 export TEXTDOMAIN="3g-dialer"
 export LC_NUMERIC="C"
 
+# TODO: check sakis3g, has hal for automatic connect?
+# TODO: check sakis3g, has bluetooth devices feautre
 
 # TODO:
 # * hability to disable cdrom mode ? we dont need that crap, ask to user if want it, how to re-enable, etc...
@@ -23,7 +27,6 @@ export LC_NUMERIC="C"
 # http://simoncpu.wikia.com/wiki/Experiments_on_GSM/GPRS/HSDPA_modem
 #
 # * calculate total bandwith usage (parameter that gives the result, in order to show it in the interface), info: A number of tools are available to help with that. Two console tools are vnstat, which allows to keep track of bandwith over time, and iftop to monitor bandwidth of individual sessions. :&
-
 
 #===  FUNCTION  ================================================================
 #          NAME:  providers_list_show_sorted
@@ -36,40 +39,15 @@ providers_list_show_sorted(){
     list="$1"
 
     el_debug
+    el_security_function_loop || return
+
     el_check_variables "list"
 
     # - pre }}}
 
-   providers_list_show "$1" | sort | awk 'BEGIN{FS = "::"} {print $3"\n"$1"\n"$2}'
+   providers_list_show "$1" | sort | awk 'BEGIN{FS = ":::"} {print $3"\n"$1"\n"$2}'
 }
 
-#===  FUNCTION  ================================================================
-#          NAME:  kill_pid
-#   DESCRIPTION:  kills forcely a pid
-#    PARAMETERS:  pid
-#===============================================================================
-kill_pid(){
-    # pre {{{
-    local pid pid_wvdial
-    pid="$1"
-
-    el_debug "${pid}"
-
-    # - pre }}}
-    # only kill if exists
-    if [[ -n "$pid" ]] ; then
-        kill "$pid" 2>/dev/null 1>&2 || kill -9 "$pid" 2>/dev/null 1>&2
-    fi
-
-    # force kill of possible wvdial commands by us
-    if [[ "${pid}" = "wvdial" ]] ; then
-        pid_wvdial="$( ps aux | grep -v grep | grep "wvdial connect" | awk '{print $2}' )"
-        if [[ -n "${pid_wvdial}" ]] ; then
-            kill "${pid_wvdial}" || kill -9 "${pid_wvdial}"
-        fi
-    fi
-
-}
 #===  FUNCTION  ================================================================
 #          NAME:  providers_list_show_sorted
 #   DESCRIPTION:  show the list of providers in the sorted form
@@ -81,6 +59,8 @@ providers_list_show(){
     list="$1"
 
     el_debug
+    el_security_function_loop || return
+
     el_check_variables "list"
     el_check_dirs "$list"
     el_check_dir_has_files "$list"
@@ -95,11 +75,129 @@ providers_list_show(){
         country="${file##*__}" # show second field
 
         if [[ -n "$file" ]] && [[ -n "${provider}" ]] && [[ -n "${country}" ]] ; then
-            echo "$country::$provider::$file"
+            echo "$country:::$provider:::$file"
         fi
     done
 }
 
+#===  FUNCTION  ================================================================
+#          NAME:  device_signal_get
+#   DESCRIPTION:  get the status and the signal quality in percentage
+#       RETURNS:  signal in percentage
+#===============================================================================
+device_signal_get(){
+    # pre {{{
+    el_debug
+    el_security_function_loop || return
+
+    local logs timeout_count timeout_limit
+
+    logs="${logs_main}-${FUNCNAME}"
+    timeout_count=0
+    timeout_limit=10
+    export LC_NUMERIC=C
+
+    # }}}
+
+    wvdial show_signal_quality 2>"${logs}" &
+    pid_wvdial=$!
+
+    el_explain 2 "getting signal quality"
+
+    while true
+    do
+        sleep 1
+
+        # timeout for try to connect
+        if test "${timeout_count}" -ge "${timeout_limit}" ; then
+            el_explain 2 "timeouted"
+            kill_pid "$pid_wvdial"
+            exit 1
+        fi
+
+        # maybe we need to set the puk
+        if grep -q "^ERROR$" "${logs}"  ; then
+            el_error "errors get, please check:"
+            cat "${logs}"
+            kill_pid "$pid_wvdial"
+            exit 1
+        fi
+
+
+        # device not found
+        if grep -qE "(Cannot open /dev|Modem not responding)" "${logs}" ; then
+            device_busy
+        fi
+        if grep -qiE "(Device or resource busy|No such file or directory)" "${logs}" ; then
+            device_busy
+        fi
+
+        if grep -qE "(not specify a valid modem device)" "$logs" ; then
+            el_error "The specified modem doesn't seems to be valid"
+            kill_pid "$pid_wvdial"
+            exit 1
+        fi
+
+        if grep -q "^+CSQ: " "${logs}" ; then
+            strenght="$( grep "^+CSQ: " "${logs}" | tail -1 )"
+            strenght="${strenght##*CSQ:}"
+            # remove extra leading blank chars
+            read -r strenght <<< "$strenght"
+            strenght="${strenght/,/.}"
+            strenght="$( echo "((($strenght - 5) / (22 - 5)) * 100 )" | bc -l )"
+            strenght="${strenght%.*}"
+            break
+        fi
+
+        # update progress
+        timeout_count="$(( $timeout_count + 1 ))"
+    done
+
+    kill_pid "${pid_wvdial}"
+
+    if [[ -n "$strenght" ]] ; then
+       echo "$strenght %"
+    fi
+
+
+
+}
+
+#===  FUNCTION  ================================================================
+#          NAME:  kill_pid
+#   DESCRIPTION:  kills forcely a pid
+#    PARAMETERS:  pid
+#===============================================================================
+kill_pid(){
+    # pre {{{
+    local pid pid_wvdial
+    pid="$1"
+
+    #el_debug "${pid}"
+    el_security_function_loop || return
+
+    # - pre }}}
+    # only kill if exists
+    if [[ -n "$pid" ]] ; then
+        kill "$pid" 2>/dev/null 1>&2 || kill -9 "$pid" 2>/dev/null 1>&2
+    fi
+
+    # force kill of possible wvdial commands by us
+    if [[ "${pid}" = "wvdial" ]] ; then
+        pid_wvdial="$( ps aux | grep -v grep | grep "wvdial connect" | awk '{print $2}' )"
+        if [[ -n "${pid_wvdial}" ]] ; then
+            kill "${pid_wvdial}" 1>/dev/null 2>&1
+        fi
+    fi
+    if [[ "${pid}" = "all" ]] ; then
+        kill    "$pid_connecting_gui" 1>/dev/null 2>&1
+        kill    "$pid_prompt_gui"     1>/dev/null 2>&1
+        kill    "$pid_pin_gui"        1>/dev/null 2>&1
+        kill    "$pid_wvdial"         1>/dev/null 2>&1
+        killall "wvdial"              1>/dev/null 2>&1
+    fi
+
+}
 #===  FUNCTION  ================================================================
 #          NAME:  device_modem_select
 #   DESCRIPTION:  search for a modem device in /dev
@@ -107,74 +205,173 @@ providers_list_show(){
 #===============================================================================
 device_modem_select(){
     # pre {{{
+    local device_pick counter
+    counter=0
+
     if ((is_device_found)) ; then
         return
     fi
+
     el_debug
+    el_security_function_loop || return
 
-    if [[ -z "${device}" ]] && [[ "$1" != "new" ]] ; then
-        config_get
-    fi
+    local is_modem_found
+
     # - pre }}}
-    # FIXME add bluetooth devices feature too
 
-    # test actual modem {{{
-    if [[ -n "${device}" ]] && [[ "${1}" != "new" ]] ; then
-        # this checks if the modem works, if not, we should select a new one
-       if wvdial device_reset 2>&1 | grep -qi "Modem initialized" ; then
-           el_explain 1 "modem working"
-           return
-       fi
+    if ((is_configuration_new)) && ! ((is_progress_disabled)) ; then
+        { echo 10 ; sleep 1000 ; } \
+            | $guitool --progress --text=$"Detecting your modem..." --pulsate &
+        pid=$!
     fi
 
-    # - test actual modem }}}
-    # detect or select modem {{{
-    { echo 10 ; sleep 1000 ; } \
-        | $guitool --progress --text=$"Detecting your modem..." --pulsate &
-    pid=$!
+    # wait reachability
+    if ((is_conf_valid)) ; then
+        while test $counter -lt 20
+        do
+            if [[ -c "$device" ]] ; then
+                el_explain 2 "our conf is validated and device exists"
+                is_device_found=1
+                break
+            else
+                el_explain 2 "waiting reachability of device"
+            fi
 
-    wvdialconf "${wvdialrc}.tmp"
+            sleep 1
+            counter="$(( $counter + 1 ))"
+        done
+    fi
 
-    device="$( grep "^Modem =" "${wvdialrc}.tmp" | head -1 | sed 's|^.*/dev/|/dev/|g' )"
-    # we should use an high baud, or we could have slow connections maybe, so simply use the generic one, not detect it
-    #Baud="$( grep "^Baud =" "${wvdialrc}.tmp" | head -1 | sed 's|^.* = ||g' )"
-    rm -f "${wvdialrc}.tmp"
+    # detect modem
+    if [[ -z "$device" ]] ; then
+        el_explain 1 "we have not a modem defined yet"
+        el_explain 2 "trying with wvdialconf"
 
+        killall wvdialconf 2>/dev/null 1>&1
 
-    if [[ -c "${device}" ]] ; then
+        sleep 2
+        while read -ru 3 line
+        do
+            if [[ "${line}" = "Found a modem on"* ]] ; then
+                is_modem_found=1
+            fi
+
+            if ((is_modem_found)) ; then
+                if echo "${line}" | grep -q "^tty.*<Info>: Speed" ; then
+                    device="/dev/$( echo "$line" | sed 's|<Info>:.*$||g' )$(echo -e "\n${device}")"
+                fi
+            fi
+
+        done 3<<< "$( timeout 16 wvdialconf "${wvdialrc}.tmp" 2>&1 )"
+
         kill_pid "${pid}"
+        rm -f "${wvdialrc}.tmp"
 
-        # multiple ones found ?
+        # nothing found ? try legacy mode
+        if [[ -z "$device" ]] ; then
+            el_explain 2 "using legacy ls mode for list modems"
+            device="$(ls -1 /dev/ttyUSB* /dev/ttyACM* 2>/dev/null | sort -g )"
+        fi
+
+
+        # multiple found ? pick one
         if [[ "$( echo "${device}" | wc -l)" -gt "1" ]] ; then
-            device="$( echo "$device" | $guitool --list --text=$"Select the device from the list" --column=$"Device" || echo /dev/ttyUSB1 )"
+            el_explain 2 "multiple modems found, pick one"
+            # pick one
+            device_pick="$( echo "$device" | $guitool --list --text=$"We have found multiple possible modems,\nselect one from the list and if not works,\njust try again with the next candidate" --column=$"Device" --height="280" )"
+            # remove extra leading blank chars
+            read -r device_pick <<< "$device_pick"
+
+            # extra device for controls ?
+            device_extra="$( echo "${device}" | sort -g | grep -v "${device_pick}" | grep "ttyUSB" | tail -1 )"
+            # remove extra leading blank chars
+            read -r device_extra <<< "$device_extra"
+
+            if [[ -c "${device_extra}" ]] ; then
+                el_explain 1 "Device Extra is __${device_extra}__"
+            else
+                unset device_extra
+            fi
+
+            device="${device_pick}"
             el_explain 1 "Device selected is __${device}__"
+
             is_device_found=1
-        else
+        fi
+
+
+        # check for found device
+        if [[ -c "${device}" ]] ; then
+            kill_pid "${pid}"
+
             el_explain 1 "Modem found at __${device}__"
             is_device_found=1
         fi
-    else
+    fi
+
+    kill_pid "${pid}"
+
+    # test actual modem {{{
+    if [[ -n "${device}" ]] ; then
+        el_explain 2 "test working modem in $device"
+
+        sleep 1
+        if timeout -s 9 10 wvdial device_reset 2>&1 | grep -qi "Modem initialized" ; then
+            el_explain 2 "modem is reachable"
+            is_device_found=1
+        else
+            el_explain 2 "not reached yet..."
+            sleep 2
+            if timeout -s 9 15 wvdial device_reset 2>&1 | grep -qi "Modem initialized" ; then
+                el_explain 2 "modem is reachable"
+                is_device_found=1
+            else
+                el_explain 2 "not reached yet..."
+                sleep 4
+                if timeout -s 9 24 wvdial device_reset 2>&1 | grep -qi "Modem initialized" ; then
+                    el_explain 2 "modem is reachable"
+                    is_device_found=1
+                else
+                    el_explain 1 "no way to reach modem"
+                    is_device_busy=1
+                    device_busy
+                fi
+            fi
+        fi
+    fi
+
+    # - test actual modem }}}
+
+    # no device found
+    if ! ((is_device_found)) ; then
+        if grep -q "Device or resource busy" "${wvdialrc}.tmp" 2>/dev/null ; then
+            is_device_busy=1
+            device_busy
+        fi
+
         if [[ "${FUNCNAME[1]}" = "$FUNCNAME" ]] ; then
             kill_pid "${pid}"
 
             el_error "modem not found."
             el_explain 0 "XXInfo:XX If it is connected and you see it like a __cdrom__ device, try to eject it before"
 
-            $guitool --error --text=$"Modem or phone not found, are you sure that is connected? Try to unplug and plug it back, search information in google and if finally not works you can report the bug to Elive"
+            $guitool --error --text=$"Modem or phone not found, are you sure that is connected? Try to unplug and plug it back, if your modem is recognized as a CDROM, eject it first, if still not working search information in google or finally report the bug to Elive"
             exit_me 0
         else
-            sleep 10
+            el_explain 2 "waiting 20 seconds..."
+            sleep 20
             kill_pid "${pid}"
 
             $FUNCNAME
+            el_explain 2 "returning"
+            return
         fi
     fi
 
     # update device in conf
-    if ((is_device_found)) && grep -q "^Modem = " "${wvdialrc}" ; then
-        sed -i "s|^Modem = /dev.*|Modem = ${device}|g" "${wvdialrc}"
-    fi
-
+    #if ((is_device_found)) && grep -q "^Modem = " "${wvdialrc}" 2>/dev/null ; then
+        #sed -i "0,/(.*)/s|^Modem = /dev.*|Modem = ${device}|" "${wvdialrc}"
+    #fi
 
     # }}}
 }
@@ -186,33 +383,47 @@ device_modem_select(){
 config_get(){
     # pre {{{
     el_debug
+    el_security_function_loop || return
+
     el_check_variables "wvdialrc"
 
     # - pre }}}
     if [[ -f "${wvdialrc}" ]] \
-        && grep -qi "3G_DIALER_SUCCESS:.*yes" "${wvdialrc}" ; then
+        && ! ((is_configuration_own)) \
+        && grep -qi "3G_DIALER_SUCCESS:.*yes" "${wvdialrc}" 2>/dev/null \
+        && test "$( grep "3G_DIALER_VERSION:" "${wvdialrc}" 2>/dev/null | sed 's|^.*VERSION: ||g' )" -ge "${TOOL_VERSION}" ; then
     # get some variables from our last conf {{{
+
+        is_conf_valid=1
 
         # device
         if [[ -z "${device}" ]] ; then
-            device="$( grep "^Modem =" "${wvdialrc}" | head -1 )"
+            device="$( grep "^Modem =" "${wvdialrc}" 2>/dev/null | head -1 )"
             device="${device/*\/dev//dev}"
-            el_explain 1 "device used last is __${device}__"
+            if [[ -c "${device}" ]] ; then
+                el_explain 1 "device is __${device}__"
+            else
+                unset device
+            fi
         fi
 
+        # provider
+        provider="$( grep "3G_NAME" "${wvdialrc}" | sed 's|^.*3G_NAME: ||g' | head -1 )"
+        # remove extra leading blank chars
+        read -r provider <<< "$provider"
+
         # pin required?
-        if grep -q "Init.*AT+CPIN.*=" "${wvdialrc}" ; then
-            device_pin="$( grep "Init.*= AT+CPIN =" "${wvdialrc}" | sed -e 's|^.*AT+CPIN.*=||g' | head -1 )"
+        if grep -q "Init.* AT+CPIN =" "${wvdialrc}" 2>/dev/null ; then
+            device_pin="$( grep "Init.*= AT+CPIN =" "${wvdialrc}" 2>/dev/null | sed -e 's|^.*AT+CPIN.*=||g' | tail -1 )"
             # remove extra leading blank chars
             read -r device_pin <<< "$device_pin"
 
             el_explain 1 "pin is __${device_pin}__"
+            is_pin_needed=1
+
             if [[ ! "${#device_pin}" = "4" ]] || [[ "$device_pin" = *[^0-9]* ]] ; then
                 device_pin_request
             fi
-            is_pin_needed=1
-        else
-            is_pin_needed=0
         fi
     # - get some variables from our last conf }}}
     fi
@@ -220,61 +431,121 @@ config_get(){
 }
 
 #===  FUNCTION  ================================================================
-#          NAME:  device_pin_check
+#          NAME:  device_pin_status
 #   DESCRIPTION:  verify if the pin was accepted or not
 #    PARAMETERS:
 #===============================================================================
-device_pin_check(){
+device_pin_status(){
     # pre {{{
+    local timeout_limit timeout_count logs
+    el_debug
+    el_security_function_loop 10 || return
+
+    timeout_count=0
+    timeout_limit=10
+    logs="${logs_main}-${FUNCNAME}"
+
     if ((is_pin_set)) ; then
+        el_explain 2 "pin is not required or already set"
         return
     fi
-    local line
-
-    el_debug
 
     # - pre }}}
-    while read -ru 3 line
-    do
-        # device not found
-        if [[ "${line}" = *"Cannot open /dev"* ]] ; then
-               # pick a new modem {{{
-               if [[ "${FUNCNAME[1]}" = "$FUNCNAME" ]] ; then
-                   # select a new device for use
-                   el_explain 2 "already run, selecting a new device"
-                   unset device
-                   device_modem_select
-               else
-                   # try again (once), maybe device is not initialized
-                   el_explain 2 "trying again"
-                   sleep 10
-                   $FUNCNAME
-               fi
 
-               # - run again }}}
+    : > "${logs}"
+
+    if ((is_pin_entered)) && ! ((is_progress_disabled)) ; then
+        { sleep 1 ; echo 10 ; sleep 1000 ; } \
+            | $guitool --progress --auto-kill --text=$"Verifying PIN" --pulsate &
+        pid_gui=$!
+    fi
+
+    sleep 3
+    wvdial check_pin_status 2>"${logs}" &
+    pid_wvdial=$!
+    #el_explain 2 "pid_wvdial = $pid_wvdial"
+
+    while true
+    do
+        sleep 1
+
+        # timeout for try to connect
+        if test "${timeout_count}" -ge "${timeout_limit}" ; then
+            kill_pid "$pid_wvdial"
+            kill_pid "$pid_gui"
+            break
         fi
 
-       # pin is accepted
-       if [[ "${line}" = *"CPIN: READY"* ]] ; then
-           el_explain 0 "pin is accepted"
-           is_pin_set=1
-           break
-       fi
+        # puk required
+        if grep -qE "(CPIN: SIM PUK|SIM PUK required)" "${logs}" ; then
+            is_puk_required=1
+            unset device_pin
 
-       # pin required to insert
-       if [[ "${line}" = *"CPIN: SIM PIN"* ]] ; then
-           el_explain 0 "pin required to insert"
-           return 1
-       fi
+            kill_pid "${pid_wvdial}"
+            kill_pid "${pid_gui}"
 
-       # puk required
-       if [[ "${line}" = *"CPIN: SIM PUK"* ]] ; then
-           el_explain 0 "woops, puk required? really?"
-           $guitool --error --text=$"Seems like your modem requires the PUK key, this happens when you have failed the PIN for 3 times which locks your SIM card, we recommend you to try again by just unplug the device and try to connect again, if you still having PUK errors, try to extract the SIM card from the modem and put it on any cell phone, where you can easly unlock the PIN by giving the PUK code"
-           # TODO: implement a way to unlock the puk (added in template)
-       fi
+            break
+        fi
 
-    done 3<<< "$( wvdial check_pin_status 2>&1 )"
+        # pin is accepted
+        if grep -q "CPIN: READY" "${logs}" ; then
+            is_pin_checked=1
+            el_explain 0 "pin is accepted"
+            is_pin_set=1
+            kill_pid "${pid_wvdial}"
+            kill_pid "${pid_gui}"
+            el_explain 2 "returning"
+            return
+        fi
+
+        # pin is required and not inserted
+        if grep -q "CPIN: SIM PIN" "${logs}" ; then
+            el_explain 0 "pin required to insert"
+
+            is_pin_checked=1
+            is_pin_needed=1
+            is_pin_set=0
+            break
+        fi
+
+        # device not found
+        if grep -qE "(Cannot open /dev|Modem not responding)" "${logs}" ; then
+            # wait a bit
+            el_explain 2 "not responding, wait 1 second"
+            sleep 1
+        fi
+
+        if grep -qiE "(Device or resource busy|No such file or directory)" "${logs}" ; then
+            device_busy
+        fi
+
+
+        if grep -qE "(not specify a valid modem device)" "$logs" ; then
+            kill_pid "${pid_wvdial}"
+            kill_pid "${pid_gui}"
+            $guitool --error --text=$"Your modem doesn't seems valid, select a new configuration"
+            exit_me 1
+        fi
+
+        # update progress
+        timeout_count="$(( $timeout_count + 1 ))"
+    done
+
+    kill_pid "${pid_wvdial}"
+    kill_pid "${pid_gui}"
+
+    # evaluate cases:
+
+    # puk recovery
+    if ((is_puk_required)) ; then
+        device_pin_recover
+    fi
+
+    # pin required to insert
+    if ((is_pin_needed)) && ! ((is_pin_set)) ; then
+        device_pin_set
+    fi
+
 }
 
 #===  FUNCTION  ================================================================
@@ -283,88 +554,163 @@ device_pin_check(){
 #===============================================================================
 device_pin_set(){
     # pre {{{
-    if ((is_pin_set)) ; then
-        return
-    fi
-    local line
+    local timeout_count timeout_limit logs
 
     el_debug
-    if ! ((device_pin)) ; then
-        config_get
+    el_security_function_loop 10 || return
+
+    if ! ((is_pin_checked)) ; then
+        el_explain 2 "pin status not checked yet"
+        device_pin_status
     fi
 
-    # - pre }}}
-    # we need pin but we don't have conf
-    if ! grep -q "Init1 = AT+CPIN = " "$HOME/.wvdialrc" ; then
-        if ! ((device_pin)) ; then
-            device_pin_request
-        fi
+    if ((is_pin_set)) || ! ((is_pin_needed)) ; then
+        el_explain 2 "pin is not required or already set"
+        return
+    fi
 
+    timeout_count=0
+    timeout_limit=10
+
+    logs="${logs_main}-${FUNCNAME}"
+
+    # - pre }}}
+
+    if [[ -z "${device_pin}" ]] ; then
+        el_explain 2 "we don't have a pin yet, let's request it"
+        device_pin_request
+    fi
+
+    : > "${logs}"
+
+    # update the conf
+    if grep -q "Init1 = AT+CPIN = " "$HOME/.wvdialrc" 2>/dev/null ; then
+        sed -i "s|^Init1 = AT+CPIN =.*$|Init1 = AT+CPIN = ${device_pin}|g" "${wvdialrc}"
+    else
         echo -e "\n[Dialer pin]" >> $HOME/.wvdialrc
         echo -e "Init1 = AT+CPIN = $device_pin" >> $HOME/.wvdialrc
     fi
 
-    # set the pin
-    if ((is_pin_needed)) && ! ((is_pin_set)) ; then
-       kill_pid "$pid_pin"
+    if ! ((is_progress_disabled)) ; then
+        { sleep 1 ; echo 10 ; sleep 1000 ; } \
+            | $guitool --progress --auto-kill --text=$"Setting PIN '${device_pin}' in your modem" --pulsate &
+        pid_gui=$!
+    fi
 
-       if [[ -z "${device_pin}" ]] ; then
-           device_pin_request
-       fi
+    sleep 3
+    wvdial pin 2>"${logs}" &
+    pid_wvdial=$!
+    #el_explain 2 "pid_wvdial = $pid_wvdial"
 
-
-       while read -ru 3 line
-       do
-           # device not found
-           if [[ "${line}" = *"Cannot open /dev"* ]] ; then
-               # run again {{{
-               if [[ "${FUNCNAME[1]}" = "$FUNCNAME" ]] ; then
-                   # select a new device for use
-                   el_explain 2 "already run, selecting a new device"
-                   unset device
-                   device_modem_select
-               else
-                   sleep 10
-                   $FUNCNAME
-               fi
-
-               # - run again }}}
-               return
-           fi
-
-           # device works and pin seems to be set, verify it
-           if [[ "${line}" = *"Modem initialized"* ]] ; then
-               el_explain 1 "device works and pin seems to be set, verifying..."
-
-               if device_pin_check ; then
-                   break
-               fi
-           fi
-
-           if echo "$line" | grep -qiE "(Device or resource busy|No such file or directory)" ; then
-               kill_pid "$pid_pin_gui"
-               device_busy
-           fi
-
-           if echo "$line " | grep -qE "(not specify a valid modem device)" "$logs" ; then
-               el_explain 0 "wrong modem ? select a new one"
-               device_modem_select
-           fi
+    el_explain 2 "inserting pin __${device_pin}__"
 
 
-       done 3<<< "$( wvdial pin 2>&1 )"
+    while true
+    do
+        sleep 1
 
-   fi
+        # timeout for try to connect
+        if test "${timeout_count}" -ge "${timeout_limit}" ; then
+            el_explain 2 "timeouted"
+            kill_pid "$pid_wvdial"
+            kill_pid "$pid_gui"
+            break
+        fi
 
-   kill_pid "$pid_pin_gui"
-   kill_pid "$pid_pin"
+        # pin is wrong
+        if grep -qE "ERROR: incorrect password" "${logs}"  ; then
+            el_explain 2 "incorrect password (pin)"
+            kill_pid "${pid_wvdial}"
+            kill_pid "${pid_gui}"
+            kill_pid all
+            killall wvdial
 
-   unset pid_pin pid_pin_gui
+            $guitool --error --text=$"PIN $device_pin is wrong, please set a new one"
+            unset device_pin
+            is_pin_wrong=1
 
-   if ! ((is_pin_set)) && ((is_pin_needed)) ; then
-       $guitool --error --text=$"The pin inserted is not valid, are you sure that is correct or that you need a pin?"
-       device_pin_request
-   fi
+            break
+        fi
+
+        # maybe we need to set the puk
+        if grep -q "^ERROR$" "${logs}"  ; then
+            device_pin_status
+        fi
+
+        # puk required
+        if grep -qE "(CPIN: SIM PUK|SIM PUK required)" "${logs}" ; then
+            el_explain 2 "ouch, puk"
+            is_puk_required=1
+            unset device_pin
+
+            kill_pid "${pid_wvdial}"
+            kill_pid "${pid_gui}"
+
+            break
+        fi
+
+        # device not found
+        if grep -qE "(Cannot open /dev|Modem not responding)" "${logs}" ; then
+            el_explain 2 "wait 1 second"
+            # wait a bit
+            sleep 1
+        fi
+
+        # device works and pin seems to be set, verify it
+        if grep -q "Modem initialized" "${logs}" ; then
+            if grep -q "^OK$" "${logs}" ; then
+                el_explain 2 "seems like we entered the pin correctly, let's verify it"
+                is_pin_entered=1
+
+                kill_pid "${pid_wvdial}"
+                kill_pid "${pid_gui}"
+
+                if ((is_conf_valid)) ; then
+                    is_pin_set=1
+                else
+                    device_pin_status gui
+                fi
+
+                break
+            fi
+        fi
+
+        if grep -qiE "(Device or resource busy|No such file or directory)" "${logs}" ; then
+            device_busy
+        fi
+
+        if grep -qE "(not specify a valid modem device)" "$logs" ; then
+            kill_pid "${pid_wvdial}"
+            kill_pid "${pid_gui}"
+            $guitool --error --text=$"Your modem doesn't seems valid, select a new configuration"
+            exit_me 1
+        fi
+
+        # update progress
+        timeout_count="$(( $timeout_count + 1 ))"
+    done
+
+    kill_pid "${pid_wvdial}"
+    kill_pid "${pid_gui}"
+
+
+    # evaluate cases:
+
+    # wrong pin set
+    if ((is_pin_wrong)) ; then
+        unset is_pin_wrong
+        device_pin_request
+        # try to set it again
+        $FUNCNAME
+        el_explain 2 "returning"
+        return
+    fi
+
+    # puk recovery
+    if ((is_puk_required)) ; then
+        device_pin_recover
+    fi
+
 }
 
 #===  FUNCTION  ================================================================
@@ -373,50 +719,145 @@ device_pin_set(){
 #===============================================================================
 device_pin_request(){
     # pre {{{
-    local example
+    local example line pin
     el_debug
+    el_security_function_loop 5 || return
+
+    if ! ((is_pin_needed)) || ((is_pin_set)) ; then
+        el_explain 2 "pin request not required"
+        return
+    fi
 
     # }}}
-    if wvdial check_pin_status 2>&1 | grep -q "+CPIN: SIM PIN" ; then
-        is_pin_needed=1
+    : ${device_pin:="1234-example"}
 
-        config_get pin
-        : ${device_pin:="1234-example"}
-        pin="$( $guitool --entry --entry-text="$device_pin" --text=$"Please enter your PIN code" || echo cancel )"
+    # ask for pin to user
+    pin="$( $guitool --entry --entry-text="$device_pin" --text=$"Please enter your PIN code" || echo cancel )"
 
-        if [[ "${pin}" = "cancel" ]] ; then
-           return
-        fi
-
-        if [[ ! "${#pin}" = "4" ]] || [[ "$pin" = *[^0-9]* ]] ; then
-            unset pin is_pin_needed
-            $guitool --error --text=$"PIN must be a value of 4 digits only, no letters or other characters, please try again"
-
-            $FUNCNAME
-        else
-            el_explain 0 "pin selected is __${pin}__"
-            device_pin="${pin}"
-            # set it
-            if [[ "${FUNCNAME[1]}" = "configuration_select_new" ]] ; then
-                device_pin_set
-            fi
-        fi
+    if [[ "${pin}" = "cancel" ]] ; then
+        is_pin_needed=0
+        return
     fi
+
+    # verify validity
+    if [[ ! "${#pin}" = "4" ]] || [[ "$pin" = *[^0-9]* ]] ; then
+        unset pin device_pin
+        $guitool --error --text=$"PIN must be a value of 4 digits only, no letters or other characters, please try again"
+
+        unset device_pin
+        $FUNCNAME
+    fi
+
+    el_explain 0 "pin selected is __${pin}__"
+    device_pin="${pin}"
+
 }
+#===  FUNCTION  ================================================================
+#          NAME:  device_pin_recover
+#   DESCRIPTION:  recover the pin using the puk code
+#    PARAMETERS:  -
+#       RETURNS:  -
+#===============================================================================
+device_pin_recover(){
+    # pre {{{
+    local values pin puk
+    el_debug
+    el_security_function_loop || return
+
+    if ! ((is_puk_required)) ; then
+        el_explain 2 "is_puk_required variable not set, ignoring recovery..."
+        return
+    fi
+
+    # }}}
+
+    kill_pid all
+    el_explain 0 "pin attempts failed, we need to recover pin using puk"
+
+    if ! grep -q "^Init.*PUKCODE.*PINCODE" "${wvdialrc}" && test -c "${device}" ; then
+        # create one
+        cat > $HOME/.wvdialrc << EOF
+[Dialer Defaults]
+Modem = $device
+Username = ''
+Password = ''
+
+[Dialer check_pin_status]
+Init1 = AT+CPIN?
+
+[Dialer pin_change]
+# this also unlocks the puk key
+# note: do not modify the spaces on the next line
+Init1 = AT+CPIN="PUKCODE","PINCODE"
+EOF
+
+    fi
+
+    if grep -q "^Init.*PUKCODE.*PINCODE" "${wvdialrc}" ; then
+        $guitool --question --text=$"Attemps for insert the PIN code failed 3 times, we need to recover your SIM by using the puk, please search your PUK code in your provider details (box, website, shop, etc) and insert it" || exit_me 0
+
+        values="$( $guitool --forms --text=$"Insert the PUK code and new PIN to use" --add-entry="PUK "$"key" --add-entry=$"new"" PIN" || exit_me 0 )"
+        if [[ "${values}" = *"|"* ]] ; then
+            puk="$( echo "$values" | awk -v FS="|" '{print $1}' )"
+            pin="$( echo "$values" | awk -v FS="|" '{print $2}' )"
+
+            # verify values
+            if [[ "${#pin}" = "4" ]] && [[ "$pin" != *[^0-9]* ]] ; then
+                if [[ "${#puk}" -ge "6" ]] && [[ "$pin" != *[^0-9]* ]] ; then
+
+                    if $guitool --question --text=$"The values that you have used are: ""\nPUK = ${puk}\nPIN  = ${pin}\n\n"$"Please confirm that they are correct before to continue, we are going to recover your SIM card" ; then
+
+                        sed -i "/^Init.*PUKCODE.*PINCODE/s/PUKCODE\",\"PINCODE/${puk}\",\"${pin}/g" "${wvdialrc}"
+
+                        sleep 1
+                        if timeout 40 wvdial pin_change 2>&1 | grep -q "Modem initialized" ; then
+                            $guitool --info --text=$"Congrats, your new PIN is $pin"
+                            device_pin="$pin"
+
+                            # if we are here is because something bad happened, is better to remove the conf and create a new one
+                            mv "${wvdialrc}" "${wvdialrc}.puk"
+
+                            main
+                            exit_me 0
+                        fi
+                    fi
+                fi
+            fi
+
+            # seems like valures are wrong, exit
+            $guitool --error --text=$"Values are wrong, please try again"
+            $FUNCNAME
+
+            exit_me 0
+        fi
+
+    else
+        $guitool --error --text=$"You need to recover the PIN of your SIM card, for that, you need to extract the SIM from your modem and insert it in a mobile phone, then insert the required PUK for unblock the PIN, you can found it in your provider details (box, website, shop, etc)"
+        exit_me 1
+    fi
+
+
+}
+
 #===  FUNCTION  ================================================================
 #          NAME:  configuration_select_new
 #   DESCRIPTION:  set a new configuration profile
 #===============================================================================
 configuration_select_new(){
     # pre {{{
-    local full_list selected Username Password Apn Phone Baud Modem Isdn
-    el_debug
+    local full_list selected
 
+    el_debug
+    el_security_function_loop || return
+
+    logs="${logs_main}-${FUNCNAME}"
+
+    is_configuration_new=1
 
     # }}}
 
     # search and select for a device
-    device_modem_select new
+    device_modem_select
 
     cat > $HOME/.wvdialrc << EOF
 [Dialer Defaults]
@@ -429,36 +870,52 @@ Init1 = AT+CPIN?
 EOF
 
     # check if we need to set a pin
-    device_pin_request
+    device_pin_set
 
+    # provider {{{
     # show list of possible providers
-    full_list="$(providers_list_show_sorted "$lists" )"
-    selected="$( { echo -e "disconnect\n"$"Disconnect""\n"$"Disconnect your connection""\n""null\n"$"Any""\n"$"It is not listed here" ; echo "$full_list" ; sleep 1 ; echo "" ; } | $guitool --list --column="File" --column=$"Country" --column=$"Provider" --hide-column=1 --text=$"Select your desired Provider and Country to connect" --height="420" --width="440" || echo cancel )"
+    if ((is_configuration_own)) ; then
+        if [[ -z "${provider}" ]]  ; then
+            selected="$( $guitool --entry --entry-text="Vodafone" --text=$"Select a random name for your connection,\nthis can be your provider like Vodafone or a fun name like Matrix" || echo cancel )"
+
+            provider="$selected"
+        fi
+
+    else
+        full_list="$(providers_list_show_sorted "$lists" )"
+        selected="$( { echo -e "disconnect\n"$"Disconnect""\n"$"Disconnect your connection""\n""null\n"$"Any""\n"$"It is not listed here" ; echo "$full_list" ; sleep 1 ; echo "" ; } | $guitool --list --column="File" --column=$"Country" --column=$"Provider" --hide-column=1 --text=$"Select your desired Provider and Country to connect" --height="420" --width="440" || echo cancel )"
+
+        if [[ "$selected" = "disconnect" ]] ; then
+            exit_me 1
+        fi
+
+        if [[ "$selected" = "null" ]] ; then
+            Username=request_me
+            Password=request_me
+        else
+            el_check_files="${lists}/$selected"
+            source "${lists}/$selected"
+        fi
+
+        provider="${selected%%_*}"
+    fi
+
+
 
     if [[ "$selected" = "cancel" ]]; then
         exit_me 0
     fi
 
-    unset Username Password Apn Phone Baud Modem Isdn
-
-    if [[ "$selected" = "disconnect" ]] ; then
-        exit_me 1
-    fi
-
-    if [[ "$selected" = "null" ]] ; then
-        Username=request_me
-        Password=request_me
-    else
-        source "${lists}/$selected"
-    fi
-
-    provider="${selected%%_*}"
+    # - provider }}}
 
 
+    unset Baud Isdn
 
-    if [[ -z $Apn ]] ; then
-        $guitool --info --text=$"The APN (Access Point Name) is the most important element that you need to know in order to connect to the Internet. If you do not know it, you can ask your Provider or search on google. It should be something like: internet, Internet, web.vodafone.de, movistar.es\n\nIt can be also an EMPTY value"
-        Apn=$( $guitool --entry --text=$"Enter the APN (Access Point Name) of your Provider" || echo cancel )
+
+    # apn {{{
+    if [[ -z $Apn ]] || ((is_configuration_own)) ; then
+        $guitool --info --text=$"The APN (Access Point Name) is the most important element that you need to know in order to connect to the Internet. If you do not know it, you should ask your Provider or search on google. It should be something like: internet, Internet, web.vodafone.de, movistar.es. It is very important to set the correct one\n\nIt can be also an EMPTY value"
+        Apn=$( $guitool --entry --entry-text="internet" --text=$"Enter the APN (Access Point Name) of your Provider" || echo cancel )
     fi
 
     if [[ "$Apn" = "cancel" ]] ; then
@@ -470,9 +927,15 @@ EOF
         Apn="really_empty"
     fi
 
-    Apn="$Apn internet"
+    if ! echo "$Apn" | grep -q "internet" ; then
+        Apn="$Apn internet"
+    fi
 
-    if echo $Username | grep -q phonenumber ; then
+    # - apn }}}
+
+    # usernames {{{
+    # special settings for connect
+    if echo "$Username" | grep -q phonenumber ; then
         if [[ -z "$phonenumber" ]] ; then
             phonenumber="$( $guitool --entry --text=$"Enter the phone number to connect" || echo cancel )"
         fi
@@ -486,23 +949,42 @@ EOF
         Password="${Password/phonenumber/$phonenumber}"
     fi
 
-    if [[ "$Username" = "request_me" ]] ; then
-        Username="$( $guitool --entry --text=$"Enter the Username to use" || echo dummy )"
+
+    if [[ "$Username" = "request_me" ]] || \
+        { ((is_configuration_own)) && [[ -z "${Username}" ]] ; }; then
+        Username="$( $guitool --entry --text=$"Enter the Username to use, most of the times is not needed" )"
     fi
-    if [[ "$Password" = "request_me" ]] ; then
-        Password="$( $guitool --entry --text=$"Enter the Password to use" || echo dummy )"
+    if [[ "$Password" = "request_me" ]] || \
+        { ((is_configuration_own)) && [[ -z "${Password}" ]] ; }; then
+        Password="$( $guitool --entry --text=$"Enter the Password to use, most of the times is not needed" )"
     fi
+
+
+    # - usernames }}}
 
     if [[ -z $Baud ]] ; then
         Baud=460800
     fi
 
     if [[ -z $Phone ]] ; then
-        Phone="*99# *99***1# #777 #888"
+        if ((is_configuration_own)) ; then
+            Phone="$( $guitool --entry --entry-text="*99#" --text=$"Enter the phone number required for connect to internet" || echo "*99# *99***1# #777 #888" )"
+        else
+            Phone="*99# *99***1# #777 #888"
+        fi
+    fi
+
+    if [[ -z "$stupid" ]] ; then
+        if $guitool --question --text=$"Do you want to use the Stupid Mode? Some providers are not smart enough to give to your modem the required information for connect, this is called stupid mode, you really can't know which one you need, if you have problems by connecting like random disconnections, create a new configuration and use the other option. We suggest to use it" ; then
+            stupid=Yes
+        else
+            stupid=No
+        fi
     fi
 
 
-    rm -f "$logs" 2>/dev/null
+
+    : > "$logs"
 
 
 for phone in $Phone
@@ -513,8 +995,6 @@ do
       do
          for usernames in yes no
          do
-            for stupid in No Yes
-            do
 #indent
 cat > $HOME/.wvdialrc << EOF
 [Dialer Defaults]
@@ -527,6 +1007,7 @@ Password = '$Password'
 
 [Dialer pin_change]
 # this also unlocks the puk key
+# note: do not modify the spaces on the next line
 Init1 = AT+CPIN="PUKCODE","PINCODE"
 
 [Dialer check_pin_required]
@@ -536,6 +1017,7 @@ Init1 = AT+CLCK="SC",2
 Init1 = AT+CPIN?
 
 [Dialer show_info]
+# 3G_DEVICE_EXTRA
 Init1 = ATI
 
 [Dialer show_manufacturer]
@@ -552,10 +1034,14 @@ Init1 = ATZ
 
 [Dialer show_signal_quality]
 # typically from 5 to 22
+# note: if we have 2 devices, like connecting with USB2,
+# we need to use USB1 for it, USB2 marks as busy
+# 3G_DEVICE_EXTRA
 Init1 = AT+CSQ
 
 [Dialer connect]
 Phone = $phone
+Auto Reconnect = yes
 Baud = $Baud
 Stupid Mode = $stupid
 Init = ATZ
@@ -564,12 +1050,17 @@ Init3 = AT+CGDCONT=1,"IP","$apn"
 EOF
 
     if [[ "$dns" = "yes" ]] ; then
-       echo -e "Auto_DNS = no" >> $HOME/.wvdialrc
-       [[ ! -z "$Dns1" ]] && echo -e "dns1 = $Dns1" >> $HOME/.wvdialrc
-       [[ ! -z "$Dns2" ]] && echo -e "dns2 = $Dns2" >> $HOME/.wvdialrc
+        echo -e "Auto DNS = yes" >> $HOME/.wvdialrc
+    else
+        echo -e "Auto DNS = no" >> $HOME/.wvdialrc
+        [[ -n "$Dns1" ]] && echo -e "dns1 = $Dns1" >> $HOME/.wvdialrc
+        [[ -n "$Dns2" ]] && echo -e "dns2 = $Dns2" >> $HOME/.wvdialrc
     fi
 
-    if [[ "$usernames" = "no" ]] ; then
+    if [[ "$usernames" = "yes" ]] && [[ -n "$Username" ]] && [[ -n "$Password" ]] ; then
+        sed -i "s/^Username.*$/Username = $Username/" $HOME/.wvdialrc
+        sed -i "s/^Password.*$/Password = $Password/" $HOME/.wvdialrc
+    else
         sed -i "s/^Username.*$/Username = ''/" $HOME/.wvdialrc
         sed -i "s/^Password.*$/Password = ''/" $HOME/.wvdialrc
     fi
@@ -581,18 +1072,19 @@ EOF
     # more entry's
     if ((is_pin_needed)) ; then
         echo -e "\n[Dialer pin]" >> $HOME/.wvdialrc
+        # note: do not modify the spaces in the next line
         echo -e "Init1 = AT+CPIN = $device_pin" >> $HOME/.wvdialrc
     fi
 
 
 
-    rm -f "$logs" "$progress_file" 2>/dev/null
+    rm -f "$logs" "$progress_file"
 
     touch "$progress_file" "$logs"
     el_explain 0 "Trying to connect"
 
     # need pin?
-    if ! ((is_pin_set)) && ((is_pin_needed)) ; then
+    if ((is_pin_needed)) && ! ((is_pin_set)) ; then
         device_pin_set
     fi
 
@@ -611,7 +1103,6 @@ EOF
         exit_me 1
     fi
 
-            done
          done
       done
    done
@@ -645,60 +1136,67 @@ exit_me(){
 
 ####################################################################
 device_busy(){
-    local device_new
+    el_security_function_loop 14 || return
 
-    # get new device
-    wvdialconf "${wvdialrc}.tmp"
-    device_new="$( grep "^Modem =" "${wvdialrc}.tmp" | head -1 | sed 's|^.*/dev/|/dev/|g' )"
-    rm -f "${wvdialrc}.tmp"
+    # set a default value if is not set
+    : ${device_busy_counter:="0"}
 
-    if [[ "${device}" != "${device_new}" ]] && [[ "${device_new}" = "/dev/"* ]] ; then
-        sed -i "s|^Modem = /dev.*|Modem = ${device_new}|g" "${wvdialrc}"
+    if [[ "${device_busy_counter}" -gt "20" ]] || ((is_device_busy)) ; then
+        kill_pid "all"
 
-        $guitool --info --text=$"Seems like your device has changed in your configuration, we have updated it, please try to connect again"
-        exit_me 0
-    else
-        $guitool --error --text=$"Your device is busy, please remove it and plug it back, then try to connect again"
+        $guitool --error --text=$"Your device is busy, please remove it and plug it back, then try to connect again. If this not works, try with a new connection configuration"
         exit_me 1
+    else
+        el_explain 2 "device not enough busy for quit, adding counter"
+        device_busy_counter="$(( ${device_busy_counter} + 1 ))"
+        sleep 1
     fi
 
 }
 
 ####################################################################
 device_connect(){
-    local line message_carrier_no counter time_connect_limit selected
+    el_security_function_loop 2 || return
+
+    local line message_carrier_no counter time_connect_limit selected logs
 
     time_connect_limit=15
     counter=0
 
-    kill_pid "$pid_wvdial"
-    kill_pid "wvdial"
+    logs="${logs_main}-${FUNCNAME}"
+
+    main disconnect
 
     #   { { wvdial 2>&1 & } ; pid_wvdial=$! ; } | tee $logs 1>/dev/null # Si se añade esta tuberia no entra en background asi que no usarlo
 
     # sleep 1 second for flush possible transfer, otherwise we can get a "device busy"
 
-    if [[ "${FUNCNAME[1]}" != "configuration_select_new" ]] ; then
-        provider="$( cat "${wvdialrc}" | grep "3G_NAME" | sed 's|^.*3G_NAME: ||g' )"
+    config_get
 
+    if ! ((is_progress_disabled)) && ! ((is_connection_trying)) ; then
         { sleep 1 ; echo 10 ; sleep 1000 ; } \
             | $guitool --progress --auto-kill --text=$"Connecting to: ""${provider}..." --pulsate &
 
         pid_connecting_gui=$!
+        #el_explain 2 "pid_connecting_gui = $pid_connecting_gui"
     fi
 
-    sleep 1
 
     device_modem_select
-    device_pin_check
+    device_pin_set
 
+    : > "${logs}"
+
+    sleep 3
     wvdial connect 2>"${logs}" &
     pid_wvdial=$!
+    #el_explain 2 "pid_wvdial = $pid_wvdial"
 
     echo 2 > "$progress_file"
 
     while true
     do
+        sleep 1
         # timeout for try to connect
         if test "${counter}" -ge "${time_connect_limit}" ; then
             break
@@ -710,27 +1208,16 @@ device_connect(){
         fi
 
         # error in device
-        if grep -q "Modem not responding" "${logs}" ; then
-            el_explain 2 "modem not responding"
-            $guitool --error --text=$"Modem is not responding, please try to unplug it and plug it in again"
-            exit_me 1
+        if grep -qiE "(Device or resource busy|No such file or directory)" "${logs}" ; then
+            device_busy
         fi
 
         if grep -q "^CONNECT" "${logs}" ; then
             el_explain 2 "connected"
             echo "connected" >> "$connected"
-            connected_wait_for_prompt
-            is_connected=1
+            kill_pid "$pid_connecting_gui"
+            connected_wait_for_prompt "$logs"
             break
-        fi
-
-        # device busy
-        if grep -q "Device or resource busy" "${logs}" ; then
-            el_explain 2 "device busy"
-            device_busy
-            kill_pid "${pid_wvdial}"
-            kill_pid "wvdial"
-            kill_pid "${pid_connecting_gui}"
         fi
 
         # no carrier
@@ -740,7 +1227,6 @@ device_connect(){
         fi
 
         # update progress
-        sleep 1
         counter="$(( $counter + 1 ))"
 
         # 15 = 100 %
@@ -778,38 +1264,64 @@ device_connect(){
 }
 ####################################################################
 connected_wait_for_prompt(){
-   : > $logs
+    # pre {{{
+    el_security_function_loop || return
 
-   if [[ "$EL_DEBUG" -gt "1" ]] ; then
-       cat "$logs" 1>&2
-   fi
+    local logs
 
-   { sleep 1 ; echo 10 ; sleep 1000 ; } | $guitool --progress --text=$"Connected, waiting for the provider details" --pulsate &
-   pid_prompt_gui=$!
+    logs="$1"
 
-   while true
-   do
-       sleep 1
-       if grep -qiE "(Device or resource busy|No such file or directory)" "$logs" ; then
-           kill_pid "$pid_prompt_gui"
-           device_busy
-           exit_me 1
-       fi
-       if grep -qE "(local.*IP.*address|remote.*IP.*address|primary.*DNS|secondary.*DNS)" $logs ; then
-           # ok, connected
-           kill_pid "$pid_prompt_gui"
-           kill_pid "$pid_connecting_gui"
-           connected_successfully
-           break
-       fi
-   done
+    # - pre }}}
+    : > "$logs"
+
+    if ! ((is_progress_disabled)) ; then
+        { sleep 1 ; echo 10 ; sleep 1000 ; } \
+            | $guitool --progress --text=$"Connected, waiting for the provider details" --pulsate &
+        pid_prompt_gui=$!
+    fi
+
+    #el_explain 2 "pid_prompt_gui = $pid_prompt_gui"
+
+    while true
+    do
+        sleep 1
+
+        if grep -qiE "(Device or resource busy|No such file or directory)" "$logs" ; then
+            kill_pid "${pid_prompt_gui}"
+            device_busy
+        fi
+
+        if grep -qE "(local.*IP.*address|remote.*IP.*address|primary.*DNS|secondary.*DNS)" "$logs" ; then
+            # ok, connected
+            is_connected=1
+            connected_successfully
+            kill_pid "${pid_prompt_gui}"
+            break
+        fi
+    done
 }
 ####################################################################
 connected_successfully(){
+    el_security_function_loop || return
+
+    kill_pid "$pid_prompt_gui"
+    kill_pid "$pid_connecting_gui"
+
     el_explain 0 "connected successfully"
-    $timeout $guitool --info --text=$"You have been successfully connected to the Internet."
+    if ! ((is_progress_disabled)) ; then
+        $timeout $guitool --info --text=$"You have been successfully connected to the Internet"
+    fi
+
+    # FIXME: set a counter of network usage
 
     el_check_files "${wvdialrc}"
+
+    # set extra device for controls
+    if [[ -c "$device_extra" ]] ; then
+        sed -i "s|^.*3G_DEVICE_EXTRA.*$|Modem = ${device_extra}|g" "${wvdialrc}"
+    fi
+
+    # mark as valid conf
     sed -i 's|^.*3G_DIALER_SUCCESS:.*$|# 3G_DIALER_SUCCESS: yes|g' "${wvdialrc}"
 
     exit_me 0
@@ -821,29 +1333,94 @@ connected_successfully(){
 
 main(){
     # pre {{{
-    rm -f "$connected" "$progress_file" "$logs"
-    touch "$connected" "$progress_file" "$logs"
+    el_check_variables "logs_main,connected,progress_file"
 
+    rm -f "$connected" "$progress_file" "${logs_main}"*
+    touch "$connected" "$progress_file" "${logs_main}"*
+
+    local selected
+
+    el_debug
+    el_security_function_loop 5 || return
     el_group_add "dialout"
+
+
     # }}}
 
     case $1 in
-        status)
-            true
-            #TODO: add "status" and quality of connection, usage, etc...
-
+        signal)
+            device_signal_get
             ;;
         disconnect)
             kill_pid "wvdial"
 
             ;;
-        connect|*)
+        connect)
+
             # old version or not successfully connected, run new conf
-            if ! grep -qi "3G_DIALER_SUCCESS:.*yes" "${wvdialrc}" || test "$( grep "3G_DIALER_VERSION:" "${wvdialrc}" | sed 's|^.*VERSION: ||g' )" -lt "${TOOL_VERSION}" ; then
-                configuration_select_new
-            else
+            if grep -qi "3G_DIALER_SUCCESS:.*yes" "${wvdialrc}" 2>/dev/null ; then
                 device_connect
+            else
+                configuration_select_new
             fi
+
+            ;;
+        connect_nogui)
+            # old version or not successfully connected, run new conf
+            if grep -qi "3G_DIALER_SUCCESS:.*yes" "${wvdialrc}" 2>/dev/null ; then
+                is_progress_disabled=1
+                device_connect
+            else
+                configuration_select_new
+            fi
+
+            ;;
+
+        *)
+            # get values
+            config_get
+
+            if ((is_conf_valid)) ; then
+                selected="$( echo -e "connect\n"$"Connect to ${provider}""\ndisconnect\n"$"Disconnect your modem""\nnew_profile\n"$"New connection""\nnew_configuration_own\n"$"New connection with own settings" | $guitool --list --column="" --column=$"Option" --hide-column=1 --text=$"Please select an option" --height="240" --width="340" || echo cancel )"
+            else
+                selected="$( echo -e "new_profile\n"$"New connection""\nnew_configuration_own\n"$"New connection with own settings" | $guitool --list --column="" --column=$"Option" --hide-column=1 --text=$"Please select an option" --height="190" --width="340" || echo cancel )"
+
+            fi
+
+            case "$selected" in
+                connect)
+                    config_get
+                    device_connect
+                    ;;
+                disconnect)
+                    killall wvdialconf
+                    kill_pid "wvdial"
+                    if [[ -n "${provider}" ]] ; then
+                        $guitool --info --text=$"Disconnected from ${provider}"
+                    else
+                        $guitool --info --text=$"Disconnected successfully"
+                    fi
+
+                    ;;
+                new_profile)
+                    config_get
+                    configuration_select_new
+                    ;;
+                new_configuration_own)
+
+                    $guitool --info --text=$"You are going to create your own configuration, this is very useful if there's not an existing template for your provider or it simply doesn't works, you can very easly found your required configuration parameters for your provider and country searching them in google including the keywords: wvdial apn"
+
+                    el_explain 2 "cleaning some values"
+                    unset device is_pin_needed is_conf_valid provider device_pin
+
+                    is_configuration_own=1
+                    configuration_select_new
+
+                    ;;
+                cancel)
+                    exit_me 0
+                    ;;
+            esac
 
             ;;
     esac
