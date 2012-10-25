@@ -116,7 +116,7 @@ device_signal_get(){
         fi
 
         # maybe we need to set the puk
-        if grep -q "^ERROR$" "${logs}"  ; then
+        if grep -q "^ERROR$" Project-Id-Version: PACKAGE VERSION\nReport-Msgid-Bugs-To: \nPOT-Creation-Date: 2012-10-20 23:53+0200\nPO-Revision-Date: 2010-02-24 17:36-0500\nLast-Translator: orascic <ivan.jovanovic.83@gmail.com>\nLanguage-Team: LANGUAGE <LL@li.org>\nLanguage: \nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"${logs}"  ; then
             el_error "errors get, please check:"
             cat "${logs}"
             kill_pid "$pid_wvdial"
@@ -633,7 +633,7 @@ device_pin_set(){
         fi
 
         # maybe we need to set the puk
-        if grep -q "^ERROR$" "${logs}"  ; then
+        if grep -q "^ERROR$" Project-Id-Version: PACKAGE VERSION\nReport-Msgid-Bugs-To: \nPOT-Creation-Date: 2012-10-20 23:53+0200\nPO-Revision-Date: 2010-02-24 17:36-0500\nLast-Translator: orascic <ivan.jovanovic.83@gmail.com>\nLanguage-Team: LANGUAGE <LL@li.org>\nLanguage: \nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"${logs}"  ; then
             device_pin_status
         fi
 
@@ -658,7 +658,7 @@ device_pin_set(){
 
         # device works and pin seems to be set, verify it
         if grep -q "Modem initialized" "${logs}" ; then
-            if grep -q "^OK$" "${logs}" ; then
+            if grep -q "^OK$" Project-Id-Version: PACKAGE VERSION\nReport-Msgid-Bugs-To: \nPOT-Creation-Date: 2012-10-20 23:53+0200\nPO-Revision-Date: 2010-02-24 17:36-0500\nLast-Translator: orascic <ivan.jovanovic.83@gmail.com>\nLanguage-Team: LANGUAGE <LL@li.org>\nLanguage: \nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n"${logs}" ; then
                 el_explain 2 "seems like we entered the pin correctly, let's verify it"
                 is_pin_entered=1
 
