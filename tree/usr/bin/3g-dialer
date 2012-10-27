@@ -212,6 +212,11 @@ device_modem_select(){
         return
     fi
 
+    #FIXME: set a generic "new conf" variable for those cases
+    if ((is_configuration_new)) || ((is_configuration_own)) ; then
+        unset is_conf_valid
+    fi
+
     el_debug
     el_security_function_loop || return
 
@@ -259,19 +264,32 @@ device_modem_select(){
         killall wvdialconf 2>/dev/null 1>&1
 
         sleep 2
-        while read -ru 3 line
-        do
-            if [[ "${line}" = "Found a modem on"* ]] ; then
-                is_modem_found=1
-            fi
 
-            if ((is_modem_found)) ; then
-                if echo "${line}" | grep -q "^tty.*<Info>: Speed" ; then
+        timeout 60 wvdialconf "${wvdialrc}.tmp" 2>"${wvdialrc}.logs" 1>&2
+
+        if ! grep -q "Found a modem on" "${wvdialrc}.logs" ; then
+            el_explain 2 "device not ready? waiting a bit..."
+            sleep 10
+            timeout 60 wvdialconf "${wvdialrc}.tmp" 2>"${wvdialrc}.logs" 1>&2
+
+            if ! grep -q "Found a modem on" "${wvdialrc}.logs" ; then
+                el_explain 2 "device not ready? waiting a bit..."
+                sleep 20
+                timeout 60 wvdialconf "${wvdialrc}.tmp" 2>"${wvdialrc}.logs" 1>&2
+            fi
+        fi
+
+        if grep -q "Found a modem on" "${wvdialrc}.logs" ; then
+            while read -ru 3 line
+            do
+                if echo "$line" | grep -q "ttyUSB[[:digit:]]*<Info>: Speed.*init" ; then
                     device="/dev/$( echo "$line" | sed 's|<Info>:.*$||g' )$(echo -e "\n${device}")"
                 fi
-            fi
+            done 3<<< "$( cat "${wvdialrc}.logs")"
+        fi
 
-        done 3<<< "$( timeout 16 wvdialconf "${wvdialrc}.tmp" 2>&1 )"
+        rm -f "${wvdialrc}.logs" "${wvdialrc}.tmp"
+
 
         kill_pid "${pid}"
         rm -f "${wvdialrc}.tmp"
@@ -322,21 +340,38 @@ device_modem_select(){
 
     # test actual modem {{{
     if [[ -n "${device}" ]] ; then
+        # create new conf, of course
+        if ! ((is_conf_valid)) ; then
+            cat > "${wvdialrc}" << EOF
+[Dialer Defaults]
+Modem = $device
+Username = ''
+Password = ''
+
+[Dialer check_pin_status]
+Init1 = AT+CPIN?
+
+[Dialer device_reset]
+Init1 = ATZ
+
+EOF
+        fi
+
         el_explain 2 "test working modem in $device"
 
-        sleep 1
+        sleep 2
         if timeout -s 9 10 wvdial device_reset 2>&1 | grep -qi "Modem initialized" ; then
             el_explain 2 "modem is reachable"
             is_device_found=1
         else
             el_explain 2 "not reached yet..."
-            sleep 2
+            sleep 5
             if timeout -s 9 15 wvdial device_reset 2>&1 | grep -qi "Modem initialized" ; then
                 el_explain 2 "modem is reachable"
                 is_device_found=1
             else
                 el_explain 2 "not reached yet..."
-                sleep 4
+                sleep 10
                 if timeout -s 9 24 wvdial device_reset 2>&1 | grep -qi "Modem initialized" ; then
                     el_explain 2 "modem is reachable"
                     is_device_found=1
@@ -593,11 +628,11 @@ device_pin_set(){
     : > "${logs}"
 
     # update the conf
-    if grep -q "Init1 = AT+CPIN = " "$HOME/.wvdialrc" 2>/dev/null ; then
+    if grep -q "Init1 = AT+CPIN = " "${wvdialrc}" 2>/dev/null ; then
         sed -i "s|^Init1 = AT+CPIN =.*$|Init1 = AT+CPIN = ${device_pin}|g" "${wvdialrc}"
     else
-        echo -e "\n[Dialer pin]" >> $HOME/.wvdialrc
-        echo -e "Init1 = AT+CPIN = $device_pin" >> $HOME/.wvdialrc
+        echo -e "\n[Dialer pin]" >> "${wvdialrc}"
+        echo -e "Init1 = AT+CPIN = $device_pin" >> "${wvdialrc}"
     fi
 
     if ! ((is_progress_disabled)) ; then
@@ -785,7 +820,7 @@ device_pin_recover(){
 
     if ! grep -q "^Init.*PUKCODE.*PINCODE" "${wvdialrc}" && test -c "${device}" ; then
         # create one
-        cat > $HOME/.wvdialrc << EOF
+        cat > "${wvdialrc}" << EOF
 [Dialer Defaults]
 Modem = $device
 Username = ''
@@ -868,7 +903,7 @@ configuration_select_new(){
     # search and select for a device
     device_modem_select
 
-    cat > $HOME/.wvdialrc << EOF
+    cat > "${wvdialrc}" << EOF
 [Dialer Defaults]
 Modem = $device
 Username = ''
@@ -876,6 +911,10 @@ Password = ''
 
 [Dialer check_pin_status]
 Init1 = AT+CPIN?
+
+[Dialer device_reset]
+Init1 = ATZ
+
 EOF
 
     # check if we need to set a pin
@@ -1005,7 +1044,7 @@ do
          for usernames in yes no
          do
 #indent
-cat > $HOME/.wvdialrc << EOF
+cat > "${wvdialrc}" << EOF
 [Dialer Defaults]
 # 3G_DIALER_VERSION: ${TOOL_VERSION}
 # 3G_NAME: $provider
@@ -1059,30 +1098,30 @@ Init3 = AT+CGDCONT=1,"IP","$apn"
 EOF
 
     if [[ "$dns" = "yes" ]] ; then
-        echo -e "Auto DNS = yes" >> $HOME/.wvdialrc
+        echo -e "Auto DNS = yes" >> "${wvdialrc}"
     else
-        echo -e "Auto DNS = no" >> $HOME/.wvdialrc
-        [[ -n "$Dns1" ]] && echo -e "dns1 = $Dns1" >> $HOME/.wvdialrc
-        [[ -n "$Dns2" ]] && echo -e "dns2 = $Dns2" >> $HOME/.wvdialrc
+        echo -e "Auto DNS = no" >> "${wvdialrc}"
+        [[ -n "$Dns1" ]] && echo -e "dns1 = $Dns1" >> "${wvdialrc}"
+        [[ -n "$Dns2" ]] && echo -e "dns2 = $Dns2" >> "${wvdialrc}"
     fi
 
     if [[ "$usernames" = "yes" ]] && [[ -n "$Username" ]] && [[ -n "$Password" ]] ; then
-        sed -i "s/^Username.*$/Username = $Username/" $HOME/.wvdialrc
-        sed -i "s/^Password.*$/Password = $Password/" $HOME/.wvdialrc
+        sed -i "s/^Username.*$/Username = $Username/" "${wvdialrc}"
+        sed -i "s/^Password.*$/Password = $Password/" "${wvdialrc}"
     else
-        sed -i "s/^Username.*$/Username = ''/" $HOME/.wvdialrc
-        sed -i "s/^Password.*$/Password = ''/" $HOME/.wvdialrc
+        sed -i "s/^Username.*$/Username = ''/" "${wvdialrc}"
+        sed -i "s/^Password.*$/Password = ''/" "${wvdialrc}"
     fi
 
     if [[ "$apn" = "really_empty" ]] ; then
-        sed -i "s/^Init3.*$/Init3 = AT+CGDCONT=1,\"IP\",\"\"/" $HOME/.wvdialrc
+        sed -i "s/^Init3.*$/Init3 = AT+CGDCONT=1,\"IP\",\"\"/" "${wvdialrc}"
     fi
 
     # more entry's
     if ((is_pin_needed)) ; then
-        echo -e "\n[Dialer pin]" >> $HOME/.wvdialrc
+        echo -e "\n[Dialer pin]" >> "${wvdialrc}"
         # note: do not modify the spaces in the next line
-        echo -e "Init1 = AT+CPIN = $device_pin" >> $HOME/.wvdialrc
+        echo -e "Init1 = AT+CPIN = $device_pin" >> "${wvdialrc}"
     fi
 
 
