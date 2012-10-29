@@ -265,17 +265,17 @@ device_modem_select(){
 
         sleep 2
 
-        timeout 60 wvdialconf "${wvdialrc}.tmp" 2>"${wvdialrc}.logs" 1>&2
+        timeout 140 wvdialconf "${wvdialrc}.tmp" 2>"${wvdialrc}.logs" 1>&2
 
         if ! grep -q "Found a modem on" "${wvdialrc}.logs" ; then
             el_explain 2 "device not ready? waiting a bit..."
             sleep 10
-            timeout 60 wvdialconf "${wvdialrc}.tmp" 2>"${wvdialrc}.logs" 1>&2
+            timeout 180 wvdialconf "${wvdialrc}.tmp" 2>"${wvdialrc}.logs" 1>&2
 
             if ! grep -q "Found a modem on" "${wvdialrc}.logs" ; then
                 el_explain 2 "device not ready? waiting a bit..."
                 sleep 20
-                timeout 60 wvdialconf "${wvdialrc}.tmp" 2>"${wvdialrc}.logs" 1>&2
+                timeout 220 wvdialconf "${wvdialrc}.tmp" 2>"${wvdialrc}.logs" 1>&2
             fi
         fi
 
