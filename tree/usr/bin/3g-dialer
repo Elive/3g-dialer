@@ -235,7 +235,7 @@ device_modem_select(){
 
     if ((is_configuration_new)) && ! ((is_progress_disabled)) ; then
         { echo 10 ; sleep 40 ; } \
-	    | $guitool --progress --text="$( eval_gettext "Detecting you modem..." )" --pulsate &
+	    | $guitool --progress --text="$( eval_gettext "Detecting your modem..." )" --pulsate &
         pid=$!
     fi
 
@@ -810,7 +810,7 @@ device_pin_request(){
     # verify validity
     if [[ ! "${#pin}" = "4" ]] || [[ "$pin" = *[^0-9]* ]] ; then
         unset pin device_pin
-	$guitool --error --text="$( eval_gettext "PIN must add to the value of 4 digits only, no letters or other characters, please try again" )"
+	$guitool --error --text="$( eval_gettext "PIN must be a value of 4 digits only, no letters or other characters, please try again" )"
 
         unset device_pin
         $FUNCNAME
@@ -1025,12 +1025,12 @@ EOF
     if [[ "$Username" = "request_me" ]] || \
         { ((is_configuration_own)) && [[ -z "${Username}" ]] ; }; then
 	    # translators: sometimes we need an username and password for connect, and sometimes we need to leave it in blank, it depends of the provider
-	    Username="$( $guitool --entry --text="$( eval_gettext "Enter login username (if needed):" )" )"
+	    Username="$( $guitool --entry --text="$( eval_gettext "Enter username for connect (if needed):" )" )"
     fi
     if [[ "$Password" = "request_me" ]] || \
         { ((is_configuration_own)) && [[ -z "${Password}" ]] ; }; then
 	    # translators: sometimes we need an username and password for connect, and sometimes we need to leave it in blank, it depends of the provider
-	    Password="$( $guitool --entry --text="$( eval_gettext "Enter login password (if needed):" )" )"
+	    Password="$( $guitool --entry --text="$( eval_gettext "Enter password for connect (if needed):" )" )"
     fi
 
 
