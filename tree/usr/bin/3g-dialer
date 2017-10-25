@@ -1460,7 +1460,7 @@ main(){
             config_get
 
             if ((is_conf_valid)) ; then
-		selected="$( echo -e "connect\n$( eval_gettext "Connect to:" ) ${provider}\ndisconnect\n$( eval_gettext "Disconnect from:" ) $provider\nnew_profile\n$( eval_gettext "New connection" )\nnew_configuration_own\n$( eval_gettext "New manual connection" )" | $guitool --list --column="" --column="$( eval_gettext "Options" )" --hide-column=1 --text="$( eval_gettext "Please select an option" )" --height="240" --width="340" || echo cancel )"
+		selected="$( echo -e "connect\n$( eval_gettext "Connecting to:" ) ${provider}\ndisconnect\n$( eval_gettext "Disconnect from:" ) $provider\nnew_profile\n$( eval_gettext "New connection" )\nnew_configuration_own\n$( eval_gettext "New manual connection" )" | $guitool --list --column="" --column="$( eval_gettext "Options" )" --hide-column=1 --text="$( eval_gettext "Please select an option" )" --height="240" --width="340" || echo cancel )"
             else
 		selected="$( echo -e "new_profile\n$( eval_gettext "New connection" )\nnew_configuration_own\n$( eval_gettext "New manual connection" )" | $guitool --list --column="" --column="$( eval_gettext "Options" )" --hide-column=1 --text="$( eval_gettext "Please select an option" )" --height="190" --width="340" || echo cancel )"
 
