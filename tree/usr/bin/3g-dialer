@@ -1184,7 +1184,7 @@ EOF
 done
 
 if ! ((is_connected)) ; then
-    $guitool --error --text="$( eval_gettext "Connection failed, check log file in:" )""\n${logs} ""$( eval_gettext "which has information that can be useful, by other side we suggest you to set your own configuration if the one provided is not correct, you can easily found it in Google searching something this string " )""'wvdial OR linux configuration OR apn ${provider}', ""$( eval_gettext "then just go to the option 'not listed here' for add your settings, if you think that you can help making better this tool please refer to the Elive website" )"
+    $guitool --error --text="$( eval_gettext "Connection failed, check log file in:" )""\n${logs} ""$( eval_gettext "which has information that can be useful, by other side we suggest you to set your own configuration if the one provided is not correct, you can easly found it in google searching something this string " )""'wvdial OR linux configuration OR apn ${provider}', ""$( eval_gettext "then just go to the option 'not listed here' for add your settings, if you think that you can help making better this tool please refer to the Elive website" )"
 fi
 
 
@@ -1250,7 +1250,7 @@ device_connect(){
 
     if ! ((is_progress_disabled)) && ! ((is_connection_trying)) ; then
         { sleep 1 ; echo 10 ; sleep 1000 ; } \
-	    | $guitool --progress --auto-kill --text="$( eval_gettext "Connection to host:" )""${provider}..." --pulsate &
+	    | $guitool --progress --auto-kill --text="$( eval_gettext "Connecting to host:" )""${provider}..." --pulsate &
 
         pid_connecting_gui=$!
         #el_explain 2 "pid_connecting_gui = $pid_connecting_gui"
@@ -1321,7 +1321,7 @@ device_connect(){
        case "$selected" in
            cancel)
                if ((message_carrier_no)) ; then
-		   $guitool --error --text="$( eval_gettext "No carrier found, was not possible to connect to your provider, possible reasons:\n- Try to unplug and plug again your device\n- Try in a different location with better signal\n- Connection not allowed, try it in a different computer or contact your provider to see if your connection is correctly workin" )"
+		   $guitool --error --text="$( eval_gettext "No carrier found, was not possible to connect to your provider, possible reasons:\n- Try to unplug and plug again your device\n- Try in a different location with better signal\n- Connection not allowed, try it in a different computer or contact your provider to see if your connection is correctly working" )"
                 fi
                exit_me 0
                ;;
@@ -1351,7 +1351,7 @@ connected_wait_for_prompt(){
 
     if ! ((is_progress_disabled)) ; then
         { sleep 1 ; echo 10 ; sleep 1000 ; } \
-	    | $guitool --progress --text="$( eval_gettext "Connected, waiting for authorization:" )" --pulsate &
+	    | $guitool --progress --text="$( eval_gettext "Connected, waiting for authorization: " )" --pulsate &
         pid_prompt_gui=$!
     fi
 
