@@ -1322,7 +1322,7 @@ device_connect(){
        case "$selected" in
            cancel)
                if ((message_carrier_no)) ; then
-		   $guitool --error --text="$( eval_gettext "No carrier found, was not possible to connect to your provider, possible reasons:\n- Try to unplug and plug again your device\n- Try in a different location with better signal\n- Connection not allowed, try it in a different computer or contact your provider to see if your connection is correctly working" )"
+		   $guitool --error --text="$( eval_gettext "No carrier found, was not possible to connect to your provider, possible reasons:\n# Try to unplug and plug again your device\n# Try in a different location with better signal\n# Connection not allowed, try it in a different computer or contact your provider to see if your connection is correctly working" )"
                 fi
                exit_me 0
                ;;
