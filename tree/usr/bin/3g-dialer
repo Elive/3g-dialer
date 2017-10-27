@@ -18,7 +18,8 @@ TOOL_VERSION="2" # do not use floatpoint
 . gettext.sh
 export TEXTDOMAIN="3g-dialer"
 export LC_NUMERIC="C"
-el_check_translations_required_notify
+
+el_check_translations_required
 
 trap "exit_me 1 SIGHUP" SIGHUP
 trap "exit_me 1 KILL" KILL
