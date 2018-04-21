@@ -258,10 +258,10 @@ device_modem_select(){
         done
 
         if ! ((is_device_found)) ; then
-	    if $guitool --question --text="$( eval_gettext "Did your Device connect correctly?" )" ; then
+	    if $guitool --question --text="$( eval_gettext "Did your device connect correctly?" )" ; then
 
 		local _message
-		_message="$( printf "$( eval_gettext "We have the device %s to use from a valid configuration but we can't found it, it is your modem correctly connected? try to unplug it and plug it back, even reboot the computer if needed, otherwise you will need to create a new configuration" "$device" )" )"
+		_message="$( printf "$( eval_gettext "Device %s has a valid configuration, but it is not recognized. Is your modem connected correctly? Try to unplug it and plug it back. If necessary, reboot your computer. Otherwise create a new configuration." "$device" )" )"
                 $guitool --error --text="$_message"
 
 		exit_me 1
@@ -320,7 +320,7 @@ device_modem_select(){
         if [[ "$( echo "${device}" | wc -l)" -gt "1" ]] ; then
             el_explain 2 "multiple modems found, pick one"
             # pick one
-	    device_pick="$( echo "$device" | $guitool --list --text="$( eval_gettext "We have found multiple possible modems,\nselect one from the list and if not works,\njust try again with the next candidate" )" --column="$( eval_gettext "Device:" )" --height="280" || echo cancel )"
+	    device_pick="$( echo "$device" | $guitool --list --text="$( eval_gettext "Multiple modems found.\nSelect one from the list, and if it does not work,\ntry another one." )" --column="$( eval_gettext "Device:" )" --height="280" || echo cancel )"
 
 			if [[ "${device_pick}" = "cancel" ]] ; then
 			   exit_me 1
@@ -419,7 +419,7 @@ EOF
             el_error "modem not found."
             el_explain 0 "XXInfo:XX If it is connected and you see it like a __cdrom__ device, try to eject it before"
 
-	    $guitool --error --text="$( eval_gettext "Modem or phone not found, are you sure it is connected? Try to unplug and plug it back in, if your modem is recognized as a CDROM, eject it first. If it is still not working search information in google or report the bug to Elive." )"
+	    $guitool --error --text="$( eval_gettext "Modem or phone not found, are you sure it is connected? Try to unplug and plug it back in. If your modem is recognized as a CDROM, eject it first. If this is unsuccessful, look for information on Google or report the bug to Elive." )"
             exit_me 0
         else
             el_explain 2 "waiting 20 seconds..."
@@ -587,7 +587,7 @@ device_pin_status(){
         if grep -qE "(not specify a valid modem device)" "$logs" ; then
             kill_pid "${pid_wvdial}"
             kill_pid "${pid_gui}"
-	    $guitool --error --text="$( eval_gettext "Your modem doesn't seem valid, select a new configuration" )"
+	    $guitool --error --text="$( eval_gettext "Your modem is not recognized. Select New Configuration" )"
             exit_me 1
         fi
 
@@ -657,7 +657,7 @@ device_pin_set(){
 
     if ! ((is_progress_disabled)) ; then
 	local _message
-	_message="$( printf "$( eval_gettext "Setting PIN '%s' in your modem" )" "$device_pin" )"
+	_message="$( printf "$( eval_gettext "Setting the PIN '%s' in your modem" )" "$device_pin" )"
 
         { sleep 1 ; echo 10 ; sleep 1000 ; } \
             | $guitool --progress --auto-kill --text="$_message" --pulsate &
@@ -693,7 +693,7 @@ device_pin_set(){
             killall wvdial
 
 	    local translated_message
-	    translated_message="$( printf "$( eval_gettext "PIN %s is wrong, please set a new one" )" "$device_pin" )"
+	    translated_message="$( printf "$( eval_gettext "PIN %s is wrong. Please try again." )" "$device_pin" )"
             $guitool --error --text="$translated_message"
 
             unset device_pin
@@ -752,7 +752,7 @@ device_pin_set(){
         if grep -qE "(not specify a valid modem device)" "$logs" ; then
             kill_pid "${pid_wvdial}"
             kill_pid "${pid_gui}"
-	    $guitool --error --text="$( eval_gettext "Your modem doesn't seem valid, select a new configuration" )"
+	    $guitool --error --text="$( eval_gettext "Your modem is not recognized. Select New Configuration" )"
             exit_me 1
         fi
 
@@ -802,7 +802,7 @@ device_pin_request(){
     : ${device_pin:="1234-example"}
 
     # ask for pin to user
-    pin="$( $guitool --entry --entry-text="$device_pin" --text="$( eval_gettext "Please enter your PIN code." )" || echo cancel )"
+    pin="$( $guitool --entry --entry-text="$device_pin" --text="$( eval_gettext "Please enter your PIN" )" || echo cancel )"
 
     if [[ "${pin}" = "cancel" ]] ; then
         is_pin_needed=0
@@ -812,7 +812,7 @@ device_pin_request(){
     # verify validity
     if [[ ! "${#pin}" = "4" ]] || [[ "$pin" = *[^0-9]* ]] ; then
         unset pin device_pin
-	$guitool --error --text="$( eval_gettext "PIN must be a value of 4 digits only, no letters or other characters, please try again" )"
+	$guitool --error --text="$( eval_gettext "PIN can only be a value of 4 digits - no letters or other characters. Please try again." )"
 
         unset device_pin
         $FUNCNAME
@@ -864,9 +864,9 @@ EOF
     fi
 
     if grep -q "^Init.*PUKCODE.*PINCODE" "${wvdialrc}" ; then
-	$guitool --question --text="$( eval_gettext "Maximum 3 wrong attempts for PIN code inserted, please insert your PUK code." )" || exit_me 0
+	$guitool --question --text="$( eval_gettext "3 wrong attempts entering your PIN, please enter your PUK." )" || exit_me 0
 
-	values="$( $guitool --forms --text="$( eval_gettext "Insert PUK and New PIN:" )" --add-entry="PUK ""$( eval_gettext "Key:" )" --add-entry="$( eval_gettext "New:" )"" PIN" || exit_me 0 )"
+	values="$( $guitool --forms --text="$( eval_gettext "Insert PUK and new PIN:" )" --add-entry="PUK ""$( eval_gettext "Key:" )" --add-entry="$( eval_gettext "New:" )"" PIN" || exit_me 0 )"
         if [[ "${values}" = *"|"* ]] ; then
             puk="$( echo "$values" | awk -v FS="|" '{print $1}' )"
             pin="$( echo "$values" | awk -v FS="|" '{print $2}' )"
@@ -875,7 +875,7 @@ EOF
             if [[ "${#pin}" = "4" ]] && [[ "$pin" != *[^0-9]* ]] ; then
                 if [[ "${#puk}" -ge "6" ]] && [[ "$pin" != *[^0-9]* ]] ; then
 
-		    if $guitool --question --text="$( eval_gettext "The values that you have used are: " )""\nPUK = ${puk}\nPIN  = ${pin}\n\n""$( eval_gettext "Please confirm that they are correct before you continue, we are going to recover your SIM card" )" ; then
+		    if $guitool --question --text="$( eval_gettext "You have entered the following information:" )""\nPUK = ${puk}\nPIN  = ${pin}\n\n""$( eval_gettext "Please confirm that your information is entered correctly before you continue. Your SIM card will be restored shortly." )" ; then
 
                         sed -i "/^Init.*PUKCODE.*PINCODE/s/PUKCODE\",\"PINCODE/${puk}\",\"${pin}/g" "${wvdialrc}"
 
@@ -898,14 +898,14 @@ EOF
             fi
 
             # seems like valures are wrong, exit
-	    $guitool --error --text="$( eval_gettext "Values are wrong, please try again" )"
+	    $guitool --error --text="$( eval_gettext "Wrong input. Please try again." )"
             $FUNCNAME
 
             exit_me 0
         fi
 
     else
-	$guitool --error --text="$( eval_gettext "You need to recover the PIN for your SIM card, you need to extract the SIM from your modem and insert it in a mobile phone, then insert the required PUK for unblock the PIN, you can find it in your provider details (box, website, shop, etc)" )"
+	$guitool --error --text="$( eval_gettext "You need to restore the PIN for your SIM card. Take the SIM card out of your modem and insert it in a mobile phone. Enter the required PUK to unblock the PIN. You can find it in the information from your provider (box, website, shop, etc)." )"
         exit_me 1
     fi
 
@@ -953,14 +953,14 @@ EOF
     # show list of possible providers
     if ((is_configuration_own)) ; then
         if [[ -z "${provider}" ]]  ; then
-	    selected="$( $guitool --entry --entry-text="Vodafone" --text="$( eval_gettext "Select a random name for your connection,\nthis can be your provider like Vodafone or a fun name like Matrix" )" || echo cancel )"
+	    selected="$( $guitool --entry --entry-text="Vodafone" --text="$( eval_gettext "Select a random name for your connection.\nThis can be your provider like Vodafone or a fun name like Matrix" )" || echo cancel )"
 
             provider="$selected"
         fi
 
     else
         full_list="$(providers_list_show_sorted "$lists" )"
-	selected="$( { echo -e "disconnect\n""$( eval_gettext "Disconnect:" )\n$( eval_gettext "Disconnect your connection:" )\nnull\n$( eval_gettext "New:" )\n$( eval_gettext "It is not listed here." )" ; echo "$full_list" ; sleep 1 ; echo "" ; } | $guitool --list --column="File" --column="$( eval_gettext "Country:" )" --column="$( eval_gettext "Provider:" )" --hide-column=1 --text="$( eval_gettext "Select the desired Provider and country of connection." )" --height="420" --width="440" || echo cancel )"
+	selected="$( { echo -e "disconnect\n""$( eval_gettext "Disconnect:" )\n$( eval_gettext "Disconnect your connection:" )\nnull\n$( eval_gettext "New:" )\n$( eval_gettext "Not listed here." )" ; echo "$full_list" ; sleep 1 ; echo "" ; } | $guitool --list --column="File" --column="$( eval_gettext "Country:" )" --column="$( eval_gettext "Provider:" )" --hide-column=1 --text="$( eval_gettext "Select the desired provider and country prefix." )" --height="420" --width="440" || echo cancel )"
 
         if [[ "$selected" = "disconnect" ]] ; then
             exit_me 1
@@ -988,8 +988,8 @@ EOF
 
     # apn {{{
     if [[ -z $Apn ]] || ((is_configuration_own)) ; then
-	$guitool --info --text="$( eval_gettext "The APN (Access Point Name) is the most important element that you need to know in order to connect to the Internet. If you do not know it, you should ask your Provider or search on google. It should be something like: internet, Internet, web.vodafone.de, movistar.es. It is very important to set the correct one\n\nIt can be also an EMPTY value" )"
-	Apn=$( $guitool --entry --entry-text="internet" --text="$( eval_gettext "Enter the APN (Access Point Name) of your Provider." )" || echo cancel )
+	$guitool --info --text="$( eval_gettext "The APN (Access Point Name) is most important to know so you can connect to the Internet. If you do not know it, you should ask your provider or search on Google. Use the following search terms: internet, Internet, web.vodafone.de, movistar.es.\n\nYou can also leave the input field empty." )"
+	Apn=$( $guitool --entry --entry-text="internet" --text="$( eval_gettext "Enter the APN (Access Point Name) of your provider." )" || echo cancel )
     fi
 
     if [[ "$Apn" = "cancel" ]] ; then
@@ -1027,12 +1027,12 @@ EOF
     if [[ "$Username" = "request_me" ]] || \
         { ((is_configuration_own)) && [[ -z "${Username}" ]] ; }; then
 	    # translators: sometimes we need an username and password for connect, and sometimes we need to leave it in blank, it depends of the provider
-	    Username="$( $guitool --entry --text="$( eval_gettext "Enter username for connect (if needed):" )" )"
+	    Username="$( $guitool --entry --text="$( eval_gettext "Enter user name to connect (if needed):" )" )"
     fi
     if [[ "$Password" = "request_me" ]] || \
         { ((is_configuration_own)) && [[ -z "${Password}" ]] ; }; then
 	    # translators: sometimes we need an username and password for connect, and sometimes we need to leave it in blank, it depends of the provider
-	    Password="$( $guitool --entry --text="$( eval_gettext "Enter password for connect (if needed):" )" )"
+	    Password="$( $guitool --entry --text="$( eval_gettext "Enter password to connect (if needed):" )" )"
     fi
 
 
@@ -1051,7 +1051,7 @@ EOF
     fi
 
     if [[ -z "$stupid" ]] ; then
-	if $guitool --question --text="$( eval_gettext "Do you want to use the Stupid Mode? Some providers are not smart enough to give to your modem the required information for connect, this is called stupid mode if you have problems with random disconnections, create a new configuration and use the other option. Recommended!" )" ; then
+	if $guitool --question --text="$( eval_gettext "Do you want to use the Stupid Mode? Some providers are not smart enough to give your modem the required information for a connection. When you have problems with random disconnections, create a new configuration in the Stupid Mode. Recommended!" )" ; then
             stupid=Yes
         else
             stupid=No
@@ -1169,7 +1169,7 @@ EOF
     fi
 
 
-    { while test -f "$progress_file" ; do cat "$progress_file" ; sleep 0.3 ; done ; } | { $guitool --progress --auto-close --text="$( eval_gettext "Elive is trying to connect,\nusing configuration:\n\nPhone:" )"" '${phone}'\nAPN: '${apn}'\nWith Username: ${usernames}\nWith auto-dns:"" ${dns}\nUsing 'stupid mode' provider: ${stupid}\n\n""$( eval_gettext "Please be patient while waiting\nfor the attempts to be completed" )" || echo EXIT_NOW > "${connected}" ; } &
+    { while test -f "$progress_file" ; do cat "$progress_file" ; sleep 0.3 ; done ; } | { $guitool --progress --auto-close --text="$( eval_gettext "Elive is trying to connect,\nusing configuration:\n\nPhone:" )"" '${phone}'\nAPN: '${apn}'\nWith Username: ${usernames}\nWith auto-dns:"" ${dns}\nUsing 'stupid mode' provider: ${stupid}\n\n""$( eval_gettext "Please be patient...\nTrying to connect" )" || echo EXIT_NOW > "${connected}" ; } &
 
     is_connection_trying=1
 
@@ -1185,7 +1185,7 @@ EOF
 done
 
 if ! ((is_connected)) ; then
-    $guitool --error --text="$( eval_gettext "Connection failed, check log file in:" )""\n${logs} ""$( eval_gettext "which has information that can be useful, by other side we suggest you to set your own configuration if the one provided is not correct, you can easily found it in Google searching something this string " )""'wvdial OR linux configuration OR apn ${provider}', ""$( eval_gettext "then just go to the option 'not listed here' for add your settings, if you think that you can help making better this tool please refer to the Elive website" )"
+    $guitool --error --text="$( eval_gettext "Connection failed. Check log file in:" )""\n${logs} ""$( eval_gettext "which has information that can be useful. Else we suggest that you create your own configuration, if the one provided does not work. You can easily find it on Google using a search term like this:" )""'wvdial OR linux configuration OR apn ${provider}', ""$( eval_gettext "then just go to the option 'not listed here' to add your settings. If you think that you can help to improve this tool ,please refer to the Elive website." )"
 fi
 
 
@@ -1220,7 +1220,7 @@ device_busy(){
     if [[ "${device_busy_counter}" -gt "20" ]] || ((is_device_busy)) ; then
         kill_pid "all"
 
-	$guitool --error --text="$( eval_gettext "Your device is busy, please remove it and plug it back in, then try to connect again. If this doesn't work, try with a new connection configuration" )"
+	$guitool --error --text="$( eval_gettext "Your device does not respond. Please remove it, plug it back in and try to connect again. If this is unsuccessful, try a new configuration.." )"
         exit_me 1
     else
         el_explain 2 "device not enough busy for quit, adding counter"
@@ -1318,11 +1318,11 @@ device_connect(){
     kill_pid "$pid_connecting_gui"
 
     if ! ((is_connected)) && [[ "${FUNCNAME[1]}" = "main" ]] ; then
-	selected="$( echo -e "retry\n$( eval_gettext "Please try again?" )\nconfig_new\n$( eval_gettext "New configuration" )" | $guitool --list --column="" --column="$( eval_gettext "Options" )" --hide-column=1 --text="$( eval_gettext "Setup could not connect. Select an option:" )" --height="240" --width="340" || echo cancel )"
+	selected="$( echo -e "retry\n$( eval_gettext "Please try again" )\nconfig_new\n$( eval_gettext "New configuration" )" | $guitool --list --column="" --column="$( eval_gettext "Options" )" --hide-column=1 --text="$( eval_gettext "Setup could not connect. Please select an option:" )" --height="240" --width="340" || echo cancel )"
        case "$selected" in
            cancel)
                if ((message_carrier_no)) ; then
-		   $guitool --error --text="$( eval_gettext "No carrier found, was not possible to connect to your provider, possible reasons:\n# Try to unplug and plug again your device\n# Try in a different location with better signal\n# Connection not allowed, try it in a different computer or contact your provider to see if your connection is correctly working" )"
+		   $guitool --error --text="$( eval_gettext "No carrier found; it was not possible to connect to your provider. Possible sollutions:\n# Try to unplug and plug again your device\n# Try in a different location with a better signal\n# Connection not allowed; try on a different computer or contact your provider to see if your connection is working correctly." )"
                 fi
                exit_me 0
                ;;
@@ -1492,7 +1492,7 @@ main(){
                     ;;
                 new_configuration_own)
 
-		    $guitool --info --text="$( eval_gettext "You are going to create your own configuration, this is very useful if there's not an existing template for your provider or it simply doesn't works, you can very easly find your required configuration parameters for your provider and country by searching for them in google, including the keywords: wvdial apn" )"
+		    $guitool --info --text="$( eval_gettext "You will now create your own configuration.  This is necessary when you have no template from your provider or when you cannot connect. You can very easily find the required configuration parameters for your provider and country by looking them up on Google using the search terms: wvdial or apn." )"
 
                     el_explain 2 "cleaning some values"
                     unset device is_pin_needed is_conf_valid provider device_pin
