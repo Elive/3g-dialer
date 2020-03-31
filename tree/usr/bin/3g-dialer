@@ -1,5 +1,7 @@
 #!/bin/bash
+SOURCE="$0"
 source /usr/lib/elive-tools/functions
+REPORTS="1"
 el_make_environment
 
 # Source Code Note: This code is also an experimental way to programming, more like event-driven programming, the application itself knows what needs calling its dependencies in order to reach the goal, the goal is not defined itself, the application just walks to it, thanks to the feature for avoid loops it makes the application perfectly usable, please stick to this procedure
