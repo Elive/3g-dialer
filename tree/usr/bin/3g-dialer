@@ -1411,7 +1411,7 @@ connected_successfully(){
 
 main(){
     # pre {{{
-    el_check_variables "logs_main,connected,progress_file"
+    el_check_variables "logs_main|connected|progress_file"
 
     rm -f "$connected" "$progress_file" "${logs_main}"*
     touch "$connected" "$progress_file" "${logs_main}"*
