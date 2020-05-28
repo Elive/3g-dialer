@@ -52,7 +52,7 @@ providers_list_show_sorted(){
     list="$1"
 
     el_debug
-    el_security_function_loop || return
+    el_security_function_loop || return 0
 
     el_check_variables "list"
 
@@ -72,7 +72,7 @@ providers_list_show(){
     list="$1"
 
     el_debug
-    el_security_function_loop || return
+    el_security_function_loop || return 0
 
     el_check_variables "list"
     el_check_dirs "$list"
@@ -101,7 +101,7 @@ providers_list_show(){
 device_signal_get(){
     # pre {{{
     el_debug
-    el_security_function_loop || return
+    el_security_function_loop || return 0
 
     local logs timeout_count timeout_limit
 
@@ -187,7 +187,7 @@ kill_pid(){
     pid="$1"
 
     #el_debug "${pid}"
-    el_security_function_loop || return
+    el_security_function_loop || return 0
 
     # - pre }}}
     # only kill if exists
@@ -222,7 +222,7 @@ device_modem_select(){
     counter=0
 
     if ((is_device_found)) ; then
-        return
+        return 0
     fi
 
     #FIXME: set a generic "new conf" variable for those cases
@@ -231,7 +231,7 @@ device_modem_select(){
     fi
 
     el_debug
-    el_security_function_loop || return
+    el_security_function_loop || return 0
 
     local is_modem_found
 
@@ -430,7 +430,7 @@ EOF
 
             $FUNCNAME
             el_explain 2 "returning"
-            return
+            return 0
         fi
     fi
 
@@ -449,7 +449,7 @@ EOF
 config_get(){
     # pre {{{
     el_debug
-    el_security_function_loop || return
+    el_security_function_loop || return 0
 
     el_check_variables "wvdialrc"
 
@@ -505,7 +505,7 @@ device_pin_status(){
     # pre {{{
     local timeout_limit timeout_count logs
     el_debug
-    el_security_function_loop 10 || return
+    el_security_function_loop 10 || return 0
 
     timeout_count=0
     timeout_limit=10
@@ -513,7 +513,7 @@ device_pin_status(){
 
     if ((is_pin_set)) ; then
         el_explain 2 "pin is not required or already set"
-        return
+        return 0
     fi
 
     # - pre }}}
@@ -561,7 +561,7 @@ device_pin_status(){
             kill_pid "${pid_wvdial}"
             kill_pid "${pid_gui}"
             el_explain 2 "returning"
-            return
+            return 0
         fi
 
         # pin is required and not inserted
@@ -623,7 +623,7 @@ device_pin_set(){
     local timeout_count timeout_limit logs
 
     el_debug
-    el_security_function_loop 10 || return
+    el_security_function_loop 10 || return 0
 
     if ! ((is_pin_checked)) ; then
         el_explain 2 "pin status not checked yet"
@@ -632,7 +632,7 @@ device_pin_set(){
 
     if ((is_pin_set)) || ! ((is_pin_needed)) ; then
         el_explain 2 "pin is not required or already set"
-        return
+        return 0
     fi
 
     timeout_count=0
@@ -775,7 +775,7 @@ device_pin_set(){
         # try to set it again
         $FUNCNAME
         el_explain 2 "returning"
-        return
+        return 0
     fi
 
     # puk recovery
@@ -793,11 +793,11 @@ device_pin_request(){
     # pre {{{
     local example line pin
     el_debug
-    el_security_function_loop 5 || return
+    el_security_function_loop 5 || return 0
 
     if ! ((is_pin_needed)) || ((is_pin_set)) ; then
         el_explain 2 "pin request not required"
-        return
+        return 0
     fi
 
     # }}}
@@ -808,7 +808,7 @@ device_pin_request(){
 
     if [[ "${pin}" = "cancel" ]] ; then
         is_pin_needed=0
-        return
+        return 0
     fi
 
     # verify validity
@@ -834,11 +834,11 @@ device_pin_recover(){
     # pre {{{
     local values pin puk
     el_debug
-    el_security_function_loop || return
+    el_security_function_loop || return 0
 
     if ! ((is_puk_required)) ; then
         el_explain 2 "is_puk_required variable not set, ignoring recovery..."
-        return
+        return 0
     fi
 
     # }}}
@@ -923,7 +923,7 @@ configuration_select_new(){
     local full_list selected
 
     el_debug
-    el_security_function_loop || return
+    el_security_function_loop || return 0
 
     logs="${logs_main}-${FUNCNAME}"
 
@@ -1214,7 +1214,7 @@ exit_me(){
 
 ####################################################################
 device_busy(){
-    el_security_function_loop 14 || return
+    el_security_function_loop 14 || return 0
 
     # set a default value if is not set
     : ${device_busy_counter:="0"}
@@ -1234,7 +1234,7 @@ device_busy(){
 
 ####################################################################
 device_connect(){
-    el_security_function_loop 2 || return
+    el_security_function_loop 2 || return 0
 
     local line message_carrier_no counter time_connect_limit selected logs
 
@@ -1343,7 +1343,7 @@ device_connect(){
 ####################################################################
 connected_wait_for_prompt(){
     # pre {{{
-    el_security_function_loop || return
+    el_security_function_loop || return 0
 
     local logs
 
@@ -1380,7 +1380,7 @@ connected_wait_for_prompt(){
 }
 ####################################################################
 connected_successfully(){
-    el_security_function_loop || return
+    el_security_function_loop || return 0
 
     kill_pid "$pid_prompt_gui"
     kill_pid "$pid_connecting_gui"
@@ -1419,7 +1419,7 @@ main(){
     local selected
 
     el_debug
-    el_security_function_loop 5 || return
+    el_security_function_loop 5 || return 0
     el_group_add "dialout"
 
 

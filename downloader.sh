@@ -18,7 +18,7 @@ toline(){
    unset line
 }
 debug(){
-   [[ "$debug" != "yes" ]] && return
+   [[ "$debug" != "yes" ]] && return 0
    echo -e "D: $1"
 }
 
