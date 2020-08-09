@@ -866,7 +866,7 @@ EOF
     fi
 
     if grep -q "^Init.*PUKCODE.*PINCODE" "${wvdialrc}" ; then
-	$guitool --question --text="$( eval_gettext "3 wrong attempts entering your PIN, please enter your PUK." )" || exit_me 0
+	$guitool --question --text="$( eval_gettext "3 wrong attempts entering your PIN. Please enter your PUK." )" || exit_me 0
 
 	values="$( $guitool --forms --text="$( eval_gettext "Enter PUK and new PIN:" )" --add-entry="PUK ""$( eval_gettext "Key:" )" --add-entry="$( eval_gettext "New:" )"" PIN" || exit_me 0 )"
         if [[ "${values}" = *"|"* ]] ; then
