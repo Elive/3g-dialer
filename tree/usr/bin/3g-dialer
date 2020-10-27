@@ -868,7 +868,7 @@ EOF
     if grep -q "^Init.*PUKCODE.*PINCODE" "${wvdialrc}" ; then
 	$guitool --question --text="$( eval_gettext "3 wrong attempts entering your PIN. Please enter your PUK." )" || exit_me 0
 
-	values="$( $guitool --forms --text="$( eval_gettext "Enter PUK and new PIN" )" --add-entry="PUK ""$( eval_gettext "Key" )" --add-entry="$( eval_gettext "New" )"" PIN" || exit_me 0 )"
+	values="$( $guitool --forms --text="$( eval_gettext "Enter PUK and a new PIN" )" --add-entry="PUK ""$( eval_gettext "Key" )" --add-entry="$( eval_gettext "New" )"" PIN" || exit_me 0 )"
         if [[ "${values}" = *"|"* ]] ; then
             puk="$( echo "$values" | awk -v FS="|" '{print $1}' )"
             pin="$( echo "$values" | awk -v FS="|" '{print $2}' )"
@@ -1320,7 +1320,7 @@ device_connect(){
     kill_pid "$pid_connecting_gui"
 
     if ! ((is_connected)) && [[ "${FUNCNAME[1]}" = "main" ]] ; then
-	selected="$( echo -e "retry\n$( eval_gettext "Please try again" )\nconfig_new\n$( eval_gettext "New configuration" )" | $guitool --list --column="" --column="$( eval_gettext "Options" )" --hide-column=1 --text="$( eval_gettext "Setup could not connect. Please select an option" )" --height="240" --width="340" || echo cancel )"
+	selected="$( echo -e "retry\n$( eval_gettext "Please try again" )\nconfig_new\n$( eval_gettext "New configuration" )" | $guitool --list --column="" --column="$( eval_gettext "Options" )" --hide-column=1 --text="$( eval_gettext "Could not connect. Please select an option" )" --height="240" --width="340" || echo cancel )"
        case "$selected" in
            cancel)
                if ((message_carrier_no)) ; then
