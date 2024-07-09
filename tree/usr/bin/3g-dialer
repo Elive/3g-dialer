@@ -263,7 +263,7 @@ device_modem_select(){
 	    if $guitool --question --text="$( eval_gettext "Did your device connect correctly?" )" ; then
 
 		local _message
-		_message="$( printf "$( eval_gettext "Device %s has a valid configuration, but is not recognized. Is your modem connected correctly? Try to unplug it and plug it back. If necessary, reboot your computer. Otherwise create a new configuration." "$device" )" )"
+		_message="$( printf "$( eval_gettext "Device %s has a valid configuration, but is not recognized. Is your modem connected correctly? Try unplugging it and plugging it back in. If necessary, reboot your computer. Otherwise, create a new configuration." "$device" )" )"
                 $guitool --error --text="$_message"
 
 		exit_me 1
@@ -814,7 +814,7 @@ device_pin_request(){
     # verify validity
     if [[ ! "${#pin}" = "4" ]] || [[ "$pin" = *[^0-9]* ]] ; then
         unset pin device_pin
-	$guitool --error --text="$( eval_gettext "PIN can only consist of 4 digits - no letters or other characters. Please try again." )"
+	$guitool --error --text="$( eval_gettext "Your PIN can only consist of 4 digits - no letters or other characters. Please try again." )"
 
         unset device_pin
         $FUNCNAME
@@ -866,9 +866,9 @@ EOF
     fi
 
     if grep -q "^Init.*PUKCODE.*PINCODE" "${wvdialrc}" ; then
-	$guitool --question --text="$( eval_gettext "3 wrong attempts entering your PIN. Please enter your PUK." )" || exit_me 0
+	$guitool --question --text="$( eval_gettext "Three incorrect attempts entering your PIN. Please enter your PUK." )" || exit_me 0
 
-	values="$( $guitool --forms --text="$( eval_gettext "Enter PUK and a new PIN" )" --add-entry="PUK ""$( eval_gettext "Key" )" --add-entry="$( eval_gettext "New" )"" PIN" || exit_me 0 )"
+	values="$( $guitool --forms --text="$( eval_gettext "Enter your PUK and a new PIN" )" --add-entry="PUK ""$( eval_gettext "Key" )" --add-entry="$( eval_gettext "New" )"" PIN" || exit_me 0 )"
         if [[ "${values}" = *"|"* ]] ; then
             puk="$( echo "$values" | awk -v FS="|" '{print $1}' )"
             pin="$( echo "$values" | awk -v FS="|" '{print $2}' )"
@@ -884,7 +884,7 @@ EOF
                         sleep 1
                         if timeout 40 wvdial pin_change 2>&1 | grep -q "Modem initialized" ; then
 			    local translated_message
-			    translated_message="$( printf "$( eval_gettext "Congrats, your new PIN is %s" )" "$pin" )"
+			    translated_message="$( printf "$( eval_gettext "Congratulations, your new PIN is set to %s" )" "$pin" )"
 
                             $guitool --info --text="$translated_message"
                             device_pin="$pin"
@@ -955,7 +955,7 @@ EOF
     # show list of possible providers
     if ((is_configuration_own)) ; then
         if [[ -z "${provider}" ]]  ; then
-	    selected="$( $guitool --entry --entry-text="Vodafone" --text="$( eval_gettext "Select a random name for your connection.\nThis can be your provider like Vodafone or a fun name like Matrix" )" || echo cancel )"
+	    selected="$( $guitool --entry --entry-text="Vodafone" --text="$( eval_gettext "Select a random name for your connection.\nThis can be your provider, like Vodafone, or a fun name, like Matrix." )" || echo cancel )"
 
             provider="$selected"
         fi
@@ -990,7 +990,7 @@ EOF
 
     # apn {{{
     if [[ -z $Apn ]] || ((is_configuration_own)) ; then
-	$guitool --info --text="$( eval_gettext "The APN (Access Point Name) is most important to know so you can connect to the Internet. If you do not know it, you should ask your provider or search on Google. Use the following search terms: internet, Internet, web.vodafone.de, movistar.es.\n\nYou can also leave the input field empty." )"
+	$guitool --info --text="$( eval_gettext "The APN (Access Point Name) is crucial to know to connect to the Internet. If you're unsure, ask your provider or search on Google using terms like 'Internet', 'web.vodafone.de', or 'movistar.es'. You can also leave the input field empty." )"
 	Apn=$( $guitool --entry --entry-text="internet" --text="$( eval_gettext "Enter the APN (Access Point Name) of your provider." )" || echo cancel )
     fi
 
@@ -1013,7 +1013,7 @@ EOF
     # special settings for connect
     if echo "$Username" | grep -q phonenumber ; then
         if [[ -z "$phonenumber" ]] ; then
-	    phonenumber="$( $guitool --entry --text="$( eval_gettext "Enter phone number to connect." )" || echo cancel )"
+	    phonenumber="$( $guitool --entry --text="$( eval_gettext "Enter the phone number to connect." )" || echo cancel )"
         fi
         Username="${Username/phonenumber/$phonenumber}"
     fi
@@ -1029,12 +1029,12 @@ EOF
     if [[ "$Username" = "request_me" ]] || \
         { ((is_configuration_own)) && [[ -z "${Username}" ]] ; }; then
 	    # translators: sometimes we need an username and password for connect, and sometimes we need to leave it in blank, it depends of the provider
-	    Username="$( $guitool --entry --text="$( eval_gettext "Enter user name to connect (if needed)" )" )"
+	    Username="$( $guitool --entry --text="$( eval_gettext "Enter the user name to connect (if needed)" )" )"
     fi
     if [[ "$Password" = "request_me" ]] || \
         { ((is_configuration_own)) && [[ -z "${Password}" ]] ; }; then
 	    # translators: sometimes we need an username and password for connect, and sometimes we need to leave it in blank, it depends of the provider
-	    Password="$( $guitool --entry --text="$( eval_gettext "Enter password to connect (if needed)" )" )"
+	    Password="$( $guitool --entry --text="$( eval_gettext "Enter the password to connect (if needed)" )" )"
     fi
 
 
@@ -1046,7 +1046,7 @@ EOF
 
     if [[ -z $Phone ]] ; then
         if ((is_configuration_own)) ; then
-	    Phone="$( $guitool --entry --entry-text="*99#" --text="$( eval_gettext "Enter Phone Number required for internet connection." )" || echo "*99# *99***1# #777 #888" )"
+	    Phone="$( $guitool --entry --entry-text="*99#" --text="$( eval_gettext "Enter the phone number required for internet connection." )" || echo "*99# *99***1# #777 #888" )"
         else
             Phone="*99# *99***1# #777 #888"
         fi
@@ -1324,7 +1324,7 @@ device_connect(){
        case "$selected" in
            cancel)
                if ((message_carrier_no)) ; then
-		   $guitool --error --text="$( eval_gettext "No carrier found; it was not possible to connect to your provider. Possible sollutions:\n# Try to unplug and plug again your device\n# Try in a different location with a better signal\n# Connection not allowed; try on a different computer or contact your provider to see if your connection is working correctly." )"
+		   $guitool --error --text="$( eval_gettext "No carrier found; it was not possible to connect to your provider. Possible solutions:\n# Try to unplug and plug again your device\n# Try in a different location with a better signal\n# Connection not allowed; try on a different computer or contact your provider to see if your connection is working correctly." )"
                 fi
                exit_me 0
                ;;
